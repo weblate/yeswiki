@@ -10,43 +10,45 @@
  * - email
  * - password
  * - remember
- * - userpage
+ * - userpage.
  */
 
 namespace YesWiki\Login;
 
 use YesWiki\Core\Controller\AuthController;
-use YesWiki\Core\Service\TemplateEngine;
 use YesWiki\Core\Service\PageManager;
+use YesWiki\Core\Service\TemplateEngine;
 use YesWiki\Core\Service\UserManager;
-use YesWiki\Login\Exception\LoginException;
 use YesWiki\Core\YesWikiAction;
+use YesWiki\Login\Exception\LoginException;
+use YesWiki\Security\Controller\SecurityController;
 
 class LoginAction extends YesWikiAction
 {
     protected $authController;
     protected $pageManager;
     protected $templateEngine;
+    protected $securityController;
     protected $userManager;
 
     public function formatArguments($arg)
     {
-        $noSignupButton = (isset($arg['signupurl']) && $arg['signupurl'] === "0");
+        $noSignupButton = (isset($arg['signupurl']) && $arg['signupurl'] === '0');
         $incomingurl = !empty($arg['incomingurl'])
             ? $this->wiki->generateLink($arg['incomingurl'])
             : $this->getIncomingUrlFromServer($_SERVER ?? []);
         $this->templateEngine = $this->getService(TemplateEngine::class);
 
         return [
-            'signupurl' => $noSignupButton ? "0" : (
+            'signupurl' => $noSignupButton ? '0' : (
                 empty($arg['signupurl'])
                 // TODO : check page name for other languages
-                ? $this->wiki->Href("", "ParametresUtilisateur")
+                ? $this->wiki->Href('', 'ParametresUtilisateur')
                 : $this->wiki->generateLink($arg['signupurl'])
             ),
 
             'profileurl' => empty($arg['profileurl'])
-                ? $this->wiki->Href("", "ParametresUtilisateur")
+                ? $this->wiki->Href('', 'ParametresUtilisateur')
                 : (
                     $arg['profileurl'] == 'WikiName'
                     ? 'WikiName'
@@ -70,22 +72,21 @@ class LoginAction extends YesWikiAction
                     : $this->wiki->generateLink($arg['userpage'])
                 )
                 : (
-                    (isset($_REQUEST["action"]) && $_REQUEST["action"] == "logout")
+                    (isset($_REQUEST['action']) && $_REQUEST['action'] == 'logout')
                     ? preg_replace('/(&|\\\?)$/m', '', preg_replace('/(&|\\\?)action=logout(&)?/', '$1', $incomingurl))
                     : $incomingurl
                 ),
 
-            'lostpasswordurl' => !empty($arg['lostpasswordurl'])
-                ? $this->wiki->generateLink($arg['lostpasswordurl'])
-                // TODO : check page name for other languages
-                : $this->wiki->Href("", "MotDePassePerdu"),
+            'lostpasswordurl' => ! boolval($this->params->get('contact_disable_email_for_password')) ? (! empty($arg['lostpasswordurl']) ? $this->wiki->generateLink($arg['lostpasswordurl']) : 
+            // TODO : check page name for other languages
+            $this->wiki->Href('', 'MotDePassePerdu')) : '',
 
             'class' => !empty($arg['class']) ? $arg['class'] : '',
             'btnclass' => !empty($arg['btnclass']) ? $arg['btnclass'] : '',
             'nobtn' => $this->formatBoolean($arg, false, 'nobtn'),
             'template' => (empty($arg['template']) ||
                 empty(basename($arg['template'])) ||
-                !$this->templateEngine->hasTemplate("@login/".basename($arg['template'])))
+                !$this->templateEngine->hasTemplate('@login/' . basename($arg['template'])))
                 ? 'default.twig'
                 : basename($arg['template']),
         ];
@@ -96,83 +97,86 @@ class LoginAction extends YesWikiAction
         // get services
         $this->authController = $this->getService(AuthController::class);
         $this->pageManager = $this->getService(PageManager::class);
+        $this->securityController = $this->getService(SecurityController::class);
         $this->userManager = $this->getService(UserManager::class);
 
-        $action = $_REQUEST["action"] ?? '';
+        $action = $_REQUEST['action'] ?? '';
         switch ($action) {
-            case "logout":
+            case 'logout':
                 $this->logout();
                 break;
-            case "login":
+            case 'login':
                 $this->login();
                 break;
 
-            case "checklogged":
+            case 'checklogged':
             default:
                 return $this->renderForm($action);
         }
+
         return null;
     }
 
     private function getIncomingUrlFromServer(array $server): string
     {
         $url = explode('?', $server['REQUEST_URI']);
-        $d = dirname($url[0].'?');
+        $d = dirname($url[0] . '?');
         $t = ($d != '/' ? str_replace($d, '', $server['REQUEST_URI']) : $server['REQUEST_URI']);
-        return $this->wiki->getBaseUrl().$t;
+
+        return $this->wiki->getBaseUrl() . $t;
     }
 
     private function renderForm(string $action): string
     {
         $user = $this->authController->getLoggedUser();
         $connected = !empty($user);
-        $error = "";
-        $pageMenuUserContent = "";
+        $error = '';
+        $pageMenuUserContent = '';
         if ($connected) {
-            $pageMenuUser = $this->pageManager->getOne("PageMenuUser");
+            $pageMenuUser = $this->pageManager->getOne('PageMenuUser');
             if (!empty($pageMenuUser)) {
-                $pageMenuUserContent = $this->wiki->Format("{{include page=\"PageMenuUser\"}}");
+                $pageMenuUserContent = $this->wiki->Format('{{include page="PageMenuUser"}}');
             }
             if ($this->arguments['profileurl'] == 'WikiName') {
-                $this->arguments['profileurl'] = $this->wiki->Href("edit", $user['name']);
+                $this->arguments['profileurl'] = $this->wiki->Href('edit', $user['name']);
             }
-        } elseif ($action == "checklogged") {
+        } elseif ($action == 'checklogged') {
             $error = _t('LOGIN_COOKIES_ERROR');
         }
 
         $output = $this->render("@login/{$this->arguments['template']}", [
-            "connected" => $connected,
-            "user" => ((isset($user["name"])) ? $user["name"] : ((isset($_POST["name"])) ? $_POST["name"] : '')),
-            "email" => ((isset($user["email"])) ? $user["email"] : ((isset($_POST["email"])) ? $_POST["email"] : '')),
-            "incomingurl" => $this->arguments['incomingurl'],
-            "signupurl" => $this->arguments['signupurl'],
-            'lostpasswordurl' => $this->arguments['lostpasswordurl'],
-            "profileurl" => $this->arguments['profileurl'],
-            "userpage" => $this->arguments['userpage'],
-            "PageMenuUser" => $pageMenuUserContent,
-            "btnclass" => $this->arguments['btnclass'],
-            "class" => $this->arguments['class'],
-            "nobtn" => $this->arguments['nobtn'],
-            "error" => $error
+            'connected' => $connected,
+            'user' => ((isset($user['name'])) ? $user['name'] : ((isset($_POST['name'])) ? $_POST['name'] : '')),
+            'email' => ((isset($user['email'])) ? $user['email'] : ((isset($_POST['email'])) ? $_POST['email'] : '')),
+            'incomingurl' => $this->arguments['incomingurl'],
+            'signupurl' => $this->arguments['signupurl'],
+            'lostpasswordurl' => ! boolval($this->params->get('contact_disable_email_for_password')) ? $this->arguments['lostpasswordurl'] : '',
+            'profileurl' => $this->arguments['profileurl'],
+            'userpage' => $this->arguments['userpage'],
+            'PageMenuUser' => $pageMenuUserContent,
+            'btnclass' => $this->arguments['btnclass'],
+            'class' => $this->arguments['class'],
+            'nobtn' => $this->arguments['nobtn'],
+            'error' => $error,
         ]);
 
         // backward compatibility TODO remove it for ectoplasme
-        if (!empty($this->arguments['class']) && substr($this->arguments['template'], -strlen(".tpl.html")) == ".tpl.html") {
+        if (!empty($this->arguments['class']) && substr($this->arguments['template'], -strlen('.tpl.html')) == '.tpl.html') {
             $output = "<div class=\"{$this->arguments['class']}\">\n$output\n</div>\n";
         }
-        return $output ;
+
+        return $output;
     }
 
     private function login()
     {
-        $incomingurl = filter_input(INPUT_POST, 'incomingurl', FILTER_SANITIZE_URL);
+        $incomingurl = $this->securityController->filterInput(INPUT_POST, 'incomingurl', FILTER_SANITIZE_URL, false, 'string');
         if (empty($incomingurl)) {
             $incomingurl = $this->arguments['incomingurl'];
         }
         try {
-            if (!empty($_POST["name"])) {
-                $name = filter_input(INPUT_POST, 'name', FILTER_UNSAFE_RAW);
-                $name = in_array($name, [false,null], true) ? "" : htmlspecialchars(strip_tags($name));
+            if (!empty($_POST['name'])) {
+                $name = $this->securityController->filterInput(INPUT_POST, 'name', FILTER_DEFAULT, true);
                 if (empty($name)) {
                     throw new LoginException(_t('LOGIN_WRONG_USER'));
                 }
@@ -183,11 +187,10 @@ class LoginAction extends YesWikiAction
                     $user = $this->userManager->getOneByName($name);
                 }
             } else {
-                if (empty($_POST["email"])) {
+                if (empty($_POST['email'])) {
                     throw new LoginException(_t('LOGIN_WRONG_USER'));
                 }
-                $email = filter_input(INPUT_POST, 'email', FILTER_UNSAFE_RAW);
-                $email = in_array($email, [false,null], true) ? "" : htmlspecialchars(strip_tags($email));
+                $email = $this->securityController->filterInput(INPUT_POST, 'email', FILTER_DEFAULT, true);
                 if (empty($email)) {
                     throw new LoginException(_t('LOGIN_WRONG_USER'));
                 }
@@ -196,17 +199,16 @@ class LoginAction extends YesWikiAction
             if (empty($user)) {
                 throw new LoginException(_t('LOGIN_WRONG_USER'));
             }
-            $password = filter_input(INPUT_POST, 'password', FILTER_UNSAFE_RAW);
-            $password = in_array($password, [false,null], true) ? "" : $password;
+            $password = $this->securityController->filterInput(INPUT_POST, 'password', FILTER_UNSAFE_RAW, false, 'string');
             if (!$this->authController->checkPassword($password, $user)) {
                 throw new LoginException(_t('LOGIN_WRONG_PASSWORD'));
             }
-            $remember = filter_input(INPUT_POST, 'remember', FILTER_VALIDATE_BOOL);
+            $remember = $this->securityController->filterInput(INPUT_POST, 'remember', FILTER_VALIDATE_BOOL, false, 'bool');
             $this->authController->login($user, $remember);
 
             // si l'on veut utiliser la page d'accueil correspondant au nom d'utilisateur
-            if (((!empty($_POST['userpage']) && $_POST['userpage'] == 'user') || $this->arguments['userpage'] == 'user') && $this->pageManager->getOne($user["name"])) {
-                $this->wiki->Redirect($this->wiki->Href('', $user["name"]));
+            if (((!empty($_POST['userpage']) && $_POST['userpage'] == 'user') || $this->arguments['userpage'] == 'user') && $this->pageManager->getOne($user['name'])) {
+                $this->wiki->Redirect($this->wiki->Href('', $user['name']));
             } else {
                 $this->wiki->Redirect($this->arguments['loggedinurl']);
             }

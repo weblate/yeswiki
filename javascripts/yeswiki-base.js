@@ -60,11 +60,7 @@ function toastMessage(
   toastClass = 'alert alert-secondary-1'
 ) {
   const $toast = $(
-    `<div class="toast-message"><div class="${
-      toastClass
-    }">${
-      message
-    }</div></div>`
+    `<div class="toast-message"><div class="${toastClass}">${message}</div></div>`
   )
   $('body').after($toast)
   $toast.css('top', `${$('#yw-topnav').outerHeight(true) + 20}px`)
@@ -116,8 +112,10 @@ function toastMessage(
         </div>
       </div>`
 
-    if ($modal.length == 0) {
-      $('body').append(`<div class="modal fade" id="YesWikiModal">${yesWikiModalHtml}</div>`)
+    if ($modal.length === 0) {
+      $('body').append(
+        `<div class="modal fade" id="YesWikiModal">${yesWikiModalHtml}</div>`
+      )
       $modal = $('#YesWikiModal')
     } else {
       $modal.html(yesWikiModalHtml)
@@ -128,14 +126,12 @@ function toastMessage(
       $modal
         .find('.modal-body')
         .html(
-          `<img loading="lazy" class="center-block img-responsive" src="${
-            link
-          }" alt="image" />`
+          `<img loading="lazy" class="center-block img-responsive" src="${link}" alt="" />`
         )
     } else if (iframe === 1) {
       const modalTitle = $modal.find('.modal-header h3')
       if (modalTitle.length > 0) {
-        if (modalTitle[0].innerText == 0) {
+        if (modalTitle[0].innerText === 0) {
           modalTitle[0].innerHTML = `<a href="${link}">${link.substr(0, 128)}</a>`
         } else {
           modalTitle[0].innerHTML = `<a href="${link}">${modalTitle[0].innerText}</a>`
@@ -145,9 +141,7 @@ function toastMessage(
         .find('.modal-body')
         .html(
           '<span id="yw-modal-loading" class="throbber"></span>'
-            + `<iframe id="yw-modal-iframe" src="${
-              link
-            }" referrerpolicy="no-referrer"></iframe>`
+          + `<iframe id="yw-modal-iframe" src="${link}" referrerpolicy="no-referrer"></iframe>`
         )
       $('#yw-modal-iframe').on('load', () => {
         $('#yw-modal-loading').hide()
@@ -158,32 +152,32 @@ function toastMessage(
         const url = document.createElement('a')
         url.href = link
         const queryString = url.search
-        if (!queryString || queryString.length == 0) {
-          var separator = '?'
+        let separator
+        if (!queryString || queryString.length === 0) {
+          separator = '?'
         } else {
-          var separator = '&'
+          separator = '&'
         }
-        link
-          += `${separator
-          }incomingurl=${
-            encodeURIComponent(window.location.toString())}`
-      } catch (e) {}
+        link += `${separator}incomingurl=${encodeURIComponent(
+          window.location.toString()
+        )}`
+      } catch (er) {
+        console.error(er)
+      }
       // AJAX Request for javascripts
       const xhttp = new XMLHttpRequest()
       xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
+        if (this.readyState === 4 && this.status === 200) {
           const xmlString = this.responseText
           const doc = new DOMParser().parseFromString(xmlString, 'text/html')
           // find scripts
           const res = doc.scripts
-          var l = res.length
-          var i
+          const l = res.length
+          let i
           for (i = 0; i < l; i++) {
             const src = res[i].getAttribute('src')
             if (src) {
-              var selection = document.querySelectorAll(
-                `script[src="${src}"]`
-              )
+              var selection = document.querySelectorAll(`script[src="${src}"]`)
               if (!selection || selection.length == 0) {
                 // append script and load it only if not present
                 document.body.appendChild(document.importNode(res[i]))
@@ -208,27 +202,22 @@ function toastMessage(
           }
           // find css
           const importedCSS = doc.querySelectorAll('link[rel="stylesheet"]')
-          var l = importedCSS.length
-          var i
-          for (i = 0; i < l; i++) {
+          const le = importedCSS.length
+          for (i = 0; i < le; i++) {
             const href = importedCSS[i].getAttribute('href')
             if (href) {
-              var selection = document.querySelector(
-                `link[href="${href}"]`
-              )
-              if (!selection || selection.length == 0) {
+              var selection = document.querySelector(`link[href="${href}"]`)
+              if (!selection || selection.length === 0) {
                 // append link
                 document.body.appendChild(document.importNode(importedCSS[i]))
               }
             }
           }
           // AJAX Request for content
-          $modal
-            .find('.modal-body')
-            .load(`${link} .page`, (response, status, xhr) => {
-              $(document).trigger('yw-modal-open')
-              return false
-            })
+          $modal.find('.modal-body').load(`${link} .page`, () => {
+            $(document).trigger('yw-modal-open')
+            return false
+          })
         }
       }
       xhttp.open('GET', link, true)
@@ -271,9 +260,9 @@ function toastMessage(
   // Remove hidden div by ACL
   $('.remove-this-div-on-page-load').remove()
 
-
   /* tooltips */
   $("[data-toggle='tooltip']").tooltip()
+  $("[data-tooltip='tooltip']").tooltip()
 
   // moteur de recherche utilisé dans un template
   $('a[href="#search"]').on('click', function(e) {
@@ -297,9 +286,7 @@ function toastMessage(
     const that = this
     window.addEventListener('popstate', (event) => {
       if (event.state) {
-        $(that)
-          .filter(`[href="${event.state.url}"]`)
-          .tab('show')
+        $(that).filter(`[href="${event.state.url}"]`).tab('show')
       }
     })
     return this.each(function(index, element) {
@@ -311,16 +298,16 @@ function toastMessage(
             stateObject,
             document.title,
             window.location.pathname
-              + window.location.search
-              + $(this).attr('href')
+            + window.location.search
+            + $(this).attr('href')
           )
         } else {
           window.history.replaceState(
             stateObject,
             document.title,
             window.location.pathname
-              + window.location.search
-              + $(this).attr('href')
+            + window.location.search
+            + $(this).attr('href')
           )
         }
       })
@@ -339,19 +326,17 @@ function toastMessage(
     e.stopPropagation()
     $('body').append(
       '<div class="modal fade" id="YesWikiModal">'
-        + '<div class="modal-dialog">'
-        + '<div class="modal-content">'
-        + '<div class="modal-header">'
-        + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
-        + `<h3>${
-          _t('NAVBAR_EDIT_MESSAGE')
-        }</h3>`
-        + '</div>'
-        + '<div class="modal-body">'
-        + '</div>'
-        + '</div>'
-        + '</div>'
-        + '</div>'
+      + '<div class="modal-dialog">'
+      + '<div class="modal-content">'
+      + '<div class="modal-header">'
+      + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+      + `<h3>${_t('NAVBAR_EDIT_MESSAGE')}</h3>`
+      + '</div>'
+      + '<div class="modal-body">'
+      + '</div>'
+      + '</div>'
+      + '</div>'
+      + '</div>'
     )
 
     const $editmodal = $('#YesWikiModal')
@@ -368,23 +353,19 @@ function toastMessage(
         $editmodal
           .find('.modal-body')
           .append(
-            `<a href="${
-              href
-            }" class="btn btn-default btn-block">`
-              + `<i class="fa fa-pencil-alt"></i> ${
-                _t('YESWIKIMODAL_EDIT_MSG')
-              } ${
-                pagewiki
-              }</a>`
+            `<a href="${href}" class="btn btn-default btn-block">`
+            + `<i class="fa fa-pencil-alt"></i> ${_t(
+              'YESWIKIMODAL_EDIT_MSG'
+            )} ${pagewiki}</a>`
           )
       })
 
     $editmodal
       .find('.modal-body')
       .append(
-        `<a href="#" data-dismiss="modal" class="btn btn-warning btn-xs btn-block">${
-          +_t('EDIT_OUPS_MSG')
-        }</a>`
+        `<a href="#" data-dismiss="modal" class="btn btn-warning btn-xs btn-block">${+_t(
+          'EDIT_OUPS_MSG'
+        )}</a>`
       )
 
     $editmodal
@@ -422,7 +403,7 @@ function toastMessage(
     })
   }
 
-  $('.modalbox-hover').each(function(index) {
+  $('.modalbox-hover').each(function() {
     getText(`${$(this).attr('href')}/html`, $(this))
   })
   $('.modalbox-hover').popover({
@@ -462,6 +443,18 @@ function toastMessage(
   /** comments */
   const $comments = $('.yeswiki-page-comments, #post-comment')
 
+  function resetCommentForm(form) {
+    form
+      .attr('id', 'post-comment').attr('class', '')
+      .attr('action', form.attr('action').replace(/api\/comments(\/.*)/gm, 'api/comments'))
+      .appendTo($('.yeswiki-page-comments').parent())
+      .find('label')
+      .removeClass('hide')
+    $('.btn-cancel-comment').remove()
+    $('#post-comment').find('.btn-post-comment').text(_t('SAVE'))
+    window['aceditor-body'].editor.setValue('')
+  }
+
   // ajax post comment
   $comments.on('click', '.btn-post-comment', function(e) {
     e.preventDefault()
@@ -474,17 +467,18 @@ function toastMessage(
       dataType: 'json',
       success(e) {
         form.trigger('reset')
+        window['aceditor-body'].editor.setValue('')
         toastMessage(e.success, 3000, 'alert alert-success')
         form.parents('.yw-comment').find('.comment-links').removeClass('hide')
         // we place the new comment in different places if its an answer, a modification or a new comment
         if (form.hasClass('comment-modify')) {
-          form.closest('.yw-comment').html($('<div>').html(e.html).find('.yw-comment').html())
-          form.remove()
-          $('#post-comment').removeClass('hide')
+          form
+            .closest('.yw-comment')
+            .html($('<div>').html(e.html).find('.yw-comment').html())
+          resetCommentForm(form)
         } else if (form.parent().hasClass('comment-reponses')) {
           form.parent().append(e.html)
-          form.remove()
-          $('#post-comment').removeClass('hide')
+          resetCommentForm(form)
         } else {
           $('.yeswiki-page-comments').append(e.html)
         }
@@ -499,26 +493,30 @@ function toastMessage(
   // ajax answer comment
   $comments.on('click', '.btn-answer-comment', function(e) {
     e.preventDefault()
-
     const com = $(this).parent().parent()
-
-    // delete temporary forms that may be open
-    $('.temporary-form').remove()
+    $('.temporary-form').parents('.yw-comment').find('.comment-html:first').removeClass('hide')
+    $('.temporary-form').parents('.yw-comment').find('.comment-links:first').removeClass('hide')
+    // a comment-form is already opened
+    if ($('.temporary-form').length > 0) {
+      resetCommentForm($('.temporary-form'))
+    }
 
     // clone comment form and change some options
     const formAnswer = com.find('.comment-reponses:first')
-    $('#post-comment').clone().appendTo(formAnswer)
-    formAnswer.find('form')
+    $('#post-comment').appendTo(formAnswer)
+    formAnswer
+      .find('form')
       .attr('id', `form-comment-${com.data('tag')}`)
       .removeClass('hide')
       .addClass('temporary-form')
-    formAnswer.find('label').remove()
     formAnswer.find('[name="pagetag"]').val(com.data('tag'))
-    formAnswer.find('form').append(`<button class="btn-cancel-comment btn btn-sm btn-danger">${_t('CANCEL')}</button>`)
-    com.parents('.yw-comment').find('.comment-links').addClass('hide')
-
-    // hide comment form while another comment form is open
-    $('#post-comment').addClass('hide')
+    formAnswer
+      .find('form')
+      .append(
+        `<button class="btn-cancel-comment btn btn-sm btn-default">${_t('CANCEL')}</button>`
+      )
+    com.find('.comment-links').addClass('hide')
+    com.find('label').addClass('hide')
 
     return false
   })
@@ -528,30 +526,40 @@ function toastMessage(
     e.preventDefault()
     const com = $(this).parent().parent()
 
-    // hide comment while editor is open
+    // hide comment and comment links while editor is open
     com.find('.comment-html:first').addClass('hide')
+    com.find('.comment-links:first').addClass('hide')
 
-    // delete temporary forms that may be open
-    $('.temporary-form').remove()
+    $('.temporary-form').parents('.yw-comment').find('.comment-html:first').removeClass('hide')
+    $('.temporary-form').parents('.yw-comment').find('.comment-links:first').removeClass('hide')
+    // a comment-form is already opened
+    if ($('.temporary-form').length > 0) {
+      resetCommentForm($('.temporary-form'))
+    }
 
     // clone comment form and change some options
     const formcom = com.find('.form-comment:first')
-    $('#post-comment').clone().appendTo(formcom)
-    formcom.find('form')
+    $('#post-comment').appendTo(formcom)
+    formcom
+      .find('form')
       .attr('id', `form-comment-${com.data('tag')}`)
-      .attr('action', `${formcom.find('form').attr('action')}/${com.data('tag')}`)
+      .attr(
+        'action',
+        `${formcom.find('form').attr('action')}/${com.data('tag')}`
+      )
       .removeClass('hide')
       .addClass('temporary-form')
       .addClass('comment-modify')
-    formcom.find('label').remove()
-    formcom.find('textarea').val(com.find('.comment-body').val())
+    formcom.find('label').addClass('hide')
+    window['aceditor-body'].editor.setValue(com.find('.comment-body').val())
     formcom.find('[name="pagetag"]').val(com.data('commenton'))
     formcom.find('.btn-post-comment').text(_t('MODIFY'))
-    formcom.find('form').append(`<button class="btn-cancel-comment btn btn-sm btn-danger">${_t('CANCEL')}</button>`)
+    formcom
+      .find('form')
+      .append(
+        `<button class="btn-cancel-comment btn btn-sm btn-default">${_t('CANCEL')}</button>`
+      )
     com.parents('.yw-comment').find('.comment-links').addClass('hide')
-
-    // hide comment form while another comment form is open
-    $('#post-comment').addClass('hide')
 
     return false
   })
@@ -559,18 +567,12 @@ function toastMessage(
   // cancel comment edit
   $comments.on('click', '.btn-cancel-comment', function(e) {
     e.preventDefault()
-
     const com = $(this).parent().parent().parent()
-
     // restore html comment and links
     com.find('.comment-html:first').removeClass('hide')
+    com.find('.comment-links:first').removeClass('hide')
     com.parents('.yw-comment').find('.comment-links').removeClass('hide')
-    // remove modify comment form
-    $(`#form-comment-${com.data('tag')}`).remove()
-
-    // restore comment form
-    $('#post-comment').removeClass('hide')
-
+    resetCommentForm($(`#form-comment-${com.data('tag')}`))
     return false
   })
 
@@ -610,13 +612,9 @@ function toastMessage(
   // Reaction Management Helper
   const reactionManagementHelper = {
     renderAjaxError(translation, jqXHR, textStatus, errorThrown) {
-      const message = _t(translation, { error: `${textStatus} / ${errorThrown}${(jqXHR.responseJSON.error != undefined) ? `:${jqXHR.responseJSON.error}` : ''}` })
+      const message = _t(translation, { error: `${textStatus} / ${errorThrown}${jqXHR.responseJSON.error != undefined ? `:${jqXHR.responseJSON.error}` : ''}` })
       if (typeof toastMessage == 'function') {
-        toastMessage(
-          message,
-          3000,
-          'alert alert-danger'
-        )
+        toastMessage(message, 3000, 'alert alert-danger')
       } else {
         alert(message)
       }
@@ -637,62 +635,77 @@ function toastMessage(
           }
         },
         error(jqXHR, textStatus, errorThrown) {
-          reactionManagementHelper.renderAjaxError('REACTION_NOT_POSSIBLE_TO_DELETE_REACTION', jqXHR, textStatus, errorThrown)
+          reactionManagementHelper.renderAjaxError(
+            'REACTION_NOT_POSSIBLE_TO_DELETE_REACTION',
+            jqXHR,
+            textStatus,
+            errorThrown
+          )
         }
       })
     },
     deleteTags(headElem) {
       const table = $(headElem).closest('table')
       if (table.length != 0) {
-        $(table).find('.btn-delete-reaction:not(.btn-delete-all)').each(function() {
-          reactionManagementHelper.deleteATag($(this))
-        })
+        $(table)
+          .find('.btn-delete-reaction:not(.btn-delete-all)')
+          .each(function() {
+            reactionManagementHelper.deleteATag($(this))
+          })
       }
     }
   }
 
   // handler reaction click
   $('.link-reaction').click(function(event) {
-    event.preventDefault();
-    event.stopPropagation();
+    event.preventDefault()
+    event.stopPropagation()
     const extractData = (item) => {
       const nb = $(item).find('.reaction-numbers')
       return {
-          url : $(item).attr('href'),
-          data : $(item).data(),
-          nb : nb,
-          nbInit : parseInt(nb.text())
+        url: $(item).attr('href'),
+        data: $(item).data(),
+        nb,
+        nbInit: parseInt(nb.text())
       }
     }
-    const {url,data,nb,nbInit} = extractData(this)
-    const deleteUserReaction = async (url,data,nb,nbInit,link) =>{
-      const p = new Promise((resolve,reject)=>{
-          let currentReactionId = data.reactionid
-          if ('oldId' in data && (data.oldId === true || data.oldId === "true")){
-              currentReactionId = 'reactionField'
+    const { url, data, nb, nbInit } = extractData(this)
+    const deleteUserReaction = async(url, data, nb, nbInit, link) => {
+      const p = new Promise((resolve, reject) => {
+        let currentReactionId = data.reactionid
+        if ('oldId' in data && (data.oldId === true || data.oldId === 'true')) {
+          currentReactionId = 'reactionField'
+        }
+        $.ajax({
+          method: 'GET',
+          url: `${url}/${currentReactionId}/${data.id}/${data.pagetag}/${data.username}/delete`,
+          success() {
+            nb.text(nbInit - 1)
+            $(link).removeClass('user-reaction')
+            const nbReactionLeft = parseFloat(
+              $(link)
+                .parents('.reactions-container')
+                .find('.max-reaction')
+                .text()
+            )
+            $(link)
+              .parents('.reactions-container')
+              .find('.max-reaction')
+              .text(nbReactionLeft + 1)
+            resolve()
+          },
+          error(jqXHR, textStatus, errorThrown) {
+            reactionManagementHelper.renderAjaxError(
+              'REACTION_NOT_POSSIBLE_TO_DELETE_REACTION',
+              jqXHR,
+              textStatus,
+              errorThrown
+            )
+            reject()
           }
-          $.ajax({
-              method: 'GET',
-              url: `${url}/${currentReactionId}/${data.id}/${data.pagetag}/${data.username}/delete`,
-              success() {
-                nb.text(nbInit - 1)
-                $(link).removeClass('user-reaction')
-                const nbReactionLeft = parseFloat(
-                  $(link).parents('.reactions-container').find('.max-reaction').text()
-                )
-                $(link)
-                  .parents('.reactions-container')
-                  .find('.max-reaction')
-                  .text(nbReactionLeft + 1)
-                resolve()
-              },
-              error(jqXHR, textStatus, errorThrown) {
-                reactionManagementHelper.renderAjaxError('REACTION_NOT_POSSIBLE_TO_DELETE_REACTION', jqXHR, textStatus, errorThrown)
-                reject()
-              }
-          })
+        })
       })
-      return await p.then((...args)=>Promise.resolve(...args))
+      return await p.then((...args) => Promise.resolve(...args))
     }
     if (url !== '#') {
       if ($(this).hasClass('user-reaction')) {
@@ -712,26 +725,53 @@ function toastMessage(
           return false
         }
         const link = $(this)
-        deleteUserReaction(url,data,nb,nbInit,link).catch((e)=>{/*do nothing*/})
+        deleteUserReaction(url, data, nb, nbInit, link).catch((e) => {
+          /* do nothing */
+        })
         return false
       }
       // on ajoute la reaction si le max n'est pas dépassé
-      const nbReactionLeft = parseFloat($(this).parents('.reactions-container').find('.max-reaction').text())
-      if (url !== '#' && nbReactionLeft == 0 && typeof blockReactionRemove !== 'undefined' && blockReactionRemove === true){
-          var previous = $(this).closest(".reactions-flex").find(".user-reaction").first()
-          if (typeof previous === 'object' && 'length' in previous && previous.length > 0){
-              const {url:previousUrl,data:previousData,nb:previousNb,nbInit:previousNbInit} = extractData(previous)
-              if (previousUrl !== '#'){
-                  deleteUserReaction(previousUrl,previousData,previousNb,previousNbInit,$(previous))
-                      .then(()=>{
-                          $(this).click()
-                      })
-                      .catch((e)=>{
-                        /* do nothing */
-                      })
-                  return false
-              }
+      const nbReactionLeft = parseFloat(
+        $(this).parents('.reactions-container').find('.max-reaction').text()
+      )
+      if (
+        url !== '#'
+        && nbReactionLeft == 0
+        && typeof blockReactionRemove !== 'undefined'
+        && blockReactionRemove === true
+      ) {
+        const previous = $(this)
+          .closest('.reactions-flex')
+          .find('.user-reaction')
+          .first()
+        if (
+          typeof previous === 'object'
+          && 'length' in previous
+          && previous.length > 0
+        ) {
+          const {
+            url: previousUrl,
+            data: previousData,
+            nb: previousNb,
+            nbInit: previousNbInit
+          } = extractData(previous)
+          if (previousUrl !== '#') {
+            deleteUserReaction(
+              previousUrl,
+              previousData,
+              previousNb,
+              previousNbInit,
+              $(previous)
+            )
+              .then(() => {
+                $(this).click()
+              })
+              .catch((e) => {
+                /* do nothing */
+              })
+            return false
           }
+        }
       }
       if (nbReactionLeft > 0) {
         const link = $(this)
@@ -752,17 +792,18 @@ function toastMessage(
               .text(nbReactionLeft - 1)
           },
           error(jqXHR, textStatus, errorThrown) {
-            reactionManagementHelper.renderAjaxError('REACTION_NOT_POSSIBLE_TO_ADD_REACTION', jqXHR, textStatus, errorThrown)
+            reactionManagementHelper.renderAjaxError(
+              'REACTION_NOT_POSSIBLE_TO_ADD_REACTION',
+              jqXHR,
+              textStatus,
+              errorThrown
+            )
           }
         })
       } else {
-        const message = 'Vous n\'avez plus de choix possibles, vous pouvez retirer un choix existant pour changer'
+        const message = "Vous n'avez plus de choix possibles, vous pouvez retirer un choix existant pour changer"
         if (typeof toastMessage == 'function') {
-          toastMessage(
-            message,
-            3000,
-            'alert alert-warning'
-          )
+          toastMessage(message, 3000, 'alert alert-warning')
         } else {
           alert(message)
         }
@@ -784,57 +825,66 @@ function toastMessage(
 }(jQuery))
 
 // fot comments table
-$('#commentsTableDeleteModal.modal').on('shown.bs.modal',function(event){
-  multiDeleteService.initProgressBar($(this));
-  $(this).find('.modal-body .multi-delete-results').html('');
-  let deleteButton = $(this).find('button.start-btn-delete-comment')
-  $(deleteButton).removeAttr('disabled');
-  let button = $(event.relatedTarget) // Button that triggered the modal
-  let name = $(button).data('name');
-  let csrfToken = $(button).closest('tr').find(`td > label > input[data-itemId="${name}"][data-csrfToken]`).first().data('csrftoken');
-  $(this).find('#commentToDelete').text(name);
-  $(deleteButton).data('name',name);
-  $(deleteButton).data('targetNode',button);
-  $(deleteButton).data('modal',this);
-  if (!$(deleteButton).hasClass('eventSet')){
-    $(deleteButton).addClass('eventSet');
-    $(deleteButton).on('click',function(){
-      $(this).attr('disabled','disabled');
-      $(this).tooltip('hide');
-      let name = $(this).data('name');
-      let targetNode = $(this).data('targetNode');
-      let modal = $(this).data('modal');
+$('#commentsTableDeleteModal.modal').on('shown.bs.modal', function(event) {
+  multiDeleteService.initProgressBar($(this))
+  $(this).find('.modal-body .multi-delete-results').html('')
+  const deleteButton = $(this).find('button.start-btn-delete-comment')
+  $(deleteButton).removeAttr('disabled')
+  const button = $(event.relatedTarget) // Button that triggered the modal
+  const name = $(button).data('name')
+  const csrfToken = $(button)
+    .closest('tr')
+    .find(`td > label > input[data-itemId="${name}"][data-csrfToken]`)
+    .first()
+    .data('csrftoken')
+  $(this).find('#commentToDelete').text(name)
+  $(deleteButton).data('name', name)
+  $(deleteButton).data('targetNode', button)
+  $(deleteButton).data('modal', this)
+  if (!$(deleteButton).hasClass('eventSet')) {
+    $(deleteButton).addClass('eventSet')
+    $(deleteButton).on('click', function() {
+      $(this).attr('disabled', 'disabled')
+      $(this).tooltip('hide')
+      const name = $(this).data('name')
+      const targetNode = $(this).data('targetNode')
+      const modal = $(this).data('modal')
 
       $.ajax({
         method: 'post',
         url: wiki.url(`api/comments/${name}/delete`),
         timeout: 30000, // 30 seconds
-        error: function (e) {
-          multiDeleteService.addErrorMessage($(modal),
-            _t('COMMENT_NOT_DELETED',{comment:name})+ ' : '
-            +(e.responseJSON && e.responseJSON.error ? e.responseJSON.error : ''));
+        error(e) {
+          multiDeleteService.addErrorMessage(
+            $(modal),
+            `${_t('COMMENT_NOT_DELETED', { comment: name })} : ${e.responseJSON && e.responseJSON.error ? e.responseJSON.error : ''
+            }`
+          )
         },
-        success: function(){
-          multiDeleteService.removeLine($(targetNode).closest('.dataTables_wrapper').prop('id'),name);
-          $(modal).find('.modal-body .multi-delete-results').first().append(
-            $('<div>').text(_t('COMMENT_DELETED'))
-          );
+        success() {
+          multiDeleteService.removeLine(
+            $(targetNode).closest('.dataTables_wrapper').prop('id'),
+            name
+          )
+          $(modal)
+            .find('.modal-body .multi-delete-results')
+            .first()
+            .append($('<div>').text(_t('COMMENT_DELETED')))
         },
-        complete: function (){
-          multiDeleteService.updateProgressBar($(modal),['test'],0);
+        complete() {
+          multiDeleteService.updateProgressBar($(modal), ['test'], 0)
         }
-      });
-    });
+      })
+    })
   }
-});
+})
 
 // function to check all checkbox in page.
-function checkAll(state)
-{
-  var checkboxes = document.querySelectorAll('input.selectpage');
-  var newState = [true,'true',1,'1'].includes(state)
-  checkboxes.forEach((checkbox)=>{
-    if (checkbox.type == 'checkbox'){
+function checkAll(state) {
+  const checkboxes = document.querySelectorAll('input.selectpage')
+  const newState = [true, 'true', 1, '1'].includes(state)
+  checkboxes.forEach((checkbox) => {
+    if (checkbox.type == 'checkbox') {
       checkbox.checked = newState
     }
   })
@@ -842,20 +892,33 @@ function checkAll(state)
 
 // tabs
 // hack for next and previous buttons
-$('.tab-content [data-toggle="tab"]').on('click',function() {
+$('.tab-content [data-toggle="tab"]').on('click', function() {
   const base = $(this).closest('.tab-content').prev()
   $(base).find('.active').removeClass('active')
-  $(base).find(`[href="${$(this).attr('href')}"]`).parent().addClass('active')
-  $(base).find(`a[href="${$(this).attr('href')}"]`).tab('show')
+  $(base)
+    .find(`[href="${$(this).attr('href')}"]`)
+    .parent()
+    .addClass('active')
+  $(base)
+    .find(`a[href="${$(this).attr('href')}"]`)
+    .tab('show')
   // manage iframe case
   if (window.location != parent.parent.location) {
     $('html, body').animate({ scrollTop: $(base).offset().top }, 500)
     try {
       $(base).get(0).scrollIntoView()
-      window.parent.scrollBy(0,-80)
+      window.parent.scrollBy(0, -80)
     } catch (error) {
+      console.error(error)
     }
   } else {
     $('html, body').animate({ scrollTop: $(base).offset().top - 80 }, 500)
   }
+})
+
+// a11y
+$('#yw-a11y-jump-content').click(() => {
+  setTimeout(() => {
+    $('#yw-topnav').removeClass('nav-down').addClass('nav-up')
+  }, 300)
 })

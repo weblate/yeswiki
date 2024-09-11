@@ -1,8 +1,9 @@
 <?php
+
 use YesWiki\Core\Service\ThemeManager;
 
-if (!defined("WIKINI_VERSION")) {
-    die("acc&egrave;s direct interdit");
+if (!defined('WIKINI_VERSION')) {
+    exit('acc&egrave;s direct interdit');
 }
 
 $themeManager = $this->services->get(ThemeManager::class);
@@ -32,7 +33,7 @@ if (!empty($param)) {
             break;
         case 'theme_path':
             $theme = $themeManager->getFavoriteTheme();
-            echo ((is_dir('custom/themes/'.$theme))) ?
+            echo ((is_dir('custom/themes/' . $theme))) ?
                 "custom/themes/$theme/" :
                 "themes/$theme/";
             break;

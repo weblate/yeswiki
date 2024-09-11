@@ -1,8 +1,8 @@
 <?php
 
 // Vérification de sécurité
-if (!defined("WIKINI_VERSION")) {
-    die("acc&egrave;s direct interdit");
+if (!defined('WIKINI_VERSION')) {
+    exit('acc&egrave;s direct interdit');
 }
 
 use YesWiki\Core\Service\AclService;
@@ -24,7 +24,7 @@ if ($this->page) {
             case 'opencomments':
                 if (
                     !empty($_GET['list'])
-                    && (in_array($_GET['list'], $wikiGroups, true) || $_GET['list']=='+')
+                    && (in_array($_GET['list'], $wikiGroups, true) || $_GET['list'] == '+')
                 ) {
                     $aclsService->save($tag, 'comment', $_GET['list']);
                     $this->SetMessage(_t('YW_COMMENTS_ARE_NOW_OPEN'));

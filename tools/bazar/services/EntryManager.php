@@ -6,8 +6,6 @@ use Exception;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use YesWiki\Bazar\Exception\ParsingMultipleException;
 use YesWiki\Bazar\Field\BazarField;
-use YesWiki\Bazar\Field\EnumField;
-use YesWiki\Bazar\Field\CheckboxField;
 use YesWiki\Bazar\Field\TitleField;
 use YesWiki\Core\Controller\AuthController;
 use YesWiki\Core\Service\AclService;
@@ -34,7 +32,7 @@ class EntryManager
     protected $params;
     protected $searchManager;
 
-    private $cachedEntriestags ;
+    private $cachedEntriestags;
 
     public const TRIPLES_ENTRY_ID = 'fiche_bazar';
 
@@ -68,21 +66,21 @@ class EntryManager
     }
 
     /**
-     * Returns true if the provided page is a Bazar fiche
+     * Returns true if the provided page is a Bazar fiche.
+     *
      * @param $tag
-     * @return bool
      */
     public function isEntry($tag): bool
     {
         if (!isset($this->cachedEntriestags[$tag])) {
             $this->cachedEntriestags[$tag] = !is_null($this->tripleStore->exist($tag, TripleStore::TYPE_URI, self::TRIPLES_ENTRY_ID, '', ''));
         }
+
         return $this->cachedEntriestags[$tag];
     }
 
     /**
-     * return array with list of page's tag for all entries
-     * @return array
+     * return array with list of page's tag for all entries.
      */
     public function getAllEntriesTags(): array
     {
@@ -96,18 +94,22 @@ class EntryManager
         } else {
             $result = [];
         }
+
         return $result;
     }
 
     /**
-     * Get one specified fiche
+     * Get one specified fiche.
+     *
      * @param $tag
-     * @param bool $semantic
-     * @param string $time pour consulter une fiche dans l'historique
-     * @param bool $cache if false, don't use the page cache
-     * @param bool $bypassAcls if true, all fields are loaded regardless of acls
-     * @param null|string $userNameForCheckingACL userName used to get entry, if empty uses the connected user
+     * @param bool        $semantic
+     * @param string      $time                   pour consulter une fiche dans l'historique
+     * @param bool        $cache                  if false, don't use the page cache
+     * @param bool        $bypassAcls             if true, all fields are loaded regardless of acls
+     * @param string|null $userNameForCheckingACL userName used to get entry, if empty uses the connected user
+     *
      * @return mixed|null
+     *
      * @throws Exception
      */
     public function getOne($tag, $semantic = false, $time = null, $cache = true, $bypassAcls = false, ?string $userNameForCheckingACL = null): ?array
@@ -123,10 +125,9 @@ class EntryManager
         return $data;
     }
 
-    /** getDataFromPage
-     * @param array $page , content of page from sql
-     * @param bool $semantic
-     * @param bool $debug, to throw exception in case of error
+    /** getDataFromPage.
+     * @param array  $page            , content of page from sql
+     * @param bool   $debug,          to throw exception in case of error
      * @param string $correspondance, to pass correspondance parameter directly to appendDisplayData
      *
      * @return array data formated
@@ -140,7 +141,7 @@ class EntryManager
             if ($debug) {
                 if (empty($data['id_fiche'])) {
                     trigger_error('empty \'id_fiche\' in EntryManager::getDataFromPage in body of page \''
-                        . $page['tag'].'\'. Edit it to create id_fiche', E_USER_WARNING);
+                        . $page['tag'] . '\'. Edit it to create id_fiche', E_USER_WARNING);
                 }
                 if (empty($page['tag'])) {
                     trigger_error('empty $page[\'tag\'] in EntryManager::getDataFromPage! ', E_USER_WARNING);
@@ -154,17 +155,17 @@ class EntryManager
             // TODO call this function only when necessary
             $this->appendDisplayData($data, $semantic, $correspondance, $page);
         } elseif ($debug) {
-            trigger_error('empty \'body\'  in EntryManager::getDataFromPage for page \''. ($page['tag'] ?? '!!empty tag!!') .'\'', E_USER_WARNING);
+            trigger_error('empty \'body\'  in EntryManager::getDataFromPage for page \'' . ($page['tag'] ?? '!!empty tag!!') . '\'', E_USER_WARNING);
         }
 
         return $data;
     }
 
     /**
-     * Return the request for searching entries in database
+     * Return the request for searching entries in database.
+     *
      * @param array &$params
-     * @param bool $filterOnReadACL
-     * @param bool $applyOnAllRevisions
+     *
      * @return $string
      */
     private function prepareSearchRequest(&$params = [], bool $filterOnReadACL = false, bool $applyOnAllRevisions = false): string
@@ -178,7 +179,7 @@ class EntryManager
                 'keywords' => '', // Mots-clés pour la recherche fulltext
                 'searchOperator' => 'OR', // Opérateur à appliquer aux mots-clés
                 'minDate' => '', // Date minimale des fiches
-                'correspondance' => ''
+                'correspondance' => '',
             ],
             $params
         );
@@ -192,7 +193,7 @@ class EntryManager
 
         $requete =
             'SELECT DISTINCT * FROM ' . $this->dbService->prefixTable('pages') .
-            'WHERE '.($applyOnAllRevisions ? '' : 'latest="Y" AND ').' comment_on = \'\'';
+            'WHERE ' . ($applyOnAllRevisions ? '' : 'latest="Y" AND ') . ' comment_on = \'\'';
 
         // On limite au type de fiche
         if (!empty($params['formsIds'])) {
@@ -202,7 +203,7 @@ class EntryManager
                 }, array_filter(
                     $params['formsIds'],
                     'is_scalar'
-                ))).') ';
+                ))) . ') ';
             } elseif (is_scalar($params['formsIds'])) {
                 // on a une chaine de caractere pour l'id plutot qu'un tableau
                 $requete .= ' AND body LIKE \'%"id_typeannonce":"' . $this->dbService->escape(strval($params['formsIds'])) . '"%\'';
@@ -245,27 +246,27 @@ class EntryManager
                     foreach ($results as $result) {
                         $requeteSQL .= ' OR ';
                         if (!$result['isCheckBox']) {
-                            $requeteSQL .= ' body LIKE \'%"'.str_replace('_', '\\_', $result['propertyName']).'":"'.str_replace("'", "\\'", $result['key']).'"%\'';
+                            $requeteSQL .= ' body LIKE \'%"' . str_replace('_', '\\_', $result['propertyName']) . '":"' . str_replace("'", "\\'", $result['key']) . '"%\'';
                         } else {
-                            $requeteSQL .= ' body REGEXP \'"'.str_replace('_', '\\_', $result['propertyName']).'":(' .
-                                '"'.$result['key'] . '"'.
-                                '|"[^"]*,' . $result['key'] . '"'.
-                                '|"' . $result['key'] . ',[^"]*"'.
-                                '|"[^"]*,' .$result['key'] . ',[^"]*"'.
+                            $requeteSQL .= ' body REGEXP \'"' . str_replace('_', '\\_', $result['propertyName']) . '":(' .
+                                '"' . $result['key'] . '"' .
+                                '|"[^"]*,' . $result['key'] . '"' .
+                                '|"' . $result['key'] . ',[^"]*"' .
+                                '|"[^"]*,' . $result['key'] . ',[^"]*"' .
                                 ')\'';
                         }
                     }
                     $requeteSQL .= ')';
                 }
                 if (!empty($requeteSQL)) {
-                    $requeteSQL = ' AND ('.$requeteSQL.')';
+                    $requeteSQL = ' AND (' . $requeteSQL . ')';
                 }
             }
         }
 
         //on ajoute dans la requete les valeurs passees dans les champs liste et checkbox du moteur de recherche
         if ($params['queries'] == '') {
-            $params['queries'] = array();
+            $params['queries'] = [];
 
             // on transforme les specifications de recherche sur les liste et checkbox
             if (isset($_REQUEST['rechercher'])) {
@@ -273,7 +274,7 @@ class EntryManager
 
                 foreach ($_REQUEST as $nom => $val) {
                     if (((substr($nom, 0, 5) == 'liste') || (substr($nom, 0, 8) ==
-                                'checkbox')) && $val != '0' && $val != '') {
+                        'checkbox')) && $val != '0' && $val != '') {
                         if (is_array($val)) {
                             $val = implode(',', array_keys($val));
                         }
@@ -287,8 +288,8 @@ class EntryManager
             if (!empty($nom)) {
                 $nom = $this->convertToRawJSONStringForREGEXP($nom);
                 // sanitize $nom to prevent REGEXP SQL errors
-                $nom = preg_replace("/(?<=^|\?|\*|\+)(\?|\*|\+)/m", "\\\\\\\\$1", $nom);
-                if (!in_array($val, [false,null,""], true)) {
+                $nom = preg_replace("/(?<=^|\?|\*|\+)(\?|\*|\+)/m", '\\\\\\\$1', $nom);
+                if (!in_array($val, [false, null, ''], true)) {
                     $valcrit = explode(',', $val);
                     if (is_array($valcrit) && count($valcrit) > 1) {
                         $requeteSQL .= ' AND ';
@@ -325,9 +326,9 @@ class EntryManager
                                 $requeteSQL .= ' NOT ';
                                 $nom = substr($nom, 0, -1);
                             }
-                            $requeteSQL .='(body REGEXP \'"' . $nom . '":"' . $rawCriteron . '"\')';
+                            $requeteSQL .= '(body REGEXP \'"' . $nom . '":"' . $rawCriteron . '"\')';
                         } else {
-                            $requeteSQL .=' AND ';
+                            $requeteSQL .= ' AND ';
                             if (substr($nom, -1) == '!') {
                                 $requeteSQL .= ' NOT ';
                                 $nom = substr($nom, 0, -1);
@@ -343,7 +344,7 @@ class EntryManager
                         $requeteSQL .= ' NOT ';
                         $nom = substr($nom, 0, -1);
                     }
-                    $requeteSQL .='(body REGEXP \'"' . $nom . '":""\' '.
+                    $requeteSQL .= '(body REGEXP \'"' . $nom . '":""\' ' .
                         'OR NOT (body REGEXP \'"' . $nom . '":"[^"][^"]*"\'))';
                 }
             }
@@ -353,7 +354,7 @@ class EntryManager
         if (isset($_GET['joinquery'])) {
             $join = $this->dbService->escape($_GET['joinquery']);
             $joinrequeteSQL = '';
-            $tableau = array();
+            $tableau = [];
             $tab = explode('|', $join);
             //découpe la requete autour des |
             foreach ($tab as $req) {
@@ -421,51 +422,48 @@ class EntryManager
     }
 
     /**
-     * Return an array of fiches based on search parameters
+     * Return an array of fiches based on search parameters.
+     *
      * @param array $params
-     * @param bool $filterOnReadACL
-     * @param bool $useGuard
+     *
      * @return mixed
      */
     public function search($params = [], bool $filterOnReadACL = false, bool $useGuard = false): array
     {
         $requete = $this->prepareSearchRequest($params, $filterOnReadACL);
-
-        // systeme de cache des recherches
-        // TODO voir si ça sert à quelque chose
-        $reqid = 'bazar-search-' . md5($requete);
-        if (!isset($GLOBALS['_BAZAR_'][$reqid])) {
-            $GLOBALS['_BAZAR_'][$reqid] = array();
-            $results = $this->dbService->loadAll($requete);
-            $debug = ($this->wiki->GetConfigValue('debug') == 'yes');
-            foreach ($results as $page) {
-                // save owner to reduce sql calls
-                $this->pageManager->cacheOwner($page);
-                // not possible to init the Guard in the constructor because of circular reference problem
-                $filteredPage = (!$this->wiki->UserIsAdmin() && $useGuard)
-                    ? $this->wiki->services->get(Guard::class)->checkAcls($page, $page['tag'])
-                    : $page;
-                $data = $this->getDataFromPage($filteredPage, false, $debug, $params['correspondance']);
-                $GLOBALS['_BAZAR_'][$reqid][$data['id_fiche']] = $data;
-            }
+        $searchResults = [];
+        $results = $this->dbService->loadAll($requete);
+        $debug = ($this->wiki->GetConfigValue('debug') == 'yes');
+        foreach ($results as $page) {
+            // save owner to reduce sql calls
+            $this->pageManager->cacheOwner($page);
+            // not possible to init the Guard in the constructor because of circular reference problem
+            $filteredPage = (!$this->wiki->UserIsAdmin() && $useGuard)
+                ? $this->wiki->services->get(Guard::class)->checkAcls($page, $page['tag'])
+                : $page;
+            $data = $this->getDataFromPage($filteredPage, false, $debug, $params['correspondance']);
+            $searchResults[$data['id_fiche']] = $data;
         }
-        return $GLOBALS['_BAZAR_'][$reqid];
+
+        return $searchResults;
     }
 
-    /** format data as in sql
-     * @param string $rawValue
+    /** format data as in sql.
      * @return string $formatedValue
      */
     private function convertToRawJSONStringForREGEXP(string $rawValue): string
     {
-        $valueJSON = substr(json_encode($rawValue), 1, strlen(json_encode($rawValue))-2);
-        $formattedValue = str_replace(['\\','\''], ['\\\\','\\\''], $valueJSON);
+        $valueJSON = substr(json_encode($rawValue), 1, strlen(json_encode($rawValue)) - 2);
+        $formattedValue = str_replace(['\\', '\''], ['\\\\', '\\\''], $valueJSON);
+
         return $this->dbService->escape($formattedValue);
     }
 
     /**
-     * Validate the fiche's data
+     * Validate the fiche's data.
+     *
      * @param $data
+     *
      * @throws Exception
      */
     public function validate($data)
@@ -486,12 +484,15 @@ class EntryManager
     }
 
     /**
-     * Create a new fiche
+     * Create a new fiche.
+     *
      * @param $formId
      * @param $data
      * @param false $semantic
-     * @param null $sourceUrl
+     * @param null  $sourceUrl
+     *
      * @return array
+     *
      * @throws Exception
      */
     public function create($formId, $data, $semantic = false, $sourceUrl = null)
@@ -562,7 +563,7 @@ class EntryManager
         if (isset($GLOBALS['utilisateur_wikini']) && !empty($olduser)) {
             $this->authController->logout();
             $oldUserClass = $this->userManager->getOneByName($olduser['name']);
-            if (!empty($oldUserClass)){
+            if (!empty($oldUserClass)) {
                 $this->authController->login($oldUserClass, $olduser['remember'] ?? 1);
             }
         }
@@ -581,12 +582,15 @@ class EntryManager
     }
 
     /**
-     * Update an entry with the provided data
+     * Update an entry with the provided data.
+     *
      * @param $tag
      * @param $data
      * @param false $semantic
-     * @param false $replace If true, all the data will be provided (no merge with the previous data)
+     * @param false $replace  If true, all the data will be provided (no merge with the previous data)
+     *
      * @return array
+     *
      * @throws Exception
      */
     public function update($tag, $data, $semantic = false, $replace = false)
@@ -629,7 +633,7 @@ class EntryManager
         $this->pageManager->save($data['id_fiche'], json_encode($data), '');
 
         // if sendmail has referenced email fields, send an email to their adresses
-        $this->sendMailToNotifiedEmails($sendmail, $data, false,$previousData);
+        $this->sendMailToNotifiedEmails($sendmail, $data, false, $previousData);
 
         if ($this->params->get('BAZ_ENVOI_MAIL_ADMIN')) {
             // Envoi d'un mail aux administrateurs
@@ -644,9 +648,10 @@ class EntryManager
      * without user modification.
      * As the fields are rectricted at reading, the right must be bypassed to load them.
      *
-     * @param array $data the provided data to update
+     * @param array $data         the provided data to update
      * @param array $previousData the provided previousData to update
-     * @param array $form the entry form
+     * @param array $form         the entry form
+     *
      * @return array the data with the restricted values added
      */
     protected function assignRestrictedFields(array $data, array $previousData, array $form)
@@ -669,7 +674,7 @@ class EntryManager
             // get the value of the restricted fields in the previous data
             foreach ($restrictedFields as $propName) {
                 if (isset($previousData[$propName])) {
-                    $data[$propName] = $previousData[$propName] ;
+                    $data[$propName] = $previousData[$propName];
                 } elseif (isset($data[$propName])) {
                     // only for cases when a field is maliciously injected in $_POST (so in $data) and the key doesn't
                     // exist in $previousData
@@ -677,15 +682,19 @@ class EntryManager
                 }
             }
         }
+
         return $data;
     }
 
     /**
-     * Add the $previousData attributes which match the actual form and which are not in $data
+     * Add the $previousData attributes which match the actual form and which are not in $data.
+     *
      * @param array $previousData the data saved in the entry
-     * @param array $form the entry form
-     * @param array $data the provided data to update
+     * @param array $form         the entry form
+     * @param array $data         the provided data to update
+     *
      * @return array the data with the merged values
+     *
      * @throws Exception
      */
     protected function mergeFields(array $previousData, array $data, array $form)
@@ -698,12 +707,14 @@ class EntryManager
                 }
             }
         }
+
         return $data;
     }
 
     /**
      * @param $entryId
      * @param $accepted
+     *
      * @throws Exception
      */
     public function publish($entryId, $accepted)
@@ -723,21 +734,23 @@ class EntryManager
     }
 
     /**
-     * Delete a fiche
+     * Delete a fiche.
+     *
      * @param $tag
+     *
      * @throws Exception
      */
-    public function delete($tag)
+    public function delete($tag, bool $forceEvenIfNotOwner = false)
     {
         if ($this->securityController->isWikiHibernated()) {
             throw new Exception(_t('WIKI_IN_HIBERNATION'));
         }
-        if (!$this->wiki->UserIsAdmin() && !$this->wiki->UserIsOwner($tag)){
-            throw new Exception(_t('DELETEPAGE_NOT_DELETED')._t('DELETEPAGE_NOT_OWNER'));
+        if (!$forceEvenIfNotOwner && !$this->wiki->UserIsAdmin() && !$this->wiki->UserIsOwner($tag)) {
+            throw new Exception(_t('DELETEPAGE_NOT_DELETED') . _t('DELETEPAGE_NOT_OWNER'));
         }
 
-        $fiche = $this->getOne($tag);
-        if (empty($fiche)){
+        $fiche = $this->getOne($tag, false, null, true, $forceEvenIfNotOwner);
+        if (empty($fiche)) {
             throw new Exception("Not existing entry : $tag");
         }
 
@@ -746,7 +759,7 @@ class EntryManager
         $this->tripleStore->delete($tag, TripleStore::SOURCE_URL_URI, null, '', '');
         $this->wiki->LogAdministrativeAction(
             $this->authController->getLoggedUserName(),
-            "Suppression de la page ->\"\"" . $tag . "\"\""
+            'Suppression de la page ->""' . $tag . '""'
         );
 
         unset($this->cachedEntriestags[$tag]);
@@ -758,18 +771,23 @@ class EntryManager
     public function decode($body)
     {
         $data = json_decode($body, true);
-        foreach ($data as $key => $value) {
-            $data[$key] = _convert($value, 'UTF-8');
+        if (is_iterable($data)) {
+            foreach ($data as $key => $value) {
+                $data[$key] = _convert($value, 'UTF-8');
+            }
         }
+
         return $data;
     }
 
     /**
      * prepare la requete d'insertion ou de MAJ de la fiche en supprimant
      * de la valeur POST les valeurs inadequates et en formattant les champs.
+     *
      * @param $data
-     * @param bool $isCreation
+     *
      * @return array
+     *
      * @throws Exception
      */
     public function formatDataBeforeSave($data, bool $isCreation = false)
@@ -778,9 +796,11 @@ class EntryManager
         $form = $this->wiki->services->get(FormManager::class)->getOne($data['id_typeannonce']);
 
         // If there is a title field, compute the entry's title
-        foreach ($form['prepared'] as $field) {
-            if ($field instanceof TitleField) {
-                $data = array_merge($data, $field->formatValuesBeforeSaveIfEditable($data, $isCreation));
+        if (is_array($form['prepared'])) {
+            foreach ($form['prepared'] as $field) {
+                if ($field instanceof TitleField) {
+                    $data = array_merge($data, $field->formatValuesBeforeSaveIfEditable($data, $isCreation));
+                }
             }
         }
 
@@ -850,7 +870,7 @@ class EntryManager
 
         // on encode en utf-8 pour reussir a encoder en json
         if (YW_CHARSET != 'UTF-8') {
-            $data = array_map(function($value){
+            $data = array_map(function ($value) {
                 return mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1');
             }, $data);
         }
@@ -860,12 +880,14 @@ class EntryManager
 
     /**
      * Append data needed for display
-     * TODO move this to a class dedicated to display
+     * TODO move this to a class dedicated to display.
+     *
      * @param $fiche
-     * @param bool $semantic
+     * @param bool   $semantic
      * @param string $correspondance
-     * @param array $page , appendDisplayData is called in environement with access to $page
-     *      helping to get owner without asking a new Time to Page manager to get it
+     * @param array  $page           , appendDisplayData is called in environement with access to $page
+     *                               helping to get owner without asking a new Time to Page manager to get it
+     *
      * @throws Exception
      */
     public function appendDisplayData(&$fiche, $semantic, $correspondance, array $page)
@@ -884,11 +906,11 @@ class EntryManager
                         // not possible to init the Guard in the constructor because of circular reference problem
                         $fiche[$key] = $this->wiki->services->get(Guard::class)->isFieldDataAuthorizedForCorrespondance($page, $fiche, $data);
                     } else {
-                        echo '<div class="alert alert-danger">'._t('BAZ_CORRESPONDANCE_ERROR').'</div>';
+                        echo '<div class="alert alert-danger">' . _t('BAZ_CORRESPONDANCE_ERROR') . '</div>';
                     }
                 }
             } catch (ParsingMultipleException $th) {
-                echo '<div class="alert alert-danger">'.str_replace("\n", "<br/>", _t('BAZ_CORRESPONDANCE_ERROR2')).'</div>';
+                echo '<div class="alert alert-danger">' . str_replace("\n", '<br/>', _t('BAZ_CORRESPONDANCE_ERROR2')) . '</div>';
             }
         }
 
@@ -910,14 +932,14 @@ class EntryManager
     }
 
     /**
-     * extract multiples parameters from argument
-     * @param string $param
+     * extract multiples parameters from argument.
+     *
      * @param string $firstseparator
      * @param string $secondseparator
-     * @return array
+     *
      * @throws ParsingMultipleException
      */
-    public function getMultipleParameters(string $param, $firstseparator = ',', $secondseparator = '='):array
+    public function getMultipleParameters(string $param, $firstseparator = ',', $secondseparator = '='): array
     {
         // This function's aim is to fetch (key , value) couples stored in a multiple parameter
         // $param is the parameter where we have to fecth the couples
@@ -950,6 +972,7 @@ class EntryManager
                 }
             }
         }
+
         return $tabparam;
     }
 
@@ -960,24 +983,27 @@ class EntryManager
             $sendmail = $data['sendmail'];
             unset($data['sendmail']);
         }
+
         return $sendmail;
     }
 
-    private function sendMailToNotifiedEmails(?string $sendmail, ?array $data, bool $isCreation,?array $previousEntry = null)
+    private function sendMailToNotifiedEmails(?string $sendmail, ?array $data, bool $isCreation, ?array $previousEntry = null)
     {
         if ($sendmail) {
             $emailsFieldnames = array_unique(explode(',', $sendmail));
             foreach ($emailsFieldnames as $emailFieldName) {
                 if (!empty($data[$emailFieldName])) {
-                    $this->mailer->notifyEmail($data[$emailFieldName], $data, $isCreation,$previousEntry);
+                    $this->mailer->notifyEmail($data[$emailFieldName], $data, $isCreation, $previousEntry);
                 }
             }
         }
     }
 
     /**
-     * sanitize formsIds and get forms
+     * sanitize formsIds and get forms.
+     *
      * @param mixed $formsIds
+     *
      * @return array $forms
      */
     private function getFormsFromIds($formsIds): array
@@ -1002,50 +1028,51 @@ class EntryManager
         }
     }
 
-
     /**
-    * remove attributes from entries only for admins !!!
-    * @param array $params
-    * @param array $attributesNames
-    * @param bool $applyOnAllRevisions
-    * @return bool true if attributesNames are foond and replaced
-    */
+     * remove attributes from entries only for admins !!!
+     *
+     * @param array $params
+     *
+     * @return bool true if attributesNames are foond and replaced
+     */
     public function removeAttributes($params, array $attributesNames, bool $applyOnAllRevisions = false): bool
     {
         return !empty($this->removeAttributesAndReturnList($params, $attributesNames, $applyOnAllRevisions));
     }
-    
+
     /**
-    * remove attributes from entries only for admins !!!
-    * @param array $params
-    * @param array $attributesNames
-    * @param bool $applyOnAllRevisions
-    * @return array with entry's ids if attributesNames are found and replaced
-    */
+     * remove attributes from entries only for admins !!!
+     *
+     * @param array $params
+     *
+     * @return array with entry's ids if attributesNames are found and replaced
+     */
     public function removeAttributesAndReturnList($params, array $attributesNames, bool $applyOnAllRevisions = false): array
     {
         return $this->manageAttributes($params, $attributesNames, $applyOnAllRevisions, 'remove');
     }
 
     /**
-    * rename attributes from entries only for admins !!!
-    * @param array $params
-    * @param array $attributesNames [$oldName => $newName]
-    * @param bool $applyOnAllRevisions
-    * @return bool true if attributesNames are foond and replaced
-    */
+     * rename attributes from entries only for admins !!!
+     *
+     * @param array $params
+     * @param array $attributesNames [$oldName => $newName]
+     *
+     * @return bool true if attributesNames are foond and replaced
+     */
     public function renameAttributes($params, array $attributesNames, bool $applyOnAllRevisions = false): bool
     {
         return !empty($this->renameAttributesAndReturnList($params, $attributesNames, $applyOnAllRevisions));
     }
 
     /**
-    * rename attributes from entries only for admins !!!
-    * @param array $params
-    * @param array $attributesNames [$oldName => $newName]
-    * @param bool $applyOnAllRevisions
-    * @return array with entry's ids if attributesNames are found and replaced
-    */
+     * rename attributes from entries only for admins !!!
+     *
+     * @param array $params
+     * @param array $attributesNames [$oldName => $newName]
+     *
+     * @return array with entry's ids if attributesNames are found and replaced
+     */
     public function renameAttributesAndReturnList($params, array $attributesNames, bool $applyOnAllRevisions = false): array
     {
         return $this->manageAttributes($params, $attributesNames, $applyOnAllRevisions, 'rename');
@@ -1053,10 +1080,9 @@ class EntryManager
 
     /**
      * manage attributes from entries only for admins !!!
+     *
      * @param array $params
-     * @param array $attributesNames
-     * @param bool $applyOnAllRevisions
-     * @param string $mode
+     *
      * @return array with entry's ids if attributesNames are found and replaced
      */
     private function manageAttributes($params, array $attributesNames, bool $applyOnAllRevisions = false, string $mode = 'remove'): array
@@ -1070,16 +1096,15 @@ class EntryManager
 
         /* sanitize params */
         if (empty($attributesNames)) {
-            throw new \Exception("\$attributesNames sould not be empty !");
-        } elseif ($mode ==='rename') {
+            throw new \Exception('$attributesNames sould not be empty !');
+        } elseif ($mode === 'rename') {
             if (!empty(array_filter(
                 $attributesNames,
                 function ($attributeName) {
-                    return !is_array($attributeName) || count($attributeName) !=1 || !is_scalar($attributeName[array_keys($attributeName)[0]]);
+                    return !is_array($attributeName) || count($attributeName) != 1 || !is_scalar($attributeName[array_keys($attributeName)[0]]);
                 }
-            ))
-            ) {
-                throw new \Exception("\$attributesNames sould be array of arrays with only one elem !");
+            ))) {
+                throw new \Exception('$attributesNames sould be array of arrays with only one elem !');
             }
         } elseif (
             !empty(array_filter(
@@ -1089,12 +1114,12 @@ class EntryManager
                 }
             ))
         ) {
-            throw new \Exception("\$attributesNames sould be array of string !");
+            throw new \Exception('$attributesNames sould be array of string !');
         }
 
         $attributesQueries = [];
         foreach ($attributesNames as $attributeName) {
-            if ($mode ==='rename') {
+            if ($mode === 'rename') {
                 foreach ($attributeName as $oldName => $newName) {
                     $attributesQueries[$oldName] = '*';
                 }
@@ -1117,12 +1142,12 @@ class EntryManager
             $entry = $this->decode($page['body']);
 
             foreach ($attributesNames as $attributeName) {
-                if ($mode ==='rename') {
+                if ($mode === 'rename') {
                     foreach ($attributeName as $oldName => $newName) {
                         if (isset($entry[$oldName])) {
                             $entry[$newName] = $entry[$oldName];
                             unset($entry[$oldName]);
-                            if (!empty($entry['id_fiche']) && !in_array($entry['id_fiche'],$entriesIds)){
+                            if (!empty($entry['id_fiche']) && !in_array($entry['id_fiche'], $entriesIds)) {
                                 $entriesIds[] = $entry['id_fiche'];
                             }
                         }
@@ -1130,7 +1155,7 @@ class EntryManager
                 } else {
                     if (isset($entry[$attributeName])) {
                         unset($entry[$attributeName]);
-                        if (!empty($entry['id_fiche']) && !in_array($entry['id_fiche'],$entriesIds)){
+                        if (!empty($entry['id_fiche']) && !in_array($entry['id_fiche'], $entriesIds)) {
                             $entriesIds[] = $entry['id_fiche'];
                         }
                     }
@@ -1140,13 +1165,13 @@ class EntryManager
             // save
             // on encode en utf-8 pour reussir a encoder en json
             if (YW_CHARSET != 'UTF-8') {
-                $entry = array_map(function($value){
+                $entry = array_map(function ($value) {
                     return mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1');
                 }, $entry);
             }
             $body = json_encode($entry);
             if ($applyOnAllRevisions) {
-                $this->dbService->query('UPDATE' . $this->dbService->prefixTable('pages') . "SET body = '" . $this->dbService->escape(chop($body)) . "'".
+                $this->dbService->query('UPDATE' . $this->dbService->prefixTable('pages') . "SET body = '" . $this->dbService->escape(chop($body)) . "'" .
                     " WHERE id = '" . $this->dbService->escape($page['id']) . "';");
             } else {
                 $this->pageManager->save($entry['id_fiche'], $body);

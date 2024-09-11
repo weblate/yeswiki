@@ -41,7 +41,7 @@ class MetadataField extends BazarField
 
     protected function renderInput($entry)
     {
-        return "";
+        return '';
     }
 
     public function formatValuesBeforeSave($entry)
@@ -54,7 +54,7 @@ class MetadataField extends BazarField
         ] + (
             !empty($this->favorite_preset)
             ? ['favorite_preset' => $this->favorite_preset]
-            :[]
+            : []
         ));
 
         return [];
@@ -62,7 +62,7 @@ class MetadataField extends BazarField
 
     protected function renderStatic($entry)
     {
-        return "";
+        return '';
     }
 
     public function getTheme()
@@ -74,6 +74,7 @@ class MetadataField extends BazarField
     {
         return $this->style;
     }
+
     public function getTemplate()
     {
         return $this->template;
@@ -100,6 +101,6 @@ class MetadataField extends BazarField
             'template' => $this->getTemplate(),
             'bgImage' => $this->getBgImage(),
             'favorite_preset' => $this->getFavoritePreset(),
-            ];
+        ];
     }
 }

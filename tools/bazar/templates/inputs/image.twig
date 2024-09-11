@@ -17,12 +17,12 @@
                         accept=".jpeg, .jpg, .gif, .png"
                     >
                 </label>
-                {% if isAllowedToDeleteFile %}
+                {% if isAllowedToDeleteFile and not isDefaultImage %}
                     <a class="btn btn-sm btn-danger" href="{{ deleteUrl }}" onclick="javascript:return confirm('{{ _t('BAZ_CONFIRMATION_SUPPRESSION_IMAGE') }}');">
                         <i class="fa fa-trash"></i>
                         {{ _t('BAZ_SUPPRIMER_IMAGE') }}
                     </a>
-                {% else %}            
+                {% elseif not isDefaultImage %}            
                     <button class="btn btn-sm btn-danger" disabled="disabled"
                         data-toggle="tooltip" data-placement="bottom" title="{{ _t('BAZ_DROIT_INSUFFISANT') }}">
                         <i class="fa fa-trash"></i>
@@ -34,11 +34,12 @@
         <input type="hidden" id="oldimage_{{ field.propertyName }}" name="oldimage_{{ field.propertyName }}" value="{{ value }}" />
     {% else %}
         <input
+            data-max-size="{{ maxSize}}"
             type="file"
             class="yw-image-upload form-control"
             id="{{ field.propertyName }}"
             name="{{ field.propertyName }}"
-            accept=".jpeg, .jpg, .gif, .png"
+            accept=".webp, .jpeg, .jpg, .gif, .png"
             {% if field.required %}required{% endif %}
         >
         <output id="img-{{ field.propertyName }}" class="col-xs-9"></output>

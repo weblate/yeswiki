@@ -3,31 +3,27 @@
 namespace YesWiki\Core\Controller;
 
 use Exception;
-use Throwable;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\Exception\TokenNotFoundException;
+use Throwable;
 use YesWiki\Bazar\Controller\EntryController;
 use YesWiki\Bazar\Service\EntryManager;
 use YesWiki\Core\ApiResponse;
-use YesWiki\Core\Controller\ArchiveController;
-use YesWiki\Core\Controller\AuthController;
-use YesWiki\Core\Controller\CsrfTokenController;
-use YesWiki\Core\Controller\PageController;
-use YesWiki\Core\Controller\UserController;
 use YesWiki\Core\Exception\DeleteUserException;
 use YesWiki\Core\Exception\ExitException;
 use YesWiki\Core\Service\AclService;
 use YesWiki\Core\Service\ArchiveService;
+use YesWiki\Core\Service\CommentService;
 use YesWiki\Core\Service\DbService;
 use YesWiki\Core\Service\DiffService;
 use YesWiki\Core\Service\PageManager;
-use YesWiki\Core\Service\UserManager;
-use YesWiki\Core\Service\CommentService;
 use YesWiki\Core\Service\ReactionManager;
 use YesWiki\Core\Service\TripleStore;
+use YesWiki\Core\Service\UserManager;
 use YesWiki\Core\YesWikiController;
+use YesWiki\Security\Controller\SecurityController;
 
 class ApiController extends YesWikiController
 {
@@ -39,63 +35,63 @@ class ApiController extends YesWikiController
         $output = '<h1>YesWiki API</h1>';
 
         $urlUser = $this->wiki->Href('', 'api/users');
-        $output .= '<h2>'._t('USERS').'</h2>'."\n".
-            '<p><code>GET '.$urlUser.'</code></p>';
+        $output .= '<h2>' . _t('USERS') . '</h2>' . "\n" .
+            '<p><code>GET ' . $urlUser . '</code></p>';
 
         $urlGroup = $this->wiki->Href('', 'api/groups');
-        $output .= '<h2>'._t('GROUPS').'</h2>'."\n".
-            '<p><code>GET '.$urlGroup.'</code></p>';
+        $output .= '<h2>' . _t('GROUPS') . '</h2>' . "\n" .
+            '<p><code>GET ' . $urlGroup . '</code></p>';
 
         $urlPages = $this->wiki->Href('', 'api/pages');
-        $output .= '<h2>'._t('PAGES').'</h2>'."\n".
-            '<p><code>GET '.$urlPages.'</code></p>';
+        $output .= '<h2>' . _t('PAGES') . '</h2>' . "\n" .
+            '<p><code>GET ' . $urlPages . '</code></p>';
         $urlPagesComments = $this->wiki->Href('', 'api/pages/{pageTag}/comments');
-        $output .= '<p><code>GET '.$urlPagesComments.'</code></p>';
+        $output .= '<p><code>GET ' . $urlPagesComments . '</code></p>';
 
         $urlComments = $this->wiki->Href('', 'api/comments');
-        $output .= '<h2>'._t('COMMENTS').'</h2>'."\n".
-            '<p><code>GET '.$urlComments.'</code></p>';
+        $output .= '<h2>' . _t('COMMENTS') . '</h2>' . "\n" .
+            '<p><code>GET ' . $urlComments . '</code></p>';
 
         $urlTriples = $this->wiki->Href('', 'api/triples/{resource}', ['property' => 'http://outils-reseaux.org/_vocabulary/type', 'user' => 'username'], false);
-        $output .= '<h2>'._t('TRIPLES').'</h2>'."\n".
-            '<p><code>GET '.$urlTriples.'</code></p>';
+        $output .= '<h2>' . _t('TRIPLES') . '</h2>' . "\n" .
+            '<p><code>GET ' . $urlTriples . '</code></p>';
 
         $urlArchives = $this->wiki->Href('', 'api/archives');
-        $output .= '<h2>'._t('ARCHIVES').'</h2>'."\n".
-            '<p>'._t('ONLY_FOR_ADMINS').'</p>'.
-            '<p><code>GET '.$urlArchives.'</code></p>'.
-            '<p><code>GET '.$urlArchives.'/{id}</code></p>'.
-            '<p><code>POST '.$urlArchives.'</code></p>'.
-            '<p><code>POST '.$urlArchives.'/{id}</code></p>';
+        $output .= '<h2>' . _t('ARCHIVES') . '</h2>' . "\n" .
+            '<p>' . _t('ONLY_FOR_ADMINS') . '</p>' .
+            '<p><code>GET ' . $urlArchives . '</code></p>' .
+            '<p><code>GET ' . $urlArchives . '/{id}</code></p>' .
+            '<p><code>POST ' . $urlArchives . '</code></p>' .
+            '<p><code>POST ' . $urlArchives . '/{id}</code></p>';
 
         // TODO use annotations to document the API endpoints
         $extensions = $this->wiki->extensions;
         foreach ($this->wiki->extensions as $extension => $pluginBase) {
-            $response = null ;
+            $response = null;
             if (file_exists($pluginBase . 'controllers/ApiController.php')) {
                 $apiClassName = 'YesWiki\\' . ucfirst($extension) . '\\Controller\\ApiController';
                 if (!class_exists($apiClassName, false)) {
-                    include($pluginBase . 'controllers/ApiController.php') ;
+                    include $pluginBase . 'controllers/ApiController.php';
                 }
                 if (class_exists($apiClassName, false)) {
-                    $apiController = new $apiClassName() ;
+                    $apiController = new $apiClassName();
                     $apiController->setWiki($this->wiki);
                     if (method_exists($apiController, 'getDocumentation')) {
-                        $response = $apiController->getDocumentation() ;
+                        $response = $apiController->getDocumentation();
                     }
                 }
             }
             if (empty($response)) {
-                $func = 'documentation'.ucfirst(strtolower($extension));
+                $func = 'documentation' . ucfirst(strtolower($extension));
                 if (function_exists($func)) {
                     $output .= $func();
                 }
             } else {
-                $output .= $response ;
+                $output .= $response;
             }
         }
 
-        $output = $this->wiki->Header().'<div class="api-container">'.$output.'</div>'.$this->wiki->Footer();
+        $output = $this->wiki->Header() . '<div class="api-container">' . $output . '</div>' . $this->wiki->Footer();
 
         return new Response($output);
     }
@@ -122,13 +118,13 @@ class ApiController extends YesWikiController
         $result = [];
         try {
             $csrfTokenController = $this->getService(CsrfTokenController::class);
-            $csrfTokenController->checkToken('main', 'POST', 'csrfToken',false);
+            $csrfTokenController->checkToken('main', 'POST', 'csrfToken', false);
             $user = $userManager->getOneByName($userId);
             if (empty($user)) {
                 $code = Response::HTTP_BAD_REQUEST;
                 $result = [
                     'notDeleted' => [$userId],
-                    'error' => 'not existing user'
+                    'error' => 'not existing user',
                 ];
             } else {
                 $userController->delete($user);
@@ -141,7 +137,7 @@ class ApiController extends YesWikiController
             $code = Response::HTTP_UNAUTHORIZED;
             $result = [
                 'notDeleted' => [$userId],
-                'error' => $th->getMessage()
+                'error' => $th->getMessage(),
             ];
         } catch (DeleteUserException $th) {
             $code = Response::HTTP_BAD_REQUEST;
@@ -153,9 +149,10 @@ class ApiController extends YesWikiController
             $code = Response::HTTP_INTERNAL_SERVER_ERROR;
             $result = [
                 'notDeleted' => [$userId],
-                'error' => $th->getMessage()
+                'error' => $th->getMessage(),
             ];
         }
+
         return new ApiResponse($result, $code);
     }
 
@@ -182,8 +179,13 @@ class ApiController extends YesWikiController
                 $user = $userController->create([
                     'name' => strval($_POST['name']),
                     'email' => strval($_POST['email']),
-                    'password' => $this->wiki->generateRandomString(30),
+                    'password' => $this->wiki->generateRandomString(30)
                 ]);
+                if (!boolval($this->wiki->config['contact_disable_email_for_password']) && !empty($user)) {
+                    $link = $userController->sendPasswordRecoveryEmail($user);
+                } else {
+                    $link = '';
+                }
                 $code = Response::HTTP_OK;
                 $result = [
                     'created' => [$user['name']],
@@ -191,19 +193,20 @@ class ApiController extends YesWikiController
                         'name' => $user['name'],
                         'email' => $user['email'],
                         'signuptime' => $user['signuptime'],
-                    ]
+                        'link' => $link
+                    ],
                 ];
             } catch (UserNameAlreadyUsedException $th) {
                 $code = Response::HTTP_BAD_REQUEST;
                 $result = [
                     'notCreated' => [strval($_POST['name'])],
-                    'error' => str_replace('{currentName}', strval($_POST['name']), _t('USERSETTINGS_NAME_ALREADY_USED'))
+                    'error' => str_replace('{currentName}', strval($_POST['name']), _t('USERSETTINGS_NAME_ALREADY_USED')),
                 ];
             } catch (UserEmailAlreadyUsedException $th) {
                 $code = Response::HTTP_BAD_REQUEST;
                 $result = [
                     'notCreated' => [strval($_POST['name'])],
-                    'error' => str_replace('{email}', strval($_POST['email']), _t('USERSETTINGS_EMAIL_ALREADY_USED'))
+                    'error' => str_replace('{email}', strval($_POST['email']), _t('USERSETTINGS_EMAIL_ALREADY_USED')),
                 ];
             } catch (ExitException $th) {
                 throw $th;
@@ -211,16 +214,17 @@ class ApiController extends YesWikiController
                 $code = Response::HTTP_BAD_REQUEST;
                 $result = [
                     'notCreated' => [strval($_POST['name'])],
-                    'error' => $th->getMessage()
+                    'error' => $th->getMessage(),
                 ];
             } catch (Throwable $th) {
                 $code = Response::HTTP_INTERNAL_SERVER_ERROR;
                 $result = [
                     'notCreated' => [strval($_POST['name'])],
-                    'error' => $th->getMessage()
+                    'error' => $th->getMessage(),
                 ];
             }
         }
+
         return new ApiResponse($result, $code);
     }
 
@@ -239,6 +243,7 @@ class ApiController extends YesWikiController
             if (!is_array($user)) {
                 $user = $user->getArrayCopy();
             }
+
             return array_filter($user, function ($k) use ($userFields) {
                 return in_array($k, $userFields);
             }, ARRAY_FILTER_USE_KEY);
@@ -262,6 +267,7 @@ class ApiController extends YesWikiController
     {
         $commentService = $this->getService(CommentService::class);
         $result = $commentService->addCommentIfAuthorized($_POST);
+
         return new ApiResponse($result, $result['code']);
     }
 
@@ -272,6 +278,7 @@ class ApiController extends YesWikiController
     {
         $commentService = $this->getService(CommentService::class);
         $result = $commentService->addCommentIfAuthorized($_POST, $tag);
+
         return new ApiResponse($result, $result['code']);
     }
 
@@ -283,11 +290,13 @@ class ApiController extends YesWikiController
         if ($this->wiki->UserIsOwner($tag) || $this->wiki->UserIsAdmin()) {
             $commentService = $this->getService(CommentService::class);
             $errors = $commentService->delete($tag);
-            return new ApiResponse(['success' => _t('COMMENT_REMOVED')]+$errors, 200);
+
+            return new ApiResponse(['success' => _t('COMMENT_REMOVED')] + $errors, 200);
         } else {
             return new ApiResponse(['error' => _t('NOT_AUTORIZED_TO_REMOVE_COMMENT')], 403);
         }
     }
+
     /**
      * @Route("/api/comments/{tag}/delete",methods={"POST"}, options={"acl":{"public","+"}})
      */
@@ -323,12 +332,13 @@ class ApiController extends YesWikiController
         SQL;
         $pages = _convert($dbService->loadAll($sql), 'ISO-8859-15');
         $pages = array_filter($pages, function ($page) use ($aclService) {
-            return $aclService->hasAccess('read', $page["tag"]);
+            return $aclService->hasAccess('read', $page['tag']);
         });
         $pagesWithTag = [];
         foreach ($pages as $page) {
             $pagesWithTag[$page['tag']] = $page;
         }
+
         return new ApiResponse(empty($pagesWithTag) ? null : $pagesWithTag);
     }
 
@@ -352,14 +362,14 @@ class ApiController extends YesWikiController
             $page['html'] = $entryController->view($page['tag'], $page['time'], false);
             $page['code'] = $diffService->formatJsonCodeIntoHtmlTable($page);
         } else {
-            $page['html'] = $this->wiki->Format($page["body"], 'wakka', $page['tag']);
+            $page['html'] = $this->wiki->Format($page['body'], 'wakka', $page['tag']);
             $page['code'] = $page['body'];
         }
 
         if ($request->get('includeDiff')) {
             $prevVersion = $pageManager->getPreviousRevision($page);
             if (!$prevVersion) {
-                $prevVersion = ["tag" => $tag, "body" => "", "time" => null];
+                $prevVersion = ['tag' => $tag, 'body' => '', 'time' => null];
             }
             $page['commit_diff_html'] = $diffService->getPageDiff($prevVersion, $page, true);
             $page['commit_diff_code'] = $diffService->getPageDiff($prevVersion, $page, false);
@@ -382,7 +392,7 @@ class ApiController extends YesWikiController
         $dbService = $this->getService(DbService::class);
 
         $result = [
-            'notDeleted' => [$tag]
+            'notDeleted' => [$tag],
         ];
         $code = Response::HTTP_INTERNAL_SERVER_ERROR;
         try {
@@ -437,20 +447,21 @@ class ApiController extends YesWikiController
         $code = Response::HTTP_INTERNAL_SERVER_ERROR;
         try {
             $csrfTokenController = $this->wiki->services->get(CsrfTokenController::class);
-            $csrfTokenController->checkToken('main', 'POST', 'csrfToken',false);
+            $csrfTokenController->checkToken('main', 'POST', 'csrfToken', false);
         } catch (TokenNotFoundException $th) {
             $code = Response::HTTP_UNAUTHORIZED;
             $result = [
                 'notDeleted' => [$tag],
-                'error' => $th->getMessage()
+                'error' => $th->getMessage(),
             ];
         } catch (Throwable $th) {
             $code = Response::HTTP_INTERNAL_SERVER_ERROR;
             $result = [
                 'notDeleted' => [$tag],
-                'error' => $th->getMessage()
+                'error' => $th->getMessage(),
             ];
         }
+
         return (empty($result))
             ? $this->deletePage($tag)
             : new ApiResponse($result, $code);
@@ -465,11 +476,12 @@ class ApiController extends YesWikiController
     }
 
     /**
-    * @Route("/api/reactions/{id}", methods={"GET"}, options={"acl":{"public"}})
-    */
+     * @Route("/api/reactions/{id}", methods={"GET"}, options={"acl":{"public"}})
+     */
     public function getReactions($id)
     {
         $id = array_map('trim', explode(',', $id));
+
         return new ApiResponse($this->getService(ReactionManager::class)->getReactions('', $id));
     }
 
@@ -487,8 +499,10 @@ class ApiController extends YesWikiController
     public function getReactionsFromUser($userId, $id)
     {
         $id = array_map('trim', explode(',', $id));
+
         return new ApiResponse($this->getService(ReactionManager::class)->getReactions('', $id, $userId));
     }
+
     /**
      * @Route("/api/reactions/{idreaction}/{id}/{page}/{username}", methods={"DELETE"}, options={"acl":{"public", "+"}})
      */
@@ -500,10 +514,10 @@ class ApiController extends YesWikiController
                 if ($reactionManager->deleteUserReaction($page, $idreaction, $id, $username)) {
                     return new ApiResponse(
                         [
-                            'idReaction'=>$idreaction,
-                            'id'=>$id,
+                            'idReaction' => $idreaction,
+                            'id' => $id,
                             'page' => $page,
-                            'user'=> $username
+                            'user' => $username,
                         ],
                         Response::HTTP_OK
                     );
@@ -551,9 +565,9 @@ class ApiController extends YesWikiController
                             // un choix de vote est fait
                             if ($_POST['id']) {
                                 // test if limits wherer put
-                                if (!empty($params['maxreaction']) && count($userReactions)>= $params['maxreaction']) {
+                                if (!empty($params['maxreaction']) && count($userReactions) >= $params['maxreaction']) {
                                     return new ApiResponse(
-                                        ['error' => 'Seulement '.$params['maxreaction'].' réaction(s) possible(s). Vous pouvez désélectionner une de vos réactions pour changer.'],
+                                        ['error' => 'Seulement ' . $params['maxreaction'] . ' réaction(s) possible(s). Vous pouvez désélectionner une de vos réactions pour changer.'],
                                         Response::HTTP_UNAUTHORIZED
                                     );
                                 } else {
@@ -580,8 +594,9 @@ class ApiController extends YesWikiController
                                 );
                             }
                         }
+
                         return new ApiResponse(
-                            ['error' => "'".strval($_POST['reactionid']) . "' n'est pas une réaction déclarée sur la page '".strval($_POST['pagetag'])."'"],
+                            ['error' => "'" . strval($_POST['reactionid']) . "' n'est pas une réaction déclarée sur la page '" . strval($_POST['pagetag']) . "'"],
                             Response::HTTP_INTERNAL_SERVER_ERROR
                         );
                     } else {
@@ -615,7 +630,7 @@ class ApiController extends YesWikiController
      */
     public function ByResource()
     {
-        extract($this->extractTriplesParams(INPUT_GET, "not empty"));
+        extract($this->extractTriplesParams(INPUT_GET, 'not empty'));
         if (!empty($apiResponse)) {
             return $apiResponse;
         }
@@ -624,10 +639,11 @@ class ApiController extends YesWikiController
             null,
             $property,
             $value,
-            "=",
-            "=",
-            "LIKE"
+            '=',
+            '=',
+            'LIKE'
         );
+
         return new ApiResponse(
             $triples,
             Response::HTTP_OK
@@ -648,10 +664,11 @@ class ApiController extends YesWikiController
             $resource,
             $property,
             $value,
-            "=",
-            "=",
-            "LIKE"
+            '=',
+            '=',
+            'LIKE'
         );
+
         return new ApiResponse(
             $triples,
             Response::HTTP_OK
@@ -683,7 +700,7 @@ class ApiController extends YesWikiController
             });
         } elseif (is_scalar($value)) {
             $rawValue = [
-                'value' => $value
+                'value' => $value,
             ];
         } else {
             $rawValue = [];
@@ -695,12 +712,13 @@ class ApiController extends YesWikiController
             $resource,
             $property,
             $value,
-            "",
-            ""
+            '',
+            ''
         );
+
         return new ApiResponse(
             ['result' => $result],
-            in_array($result, [0,3]) ? Response::HTTP_OK : Response::HTTP_INTERNAL_SERVER_ERROR
+            in_array($result, [0, 3]) ? Response::HTTP_OK : Response::HTTP_INTERNAL_SERVER_ERROR
         );
     }
 
@@ -740,17 +758,18 @@ class ApiController extends YesWikiController
                     $resource,
                     $property,
                     $value,
-                    "=",
-                    "=",
-                    "LIKE"
+                    '=',
+                    '=',
+                    'LIKE'
                 );
                 if (!empty($newTriples)) {
                     $newTriples = array_filter($newTriples, function ($triple) use ($triples) {
                         $sameTriples = array_filter($triples, function ($registeredTriple) use ($triple) {
                             return $registeredTriple['resource'] == $triple['resource'] &&
                                 $registeredTriple['property'] == $triple['property'] &&
-                                $registeredTriple['value'] == $triple['value'] ;
+                                $registeredTriple['value'] == $triple['value'];
                         });
+
                         return empty($sameTriples);
                     });
                     foreach ($newTriples as $triple) {
@@ -767,8 +786,8 @@ class ApiController extends YesWikiController
                 $triple['resource'],
                 $triple['property'],
                 $triple['value'],
-                "",
-                ""
+                '',
+                ''
             ) === false) {
                 $allOk = false;
                 $notDeletedTriples[] = $triple;
@@ -783,7 +802,7 @@ class ApiController extends YesWikiController
             return new ApiResponse(
                 [
                     'triples' => $triples,
-                    'notDeletedTriples' => $notDeletedTriples
+                    'notDeletedTriples' => $notDeletedTriples,
                 ],
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
@@ -801,14 +820,11 @@ class ApiController extends YesWikiController
                 Response::HTTP_BAD_REQUEST
             );
         } else {
-            $property = filter_input($method, 'property', FILTER_UNSAFE_RAW);
-            $property = in_array($property, [false,null], true) ? "" : htmlspecialchars(strip_tags($property));
+            $property = $this->getService(SecurityController::class)->filterInput($method, 'property', FILTER_DEFAULT, true);
             if (empty($property)) {
                 $property = null;
             }
-
-            $username = filter_input($method, 'user', FILTER_UNSAFE_RAW);
-            $username = in_array($username, [false,null], true) ? "" : htmlspecialchars(strip_tags($username));
+            $username = $this->getService(SecurityController::class)->filterInput($method, 'user', FILTER_DEFAULT, true);
             if (empty($username)) {
                 if (!$this->wiki->UserIsAdmin()) {
                     $username = $this->getService(AuthController::class)->getLoggedUser()['name'];
@@ -824,7 +840,8 @@ class ApiController extends YesWikiController
                 );
             }
         }
-        return compact(['property','username','apiResponse']);
+
+        return compact(['property', 'username', 'apiResponse']);
     }
 
     /**
@@ -842,7 +859,7 @@ class ApiController extends YesWikiController
     {
         return $this->getService(ArchiveController::class)->getArchiveStatus(
             $uid,
-            empty($_GET['forceStarted']) ? false : in_array($_GET['forceStarted'], [1,true,"1","true"], true)
+            empty($_GET['forceStarted']) ? false : in_array($_GET['forceStarted'], [1, true, '1', 'true'], true)
         );
     }
 
@@ -863,12 +880,12 @@ class ApiController extends YesWikiController
     public function getForcedUpdateToken()
     {
         $token = $this->getService(ArchiveService::class)->getForcedUpdateToken();
+
         return new ApiResponse(
-            ['token'=>$token],
+            ['token' => $token],
             empty($token) ? Response::HTTP_INTERNAL_SERVER_ERROR : Response::HTTP_OK
         );
     }
-
 
     /**
      * @Route("/api/archives/", methods={"GET"}, options={"acl":{"public", "@admins"}})
@@ -877,6 +894,7 @@ class ApiController extends YesWikiController
     public function getArchives()
     {
         $archiveService = $this->getService(ArchiveService::class);
+
         return new ApiResponse(
             $archiveService->getArchives(),
             Response::HTTP_OK

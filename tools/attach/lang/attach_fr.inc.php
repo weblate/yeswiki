@@ -1,10 +1,9 @@
 <?php
 
 return [
-
     // controllers/ApiController.php
-    'ATTACH_GET_URLIMAGE_CACHE_API_HELP' => "Fournit l'url du fichier de cache pour l'image voulue\n".
-        "Nécessite le passage du jeton anti-csrf !",
+    'ATTACH_GET_URLIMAGE_CACHE_API_HELP' => "Fournit l'url du fichier de cache pour l'image voulue\n" .
+        'Nécessite le passage du jeton anti-csrf !',
     'ATTACH_GET_CACHE_URLIMAGE_NO_FILE' => 'Fichier image inexistant',
 
     // libs/attach.lib.php
@@ -67,10 +66,10 @@ return [
     'ATTACH_DESCRIPTION' => 'Description',
     'ATTACH_CANCEL' => 'Annuler',
     'ATTACH_SAVE' => 'Sauver',
-    
+
     // actions/video.php
     'ATTACH_ACTION_VIDEO_PARAM_ERROR' => 'L\'action video doit être appelée avec les paramètres « id » et « serveur ». Pour « serveur », seules les valeurs « vimeo » ou « youtube » ou « peertube » sont acceptées.',
-    
+
     // actions/pdf.php
     'ATTACH_ACTION_PDF_PARAM_URL_ERROR' => 'L\'action pdf doit être appelée avec le paramètre « url » et l\'url renseignée doit provenir de la même origine que le wiki : c\'est à dire du même sous-domaine du serveur (par exemple \'xxx.yyy.com\'), du même schéma (par exemple \'https\') et du même port s\'il est spécifié (par exemple \'8080\').',
     'ATTACH_ACTION_DISPLAY_PDF_TEXT' => 'Afficher le pdf dans la page :',
@@ -99,8 +98,8 @@ return [
     'WHITE_BORDER' => 'Bord blanc',
     'DROP_SHADOW' => 'Ombre port&eacute;e',
     'ZOOM_HOVER' => 'Agrandissement au survol',
-    'ALT_INFOS' => 'Ce texte sera affich&eacute; &agrave; la place de l\'image si elle est introuvable sur le serveur',
-    'ALTERNATIVE_TEXT' => 'Texte de remplacement',
+    'ALT_INFOS' => 'Ce texte sera affich&eacute; &agrave; la place de l\'image si elle est introuvable sur le serveur. C\'est aussi celle qui sera lue par les technologies d\'assistance aux personnes malvoyantes. À laisser vide si l\'image est purement décorative',
+    'ALTERNATIVE_TEXT' => 'Texte alternatif pour les personnes malvoyantes',
     'NONE' => 'Texte en dessous',
     'LEFT' => 'Gauche',
     'CENTER' => 'Centre',
@@ -114,10 +113,10 @@ return [
     'ATTACH_HANDLER_AJAXUPLOAD_FILE_TOO_LARGE' => 'Le fichier est trop large.',
     'ATTACH_HANDLER_AJAXUPLOAD_AUTHORIZED_EXT' => 'Le fichier n\'a pas une extension autorisée, voici les autorisées : {ext}.',
     'ATTACH_HANDLER_AJAXUPLOAD_ERROR' => 'Impossible de sauver le fichier. L\'upload a été annulé ou le serveur a planté...',
-    
+
     // edit config action
     'EDIT_CONFIG_HINT_ATTACH-VIDEO-CONFIG[DEFAULT_VIDEO_SERVICE]' => 'Service de vidéo par défaut (peertube, youtube ou vimeo)',
     'EDIT_CONFIG_HINT_ATTACH-VIDEO-CONFIG[DEFAULT_PEERTUBE_INSTANCE]' => 'Adresse du serveur peertube par défaut',
-    'EDIT_CONFIG_HINT_MAX_FILE_SIZE' => 'Taille maximum des fichiers téléversés - octets (ex: Taille maximum des fichiers téléversés - octets (ex: 2097152 pour 2Mo)',
+    'EDIT_CONFIG_HINT_MAX_FILE_SIZE' => 'Taille maximum des fichiers téléversés - octets (ex: Taille maximum des fichiers téléversés (ex: 2097152, 2048k, 2m)',
     'EDIT_CONFIG_GROUP_ATTACH' => 'Insertion de médias (images, vidéos)',
 ];

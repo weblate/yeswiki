@@ -11,7 +11,6 @@ use YesWiki\Core\Controller\UserController;
 use YesWiki\Core\Exception\UserNameAlreadyUsedException;
 use YesWiki\Core\Service\Mailer;
 use YesWiki\Core\Service\UserManager;
-use YesWiki\Wiki;
 
 /**
  * @Field({"yeswiki_user", "utilisateur_wikini"})
@@ -40,7 +39,7 @@ class UserField extends BazarField
         $this->nameField = $values[self::FIELD_NAME_FIELD];
         $this->emailField = $values[self::FIELD_EMAIL_FIELD];
         $this->mailingList = $values[self::FIELD_MAILING_LIST];
-        $this->autoUpdateMail = in_array($values[self::FIELD_AUTO_UPDATE_MAIL], [true,"1",1], true);
+        $this->autoUpdateMail = in_array($values[self::FIELD_AUTO_UPDATE_MAIL], [true, '1', 1], true);
         $this->autoAddToGroup = trim(strval($values[self::FIELD_AUTO_ADD_TO_GROUP]));
 
         // We have no default value
@@ -56,7 +55,7 @@ class UserField extends BazarField
     protected function renderInput($entry)
     {
         $value = $this->getValue($entry);
-        
+
         $authController = $this->getService(AuthController::class);
         $userManager = $this->getService(UserManager::class);
         $loggedUser = $authController->getLoggedUser();
@@ -66,8 +65,8 @@ class UserField extends BazarField
                 if (empty($value) || !$this->isUserByName($value)) {
                     $value = $associatedUser['name'];
                     $message = str_replace(
-                        ['{wikiname}','{email}'],
-                        [$value,$associatedUser['email']],
+                        ['{wikiname}', '{email}'],
+                        [$value, $associatedUser['email']],
                         _t('BAZ_USER_FIELD_ALREADY_CONNECTED')
                     );
                 }
@@ -75,23 +74,24 @@ class UserField extends BazarField
                     $associatedUser = $userManager->getOneByName($value);
                 }
                 if ($value === $loggedUser['name'] || ($this->getWiki()->UserIsAdmin() && !empty($associatedUser['email']))) {
-                    $message = (!empty($message) ? $message."\n" : '').($this->autoUpdateMail ? str_replace(
+                    $message = (!empty($message) ? $message . "\n" : '') . ($this->autoUpdateMail ? str_replace(
                         '{email}',
                         $associatedUser['email'],
                         _t('BAZ_USER_FIELD_ALREADY_CONNECTED_AUTOUPDATE')
-                    ): '');
+                    ) : '');
                 }
             }
         }
-        return $this->render("@bazar/inputs/user.twig", [
+
+        return $this->render('@bazar/inputs/user.twig', [
             'value' => $value,
             'creationMode' => empty($entry[$this->getPropertyName()]),
             'message' => $message ?? null,
-            'userIsAdmin' =>  $this->getWiki()->UserIsAdmin(),
-            'userName' =>  $loggedUser['name'] ?? null,
-            'userEmail' =>  $loggedUser['email'] ?? null,
-            'forceLabel' => $this->propertyName.self::FORCE_LABEL,
-            'forceLabelChecked' => $_POST[$this->propertyName.self::FORCE_LABEL] ?? false,
+            'userIsAdmin' => $this->getWiki()->UserIsAdmin(),
+            'userName' => $loggedUser['name'] ?? null,
+            'userEmail' => $loggedUser['email'] ?? null,
+            'forceLabel' => $this->propertyName . self::FORCE_LABEL,
+            'forceLabelChecked' => $_POST[$this->propertyName . self::FORCE_LABEL] ?? false,
         ]);
     }
 
@@ -106,8 +106,10 @@ class UserField extends BazarField
 
         $wiki = $this->getWiki();
 
-        if ($this->getWiki()->UserIsAdmin()
-                && in_array($_POST[$this->propertyName.self::FORCE_LABEL] ?? false, [true,"true",1,"1"], true)) {
+        if (
+            $this->getWiki()->UserIsAdmin()
+            && in_array($_POST[$this->propertyName . self::FORCE_LABEL] ?? false, [true, 'true', 1, '1'], true)
+        ) {
             // force entry creation but do not create user if existing for this email
             $userManager = $this->getService(UserManager::class);
             $existingUser = $userManager->getOneByEmail($entry[$this->emailField]);
@@ -122,7 +124,7 @@ class UserField extends BazarField
             $wikiName = $value;
             // add in groups
             $this->addUserToGroups($wikiName, $entry);
-            
+
             $this->updateEmailIfNeeded($wikiName, $entry[$this->emailField] ?? null);
         } else {
             $wikiName = $entry[$this->nameField];
@@ -136,19 +138,14 @@ class UserField extends BazarField
             if ($this->isUserByName($wikiName)) {
                 $currentWikiName = $wikiName;
                 $wikiName = $this->findANewNotExistingUserName($currentWikiName);
-                if (!$isImport
+                if (
+                    !$isImport
                     && (
-                        !isset($_POST[$this->propertyName.self::CONFIRM_NAME_SUFFIX])
-                        || !in_array($_POST[$this->propertyName.self::CONFIRM_NAME_SUFFIX], [true,1,"1"], true)
+                        !isset($_POST[$this->propertyName . self::CONFIRM_NAME_SUFFIX])
+                        || !in_array($_POST[$this->propertyName . self::CONFIRM_NAME_SUFFIX], [true, 1, '1'], true)
                     )
-                    ) {
-                    throw new UserFieldException(
-                        $this->render("@bazar/inputs/user-confirm.twig", [
-                        'confirmName' => $this->propertyName.self::CONFIRM_NAME_SUFFIX,
-                        'wikiName' => $currentWikiName,
-                        'newWikiName' => $wikiName,
-                    ])
-                    );
+                ) {
+                    throw new UserFieldException($this->render('@bazar/inputs/user-confirm.twig', ['confirmName' => $this->propertyName . self::CONFIRM_NAME_SUFFIX, 'wikiName' => $currentWikiName, 'newWikiName' => $wikiName]));
                 }
             }
             if (!isset($entry[$this->emailField])) {
@@ -162,17 +159,17 @@ class UserField extends BazarField
                     throw new UserFieldException(_t('USER_PASSWORDS_NOT_IDENTICAL'));
                 }
             }
-            
+
             try {
                 $userController->create([
                     'name' => $wikiName,
                     'email' => $entry[$this->emailField],
-                    'password' => $entry['mot_de_passe_wikini']
+                    'password' => $entry['mot_de_passe_wikini'],
                 ]);
             } catch (UserNameAlreadyUsedException $ex) {
                 throw new UserFieldException(_t('BAZ_USER_FIELD_EXISTING_USER_BY_EMAIL'));
             } catch (Exception $ex) {
-                throw new UserFieldException($ex->getMessage(), $ex->getCode(), $ex);
+                throw new UserFieldException($ex->getMessage() . ' User: ' . $wikiName . ' - Email: ' . $entry[$this->emailField], $ex->getCode(), $ex);
             }
 
             // add in groups
@@ -192,15 +189,15 @@ class UserField extends BazarField
 
         // indicateur pour la gestion des droits associee a la fiche.
         $GLOBALS['utilisateur_wikini'] = $wikiName;
-        
+
         return [
             $this->propertyName => $wikiName,
             'fields-to-remove' => [
                 'mot_de_passe_wikini',
                 'mot_de_passe_repete_wikini',
-                $this->propertyName.self::CONFIRM_NAME_SUFFIX,
-                $this->propertyName.self::FORCE_LABEL,
-                ]
+                $this->propertyName . self::CONFIRM_NAME_SUFFIX,
+                $this->propertyName . self::FORCE_LABEL,
+            ],
         ];
     }
 
@@ -210,15 +207,15 @@ class UserField extends BazarField
         $authController = $this->getService(AuthController::class);
 
         if ($value) {
-            return $this->render("@bazar/fields/user.twig", [
+            return $this->render('@bazar/fields/user.twig', [
                 'value' => $value,
                 'isLoggedUser' => $authController->getLoggedUser() && $authController->getLoggedUserName() === $value,
                 'editUrl' => $this->getWiki()->href('edit', $value),
-                'settingsUrl' => $this->getWiki()->href('', 'ParametresUtilisateur')
+                'settingsUrl' => $this->getWiki()->href('', 'ParametresUtilisateur'),
             ]);
         }
 
-        return "";
+        return '';
     }
 
     // GETTERS. Needed to use them in the Twig syntax
@@ -267,12 +264,14 @@ class UserField extends BazarField
     private function isUserByName(string $userName): bool
     {
         $userManager = $this->getService(UserManager::class);
+
         return !empty($userManager->getOneByName($userName));
     }
 
     private function isUserByEmail(string $email): bool
     {
         $userManager = $this->getService(UserManager::class);
+
         return !empty($userManager->getOneByEmail($email));
     }
 
@@ -284,18 +283,19 @@ class UserField extends BazarField
             $userManager = $this->getService(UserManager::class);
             $user = $userManager->getOneByName($userName);
             $loggedUser = $authController->getLoggedUser();
-            if (!empty($user)
-                    && (
-                        $this->getWiki()->UserIsAdmin()
-                            || (
-                                !empty($loggedUser)
-                                && $user['name'] === $loggedUser['name']
-                            )
+            if (
+                !empty($user)
+                && (
+                    $this->getWiki()->UserIsAdmin()
+                    || (
+                        !empty($loggedUser)
+                        && $user['name'] === $loggedUser['name']
                     )
-                    && $user['email'] !== $email
-                ) {
+                )
+                && $user['email'] !== $email
+            ) {
                 try {
-                    $userController->update($user, ['email'=>$email]);
+                    $userController->update($user, ['email' => $email]);
                 } catch (UserNameAlreadyUsedException $ex) {
                     throw new UserFieldException(_t('BAZ_USER_FIELD_EXISTING_USER_BY_EMAIL'));
                 } catch (Exception $ex) {
@@ -316,7 +316,7 @@ class UserField extends BazarField
             $userManager = $this->getService(UserManager::class);
             foreach ($groups as $group) {
                 $group = trim($group);
-                $forceGroupCreation =  (substr($group, 0, 1) === '+');
+                $forceGroupCreation = (substr($group, 0, 1) === '+');
                 $groupName = substr($group, ($forceGroupCreation ? 1 : 0));
                 if (substr($groupName, 0, 1) !== '@') {
                     // field name
@@ -336,14 +336,14 @@ class UserField extends BazarField
                     }
                 }
             }
-            
+
             $groupsNames = array_unique($groupsNames);
 
             foreach ($groupsNames as $groupName) {
                 $previousACL = !in_array($groupName, $existingsGroups, true)
                     ? ''
-                    : $wiki->GetGroupACL($groupName)."\n";
-                $wiki->SetGroupACL($groupName, $previousACL.$wikiName);
+                    : $wiki->GetGroupACL($groupName) . "\n";
+                $wiki->SetGroupACL($groupName, $previousACL . $wikiName);
             }
         }
     }
@@ -358,7 +358,7 @@ class UserField extends BazarField
         if (!preg_match('/^[A-Za-z0-9]+$/m', $groupName)) {
             return false;
         }
-        
+
         if (in_array($groupName, $existingsGroups, true)) {
             if (!$userManager->isInGroup($groupName, $wikiName, false)) {
                 return true;
@@ -366,16 +366,17 @@ class UserField extends BazarField
         } elseif ($forceGroupCreation) {
             return true;
         }
+
         return false;
     }
 
     private function findANewNotExistingUserName(string $firstWikiName): string
     {
         // remove last numbers
-        $baseWikiName = preg_replace("/[0-9]*$/", "", $firstWikiName);
+        $baseWikiName = preg_replace('/[0-9]*$/', '', $firstWikiName);
 
         // a loop 1000 should be enough
-        for ($i=1; $i < 1000; $i++) {
+        for ($i = 1; $i < 1000; $i++) {
             $newName = "$baseWikiName$i";
             if (!$this->isUserByName($newName)) {
                 return $newName;

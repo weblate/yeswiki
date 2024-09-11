@@ -1,10 +1,9 @@
 <?php
 
 return [
-    
     'LOGIN_SIGNUP' => 'S\'inscrire',
     'LOGIN_LOGIN' => 'Se connecter',
-    'LOGIN_WIKINAME' => 'Email ou NomWiki',
+    'LOGIN_WIKINAME' => 'Email ou nom d\'utilisateur.ice',
     'LOGIN_EMAIL' => 'Email',
     'LOGIN_PASSWORD' => 'Mot de passe',
     'LOGIN_MODIFY' => 'Modifier',
@@ -38,8 +37,12 @@ return [
     'LOGIN_DEAR' => 'Cher',
     'LOGIN_CLICK_FOLLOWING_LINK' => 'Cliquez sur le lien suivant pour ré-initialiser votre mot de passe',
     'LOGIN_THE_TEAM' => 'L\'équipe de',
+    'LOGIN_PASSWORD_FOR' => 'Mot de passe pour',
     'LOGIN_PASSWORD_LOST_FOR' => 'Mot de passe perdu pour',
     'LOGIN_NO_SIGNUP_IN_THIS_PERIOD' => 'Il n\'y a pas d\'inscription pour cette période.',
+    'LOGIN_MY_OPTIONS' => 'Mes options',
+    'LOGIN_MY_CONTENTS' => 'Mes contenus',
+    'LINK_TO_CHANGE_PASSWORD' => 'Lien pour changer le mot de passe',
 
     // actions/login.php
     'LOGIN_COOKIES_ERROR' => 'Vous devez accepter les cookies pour pouvoir vous connecter.',
@@ -52,7 +55,7 @@ return [
     'USERSETTINGS_SIGNUP_MISSING_INPUT' => 'Les paramètres \'{parameters}\' ne peuvent être vides !',
     'USERSETTINGS_NAME_ALREADY_USED' => 'L\'identifiant "{currentName}" existe déjà !',
     'USERSETTINGS_EMAIL_ALREADY_USED' => 'L\'email "{email}" est déjà utilisé par un autre compte !',
-    'USERSETTINGS_CHANGE_PWD_IN_IFRAME' => "Vous vous apprêtez à changer votre mot de passe dans une fenêtre de type iframe.\n".
-        "Pour éviter les attaques par enregistrement de vos touches, assurez-vous que l'url du site commence bien par {baseUrl}.\n".
-        "Au moindre doute, ouvrez ce formulaire dans une page dédiée en cliquant sur ce lien {link}.",
+    'USERSETTINGS_CHANGE_PWD_IN_IFRAME' => "Vous vous apprêtez à changer votre mot de passe dans une fenêtre de type iframe.\n" .
+        "Pour éviter les attaques par enregistrement de vos touches, assurez-vous que l'url du site commence bien par {baseUrl}.\n" .
+        'Au moindre doute, ouvrez ce formulaire dans une page dédiée en cliquant sur ce lien {link}.',
 ];

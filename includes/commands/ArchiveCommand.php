@@ -11,9 +11,6 @@ use YesWiki\Wiki;
 
 class ArchiveCommand extends Command
 {
-    // the name of the command (the part after "bin/console")
-    protected static $defaultName = 'core:archive';
-
     protected $archiveService;
     protected $wiki;
 
@@ -27,15 +24,16 @@ class ArchiveCommand extends Command
     protected function configure()
     {
         $this
-            // the short description shown while running "php bin/console list"
+            ->setName('core:archive')
+            // the short description shown while running "./yeswicli list"
             ->setDescription('Create archive of the YesWiki.')
 
             // the full command description shown when running the command with
             // the "--help" option
-            ->setHelp("Create archive of the YesWiki.\n".
-                "To save only the database use '--database-only'\n".
+            ->setHelp("Create archive of the YesWiki.\n" .
+                "To save only the database use '--database-only'\n" .
                 "To save only the files use '--files-only'\n")
-            
+
             ->addOption('database-only', 'd', InputOption::VALUE_NONE, 'Save only the database of the YesWiki')
             ->addOption('files-only', 'f', InputOption::VALUE_NONE, 'Save only the files of the YesWiki')
             ->addOption('foldersToInclude', 'i', InputOption::VALUE_REQUIRED, 'Folders to include, path relative to root, coma separated')
@@ -51,7 +49,8 @@ class ArchiveCommand extends Command
         $filesOnly = $input->getOption('files-only');
 
         if ($databaseOnly && $filesOnly) {
-            $output->writeln("Invalid options : It is not possible to use --database-only and --files-only options in same time.");
+            $output->writeln('Invalid options : It is not possible to use --database-only and --files-only options in same time.');
+
             return Command::INVALID;
         }
 
@@ -66,7 +65,7 @@ class ArchiveCommand extends Command
             }
         }
         $uid = $input->getOption('uid');
-        $uid = empty($uid) ? "" : $uid;
+        $uid = empty($uid) ? '' : $uid;
 
         $location = $this->archiveService->archive($output, !$databaseOnly, !$filesOnly, $foldersToInclude, $foldersToExclude, $hideConfigValues, $uid);
 
@@ -80,6 +79,7 @@ class ArchiveCommand extends Command
         } else {
             $list = array_filter(array_map('trim', explode(',', $list)));
         }
+
         return $list;
     }
 }
