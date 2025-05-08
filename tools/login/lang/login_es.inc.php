@@ -1,10 +1,8 @@
 <?php
-
 return [
-    
     'LOGIN_SIGNUP' => 'Inscribirse',
     'LOGIN_LOGIN' => 'Conectarse',
-    'LOGIN_WIKINAME' => 'NombreWiki',
+    'LOGIN_WIKINAME' => 'Correo electrónico o nombre de usuario.ice',
     'LOGIN_EMAIL' => 'Email',
     'LOGIN_PASSWORD' => 'Contraseña',
     'LOGIN_MODIFY' => 'Modificar',
@@ -40,10 +38,8 @@ return [
     // 'LOGIN_THE_TEAM' => 'L\'équipe de',
     // 'LOGIN_PASSWORD_LOST_FOR' => 'Mot de passe perdu pour',
     // 'LOGIN_NO_SIGNUP_IN_THIS_PERIOD' => 'Il n\'y a pas d\'inscription pour cette période.',
-
     // actions/login.php
     // 'LOGIN_COOKIES_ERROR' => 'Vous devez accepter les cookies pour pouvoir vous connecter.',
-
     // actions/usersettings.php
     'USERSETTINGS_EMAIL_NOT_CHANGED' => 'Correo electrónico no cambiado.',
     'USERSETTINGS_PASSWORD_NOT_CHANGED' => 'Contraseña no cambiada.',
@@ -52,7 +48,30 @@ return [
     'USERSETTINGS_SIGNUP_MISSING_INPUT' => 'The \'{parameters}\' parameters cannot be empty!',
     'USERSETTINGS_NAME_ALREADY_USED' => 'The identifier "{currentName}" already exists!',
     'USERSETTINGS_EMAIL_ALREADY_USED' => 'The email "{email}" is already used by another account!',
-    'USERSETTINGS_CHANGE_PWD_IN_IFRAME' => "Está a punto de cambiar su contraseña en una ventana de iframe.\n".
-        "Para evitar ataques de registro de teclas, asegúrese de que la URL del sitio comience con {baseUrl}.\n".
-        "En caso de duda, abra este formulario en una página dedicada haciendo clic en este enlace {link}.",
+    'LOGIN_NOT_AUTORIZED_EDIT' => 'No estas autorizado a editar esta página',
+    'LOGIN_LOST_PASSWORD' => '¿Ha olvidado tu contraseña?',
+    'LOGIN_CHANGE_PASSWORD' => 'Restablecer la contraseña',
+    'LOGIN_UNKNOWN_USER' => 'Dirección de correo electrónico desconocida, no se ha registrado ningún usuario con esta dirección de correo electrónico',
+    'LOGIN_ADD_EMAIL_TO_CONTINUE' => 'Introduce una dirección de correo electrónico para continuar',
+    'LOGIN_BACK' => 'Volver',
+    'LOGIN_SEND' => 'Enviar',
+    'LOGIN_NEW_PASSWORD' => 'Nueva contraseña',
+    'LOGIN_CONFIRM_PASSWORD' => 'Confirmar la contraseña',
+    'LOGIN_WELCOME' => 'Bienvenid@',
+    'LOGIN_WRITE_PASSWORD' => 'Ingresa tu nueva contraseña en los campos a continuación',
+    'LOGIN_PASSWORD_SHOULD_BE_IDENTICAL' => 'Las contraseñas deben ser idénticas y no estar vacías',
+    'LOGIN_INVALID_KEY' => 'Clave de validación incorrecta',
+    'LOGIN_PASSWORD_WAS_RESET' => 'su contraseña ha sido cambiada correctamente',
+    'LOGIN_DEAR' => 'Estimad@',
+    'LOGIN_CLICK_FOLLOWING_LINK' => 'Haz clic en el siguiente enlace para restablecer tu contraseña',
+    'LOGIN_THE_TEAM' => 'El equipo de',
+    'LOGIN_PASSWORD_LOST_FOR' => 'Contraseña perdida para',
+    'LOGIN_NO_SIGNUP_IN_THIS_PERIOD' => 'No hay inscripción para este periodo.',
+    // actions/login.php
+    'LOGIN_COOKIES_ERROR' => 'Debes aceptar las cookies para poder iniciar sesión.',
+    'LOGIN_MESSAGE_SENT' => 'Se te ha enviado un mensaje con instrucciones para restablecer tu contraseña',
+    'LOGIN_MY_CONTENTS' => 'Mis contenidos',
+    'LOGIN_MY_OPTIONS' => 'Mis opciones',
+    'LOGIN_PASSWORD_FOR' => 'Contraseña para',
+    'LINK_TO_CHANGE_PASSWORD' => 'Enlace para cambiar contraseña',
 ];

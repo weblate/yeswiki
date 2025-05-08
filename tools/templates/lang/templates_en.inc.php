@@ -1,10 +1,7 @@
 <?php
-
 return [
-                         
     'TEMPLATE_ACTION' => 'Action',
     'TEMPLATE_FILE_NOT_FOUND' => 'Template not found',
-
     // actions/button.php
     'TEMPLATE_ACTION_BUTTON' => 'Action {{button ...}}',
     'TEMPLATE_LINK_PARAMETER_REQUIRED' => '"link" parameter required',
@@ -25,24 +22,23 @@ return [
     'TEMPLATE_BG_IMAGE' => 'Background image',
     'TEMPLATE_ERROR_NO_DATA' => 'ERROR : no metadatas to add.',
     'TEMPLATE_ERROR_NO_ACCESS' => 'ERROR : no access rights.',
-
     // barre de redaction
     'TEMPLATE_VIEW_PAGE' => 'See the page',
     'TEMPLATE_EDIT' => 'Edit',
     'TEMPLATE_EDIT_THIS_PAGE' => 'Edit this page',
     'TEMPLATE_WIKINAME_IS_NOT_A_PAGE' => 'This WikiWord is not a page',
     'TEMPLATE_CLICK_TO_SEE_REVISIONS' => 'Last changes on this page',
-    'TEMPLATE_LAST_UPDATE' => 'Modified on',
+    'TEMPLATE_LAST_UPDATE' => 'Modified on :',
     'TEMPLATE_OWNER' => 'Owner',
     'TEMPLATE_YOU' => 'you',
     'TEMPLATE_NO_OWNER' => 'No owner',
     'TEMPLATE_CLAIM' => 'Claim',
-    'TEMPLATE_CLICK_TO_CHANGE_PERMISSIONS' => 'Change permissions',
+    'TEMPLATE_CLICK_TO_CHANGE_PERMISSIONS' => 'Edit page permissions',
     'TEMPLATE_PERMISSIONS' => 'Permissions',
     'TEMPLATE_DELETE' => 'Delete',
     'TEMPLATE_DELETE_PAGE' => 'Delete this page',
-    'TEMPLATE_CLICK_TO_SEE_REFERENCES' => 'Incoming URLs to this page',
-    'TEMPLATE_REFERENCES' => 'Referrers',
+    'TEMPLATE_CLICK_TO_SEE_REFERENCES' => 'URLs referring to the page',
+    'TEMPLATE_REFERENCES' => 'References',
     'TEMPLATE_SLIDESHOW_MODE' => 'See this page as slideshow.',
     'TEMPLATE_SLIDESHOW' => 'Slideshow',
     'TEMPLATE_DYNAMIC_SLIDESHOW' => 'Dynamic diaporama',
@@ -50,24 +46,19 @@ return [
     'TEMPLATE_SEE_SHARING_OPTIONS' => 'Share this page',
     'TEMPLATE_SHARE' => 'Share',
     'TEMPLATES_SEE_ATTACHED_FILES' => 'See files attached to page',
-
     // action/diaporama
     // 'DIAPORAMA_PAGE_PARAM_MISSING' => 'Action diaporama : param&ecirc;tre "page" obligatoire.',
     // 'DIAPORAMA_TEMPLATE_PARAM_ERROR' => 'Action diaporama : le param&ecirc;tre "template" pointe sur un fichier inexistant ou illisible. Le template par d&eacute;faut sera utilis&eacute;.',
-
     // formatage des dates
     'TEMPLATE_DATE_FORMAT' => 'd M Y',
-
     // recherche
     'TEMPLATE_SEARCH_INPUT_TITLE' => 'Search in YesWiki [alt-shift-C]',
     'TEMPLATE_SEARCH_BUTTON_TITLE' => 'Search the page containing those words.',
     'TEMPLATE_SEARCH_PLACEHOLDER' => 'Search...',
     'TEMPLATE_SEARCH' => 'Search',
-
     // handler widget
     'TEMPLATE_WIDGET_TITLE' => 'Widget : integrate this page\'s content elsewhere',
     'TEMPLATE_WIDGET_COPY_PASTE' => 'Copy/Paste this HTML code to integrate this page\'s content elsewhere.',
-
     // handler share
     'TEMPLATE_SHARE_INCLUDE_CODE' => 'Code to integrate in a HTML page',
     'TEMPLATE_SHARE_MUST_READ' => 'To read : ',
@@ -79,12 +70,10 @@ return [
     'TEMPLATE_SHARE_MAIL' => 'Send this page by mail',
     'TEMPLATE_ADD_SHARE_BUTTON' => 'Add a share button on the top right of the included widget',
     'TEMPLATE_ADD_EDIT_BAR' => 'Add the edition actions bar on the included widget',
-
     // handler diaporama
     'TEMPLATE_NO_ACCESS_TO_PAGE' => 'You have no access right to this page.',
     'TEMPLATE_PAGE_DOESNT_EXIST' => 'Page doesn\'t exist',
     'PAGE_CANNOT_BE_SLIDESHOW' => 'This page cannot be split in slides (no second level titles)',
-
     // handler edit
     'TEMPLATE_CUSTOM_PAGE' => 'Preferences for page',
     'TEMPLATE_PAGE_PREFERENCES' => 'Page preferences',
@@ -97,45 +86,33 @@ return [
     'FOR_2_OR_3_COLUMN_THEMES' => 'For themes with 2 or 3 columns',
     'VERTICAL_MENU_PAGE' => 'the vertical menu',
     'RIGHT_COLUMN_PAGE' => 'the right column',
-
     // actions/yeswikiversion.php
     'RUNNING_WITH' => 'Run with',
-
     // 'TEMPLATE_ACTION_SECTION' => 'Action {{section ...}}',
     // 'TEMPLATE_ELEM_SECTION_NOT_CLOSED' => 'l\'action {{section ...}} doit &ecirc;tre ferm&eacute;e par une action {{end elem="section"}}',
-
-
     'TEMPLATE_NO_THEME_FILES' => 'Some (or all) of the template\'s files could not be found',
     'TEMPLATE_DEFAULT_THEME_USED' => 'Default template will be used',
-
     // actions/end.php
     // 'TEMPLATE_ACTION_END' => 'Action {{end ...}}',
     // 'TEMPLATE_ELEM_PARAMETER_REQUIRED' => 'param&egrave;tre "elem" obligatoire',
-
     // actions/col.php
     // 'TEMPLATE_ACTION_COL' => 'Action {{col ...}}',
     // 'TEMPLATE_SIZE_PARAMETER_REQUIRED' => 'param&egrave;tre "size" obligatoire',
     // 'TEMPLATE_SIZE_PARAMETER_MUST_BE_INTEGER_FROM_1_TO_12' => 'le param&egrave;tre "size" doit &ecirc;tre un entier compris entre 1 et 12',
     // 'TEMPLATE_ELEM_COL_NOT_CLOSED' => 'l\'action {{col ...}} doit &ecirc;tre ferm&eacute;e par une action {{end elem="col"}}',
-
     // actions/grid.php
     // 'TEMPLATE_ACTION_GRID' => 'Action {{grid ...}}',
     // 'TEMPLATE_ELEM_GRID_NOT_CLOSED' => 'l\'action {{grid ...}} doit &ecirc;tre ferm&eacute;e par une action {{end elem="grid"}}',
-
     // action/panel.php
     // 'TEMPLATE_ACTION_PANEL' => 'Action {{panel ...}}',
     // 'TEMPLATE_ELEM_PANEL_NOT_CLOSED' => 'l\'action {{panel ...}} doit &ecirc;tre ferm&eacute;e par une action {{end elem="panel"}}',
     // 'TEMPLATE_TITLE_PARAMETER_REQUIRED' => "Param&egrave;tre title obligatoire",
-
     // action/accordion.php
     // 'TEMPLATE_ACTION_ACCORDION' => 'Action {{accordion ...}}',
     // 'TEMPLATE_ELEM_ACORDION_NOT_CLOSED' => 'l\'action {{accordion ...}} doit &ecirc;tre ferm&eacute;e par une action {{end elem="accordion"}}',
-
-
     // actions/buttondropdown.php
     // 'TEMPLATE_ACTION_BUTTONDROPDOWN' => 'Action {{buttondropdown ...}}',
     // 'TEMPLATE_ELEM_BUTTONDROPDOWN_NOT_CLOSED' => 'l\'action {{buttondropdown ...}} doit &ecirc;tre ferm&eacute;e par une action {{end elem="buttondropdown"}}',
-
     // actions/adminpages.php
     // 'TEMPLATE_ACTION_FOR_ADMINS_ONLY' => 'action réservée aux administrateurs',
     // 'TEMPLATE_CONFIRM_DELETE_PAGE' => 'Etes vous sûr(e) de vouloir supprimer définitivement cette page ?',
@@ -144,10 +121,8 @@ return [
     'TEMPLATE_OWNER' => 'Owner',
     'TEMPLATE_ACTIONS' => 'Actions',
     'TEMPLATE_MODIFY' => 'Modify',
-
     // actions/setwikidefaultheme.php
     'TEMPLATE_FORCE_TEMPLATE' => 'Force to the whole wiki.',
-
     // themeselector.tpl.html
     'TEMPLATE_PRIMARY_COLOR' => 'Primary color',
     'TEMPLATE_SECONDARY_COLOR_1' => 'Secondary 1 color',
@@ -172,7 +147,6 @@ return [
     'TEMPLATE_PRESETS' => 'Graphical configurations',
     'TEMPLATE_CREATE_PRESET' => 'Create a new Graphical configuration',
     'TEMPLATE_CUSTOMIZE_PRESET' => 'Graphical configuration',
-
     // actions-builder
     'AB_template_group_label' => 'Shapes',
     'AB_template_action_label_label' => 'Label',
@@ -189,16 +163,16 @@ return [
     'AB_template_actions_danger' => 'Danger',
     'AB_template_action_accordion_label' => 'Display panels in accordion',
     // 'AB_template_action_accordion_example' => "{{panel title=\"Titre 1\"}}\nTexte du panneau 1 à changer par la suite\n{{end elem=\"panel\"}}\n"
-        // ."{{panel title=\"Titre 2\"}}\nTexte du panneau 2 à changer par la suite\n{{end elem=\"panel\"}}\n",
+    // ."{{panel title=\"Titre 2\"}}\nTexte du panneau 2 à changer par la suite\n{{end elem=\"panel\"}}\n",
     // 'AB_template_action_ariane_label' => 'Fil d\'ariane',
     'AB_template_action_col_label' => 'Column',
     // 'AB_template_action_col_example' => 'Texte de votre colonne à changer par la suite',
     'AB_template_col_size_label' => 'Column width',
     'AB_template_action_grid_label' => 'Display several columns',
     // 'AB_template_action_grid_example' => "{{col size=\"3\"}}\nTexte de la colonne 1 à changer par la suite\n{{end elem=\"col\"}}\n"
-        // ."{{col size=\"3\"}}\nTexte de la colonne 2 à changer par la suite\n{{end elem=\"col\"}}\n"
-        // ."{{col size=\"3\"}}\nTexte de la colonne 3 à changer par la suite\n{{end elem=\"col\"}}\n"
-        // ."{{col size=\"3\"}}\nTexte de la colonne 4 à changer par la suite\n{{end elem=\"col\"}}\n",
+    // ."{{col size=\"3\"}}\nTexte de la colonne 2 à changer par la suite\n{{end elem=\"col\"}}\n"
+    // ."{{col size=\"3\"}}\nTexte de la colonne 3 à changer par la suite\n{{end elem=\"col\"}}\n"
+    // ."{{col size=\"3\"}}\nTexte de la colonne 4 à changer par la suite\n{{end elem=\"col\"}}\n",
     'AB_templates_nav_label' => 'Navigation bar',
     'AB_templates_nav_description' => 'Generate a menu',
     // 'AB_templates_nav_hint' => 'LeNomDeVotrePage doit être le nom de la page dans laquelle vous mettrez cette action. Pensez à coller le code obtenu dans chacune des pages des onglets.',
@@ -292,16 +266,7 @@ return [
     'AB_templates_tabs_label' => 'Tabs into page',
     'AB_templates_tabs_description' => 'Create tabs',
     'AB_templates_tabs_hint' => 'Each tab\'s content is inside an action <code>{{tab}}Tab\'s content.{{end elem="tab"}}</code>',
-    'AB_templates_tabs_wrappedcontentexample' => "{{tab}}\n".
-        "Tab 1 content\n".
-        "{{end elem=\"tab\"}}\n".
-        "{{tab}}\n".
-        "Tab 2 content\n".
-        "{{end elem=\"tab\"}}\n".
-        "{{tab}}\n".
-        "Tab 3 content\n".
-        "{{end elem=\"tab\"}}\n",
-    'AB_templates_tabs_titles_label' => 'Tabs\' titles',
+    'AB_templates_tabs_titles_label' => "Tabs' titles",
     'AB_templates_tabs_titles_hint' => 'Separate each title by coma',
     'AB_templates_tabs_titles_default' => 'Tab 1, Tab 2, Tab 3',
     'AB_templates_tabs_btnsize_label' => 'Button size',
@@ -318,32 +283,134 @@ return [
     'AB_templates_tabs_btncolor_secondary_1' => 'Secondary 1',
     'AB_templates_tabs_btncolor_secondary_2' => 'Secondary 2',
     'AB_templates_tabs_selectedtab_label' => 'Selected tab',
-
     // gererdroits
     'ACLS_SELECT_PAGES_FILTER' => 'Filter :',
     'ACLS_SELECT_PAGES_FILTER_ON_PAGES' => 'only pages',
     'ACLS_SELECT_PAGES_FILTER_ON_SPECIALPAGES' => 'special pages only',
     'ACLS_SELECT_PAGES_FILTER_ON_LISTS' => 'only lists',
     'ACLS_SELECT_PAGES_FILTER_FORM' => 'entries of form : {name} ({id})',
-
     // actions/gererthemes.php
     'GERERTHEMES_ACTIONS' => 'Actions',
     // 'GERERTHEMES_HINT' => 'Cochez les pages que vous souhaitez modifier et choisissez une action en bas de page',
     'GERERTHEMES_INIT_THEME_FOR_SELECTED_PAGES' => 'Init values for selected pages (they will use the default theme)',
     'GERERTHEMES_MODIFY_THEME_FOR_SELECTED_PAGES' => 'Modify values for selected pages',
     'GERERTHEMES_PAGE' => 'Page',
-
-    // actions/progressbar.php
-    // 'PROGRESSBAR_REQUIRED_VAL_PARAM' => 'param&egrave;tre "val" obligatoire.',
-    // 'PROGRESSBAR_ERROR_VAL_PARAM' => 'le param&egrave;tre "val" doit étre un chiffre entre 0 et 100.',
-
-    // templates/setdefaulttheme.tpl.html
-    // 'SETDEFAULTTHEME_HNIT' => 'Le thème par défault est utilisé pour les pages qui n\'ont aucun thème défini (les lignes vides dans le tableau ci dessus)',
-
-    // for edit config
-    // 'EDIT_CONFIG_HINT_META_KEYWORDS' => 'Mots clés pour le référencement (séparés par des virgules, pas plus de 20-30)',
-    // 'EDIT_CONFIG_HINT_META_DESCRIPTION' => 'Description du site en une phrase, pour le référencement (Attention : ne pas mettre de "." (point))',
-    // 'EDIT_CONFIG_HINT_META[ROBOTS]' => 'Empêcher les robots à indexer le wiki (Mettre \'noindex,nofollow,max-image-preview:none,noarchive,noimageindex\')',
-    // 'EDIT_CONFIG_GROUP_TEMPLATES' => 'Balises meta pour l\'indexation web', // idéalement 'Mise en forme' mais templates est pour le moment uniquement utilisé pour meta
-
+    'AB_templates_section_bgcolor_label' => 'Color',
+    'GERERTHEMES_HINT' => 'Select pages that you want to modify et choose an action at the bottom of the page',
+    'AB_templates_nav_class_vertical' => 'Vertical',
+    'AB_templates_section_file_label' => 'Background image',
+    'TEMPLATE_TITLE_PARAMETER_REQUIRED' => 'Title parameter is mandatory',
+    'TEMPLATE_ELEM_BUTTONDROPDOWN_NOT_CLOSED' => 'action {{buttondropdown ...}} must be closed by an action {{end elem="buttondropdown"}}',
+    'AB_templates_nav_titles_default' => 'First page, Second page, Third page',
+    'AB_templates_nav_titles_hint' => 'Text for each tab separated by commas',
+    'AB_templates_section_shape_circ' => 'circle',
+    'AB_templates_section_shape_blob2' => 'Blob 2',
+    'AB_templates_section_shape_blob3' => 'Blob 3',
+    'AB_templates_section_textalign_justify' => 'Justified',
+    'PROGRESSBAR_ERROR_VAL_PARAM' => 'Parameter "val" must be an integer from 0 to 100.',
+    'TEMPLATE_OPEN_COMMENTS' => 'Open the comments',
+    'TEMPLATE_CLOSE_COMMENTS' => 'Close the comments',
+    'TEMPLATE_FOR_CONNECTED_PEOPLE' => 'For logged in user',
+    'TEMPLATE_FOR_MEMBERS_OF_GROUP' => 'For group members',
+    'TEMPLATE_ACTION_SECTION' => 'Action {{section ...}}',
+    'TEMPLATE_ACTION_END' => 'Action {{end ...}}',
+    'TEMPLATE_ELEM_PARAMETER_REQUIRED' => 'parameter "elem" mandatory',
+    'TEMPLATE_SIZE_PARAMETER_MUST_BE_INTEGER_FROM_1_TO_12' => 'parameter size must be integer from 1 to 12',
+    'TEMPLATE_ELEM_COL_NOT_CLOSED' => 'Action {{col ...}} must be closed by an action {{end elem="col"}}',
+    'TEMPLATE_ACTION_COL' => 'Action {{col ...}}',
+    'TEMPLATE_SIZE_PARAMETER_REQUIRED' => 'parameter "size" mandatory',
+    'TEMPLATE_ACTION_GRID' => 'Action {grid...}',
+    'TEMPLATE_ELEM_GRID_NOT_CLOSED' => 'action {{grid ...}} must be closed by an action {{end elem="grid"}}',
+    'TEMPLATE_ACTION_BUTTONDROPDOWN' => 'Action {buttondropdown ...}}',
+    'TEMPLATE_ACTION_ACCORDION' => 'Action {{accordion ...}}',
+    'TEMPLATE_ELEM_ACORDION_NOT_CLOSED' => 'action {{accordion ...}} must be closed by an action {{end elem="accordion"}}',
+    'TEMPLATE_CONFIRM_DELETE_PAGE' => 'Are you sure you want to delete this page permanently ?',
+    'TEMPLATE_ACTION_FOR_ADMINS_ONLY' => 'action for admins only',
+    'AB_templates_nav_links_default' => 'NameOfYourPage, SecondPage, ThirdPage',
+    'AB_templates_section_height_label' => 'Height (in pixels)',
+    'AB_templates_section_shape_blob4' => 'Blob 4',
+    'AB_templates_section_shape_blob5' => 'Blob 5',
+    'AB_templates_section_height_one_third' => 'one third',
+    'AB_templates_section_height_full' => 'Full height 100%',
+    'AB_templates_section_height_half' => 'one half',
+    'AB_templates_section_height_two_third' => 'two third',
+    'AB_templates_section_height_three_quarter' => 'three quarter',
+    'AB_templates_section_animation_shakex' => 'From left to right',
+    'AB_templates_section_animation_flash' => 'Flash',
+    'AB_templates_section_animation_pulse' => 'Pulse',
+    'AB_templates_section_animation_swing' => 'Swing',
+    'PROGRESSBAR_REQUIRED_VAL_PARAM' => 'parameter "val" mandatory.',
+    'TEMPLATE_ACTION_PANEL' => 'Action {{panel ...}}',
+    'TEMPLATE_ELEM_PANEL_NOT_CLOSED' => 'action {{panel ...}} must be closed by an action {{end elem="panel"}}',
+    'AB_templates_section_wrappedcontentexample' => '=====Title===== Text of your section to be replaced',
+    'AB_templates_section_shape_blob1' => 'Blob 1',
+    'AB_templates_section_textalign_right' => 'Align right',
+    'AB_templates_section_textalign_center' => 'Centered',
+    'AB_templates_nav_links_hint' => 'Names of wiki page name separated by commas',
+    'AB_templates_panel_wrappedcontentexample' => 'Text of your box to be modified later',
+    'AB_templates_section_pattern_cross' => 'Aligned Cross',
+    'AB_templates_section_pattern_cross_not_aligned' => 'Cross shifted',
+    'AB_templates_section_textcolor_black' => 'Frozen',
+    'AB_templates_section_textalign_left' => 'Left',
+    'AB_templates_section_image_label' => 'Image behaviour',
+    'AB_templates_section_animation_bounce' => 'Bonds',
+    'AB_templates_section_animation_wobble' => 'Ice wipe',
+    'AB_templates_section_animation_jello' => 'Dance',
+    'DIAPORAMA_PAGE_PARAM_MISSING' => 'Action slideshow: param markedecirc;tre "page" mandatory.',
+    'TEMPLATE_DELETE_CSS_PRESET' => 'Want to remove the custom preset',
+    'TEMPLATE_ADD_CSS_PRESET_API_HINT' => 'Save a custom preset file',
+    'TEMPLATE_DELETE_CSS_PRESET_API_HINT' => 'Deletes a custom preset file',
+    'TEMPLATE_FILE_ALREADY_EXISTING' => 'The file is already existing! Change preset name or connect to admin!',
+    'AB_template_action_ariane_label' => "Arane yarn",
+    'AB_template_action_col_size_total' => 'You have 12 virtual columns to be distributed',
+    'AB_template_action_col_example' => 'Text of your column to be changed later',
+    'AB_templates_nav_titles_label' => 'Title of your pages',
+    'AB_templates_panel_title_default' => 'Title of my box',
+    'AB_templates_panel_type_default' => 'Simple frame',
+    'AB_templates_panel_type_collapsed' => 'Closed accord',
+    'AB_templates_section_pattern_label' => 'Texture',
+    'AB_templates_section_pattern_solid' => 'Uni',
+    'AB_templates_section_pattern_border_solid' => 'Border',
+    'AB_templates_section_pattern_border_dashed' => 'Damn it',
+    'AB_templates_section_pattern_border_dotted' => 'Stuffed dick',
+    'AB_templates_section_pattern_points' => 'Points aligned',
+    'AB_templates_section_pattern_points_not_aligned' => 'Points offset',
+    'AB_templates_section_file_hint' => 'Enter the name.jpg of an image already uploaded to this page, or the name of a new image.jpg to display its upload button',
+    'AB_templates_section_textcolor_label' => 'Tone of text',
+    'AB_templates_section_textcolor_white' => 'Claire',
+    'AB_templates_section_fullwidth_label' => 'Take all available width',
+    'AB_templates_section_shape_label' => 'Form',
+    'AB_templates_section_shape_rect' => 'Rectangle',
+    'AB_templates_section_shape_rounded' => 'Arrondi',
+    'AB_templates_section_textalign_label' => 'Focus of the text',
+    'AB_templates_section_image_center' => 'The image remains centered',
+    'AB_templates_section_image_parallax' => 'The image is slightly coarse',
+    'AB_templates_section_height_one_quarter' => 'a quarter of the height',
+    'AB_templates_section_animation_label' => 'Animation',
+    'AB_templates_section_animation_rubberband' => 'Elastic',
+    'AB_templates_section_animation_shakey' => 'Bottoms up',
+    'AB_templates_section_animation_headshaked' => 'Shake',
+    'AB_templates_section_animation_tada' => 'Tada',
+    'AB_templates_section_animation_heartbat' => 'Beverly',
+    'EDIT_CONFIG_HINT_META_KEYWORDS' => 'Keywords for reference (separated by commas, no more than 20-30)',
+    'SETDEFAULTTHEME_HNIT' => 'The default theme is used for pages that have no defined theme (the empty lines in the table above)',
+    'EDIT_CONFIG_HINT_META_DESCRIPTION' => 'Site description in one sentence, for reference (Warning: do not put "." (point))',
+    'DIAPORAMA_TEMPLATE_PARAM_ERROR' => 'Slideshow action: the param markedecirc;tre "template" points to a non-existent or illegible file. The template by d♣eacute;faut will be used ateacute.',
+    'TEMPLATE_PRESET_ERROR' => "You can't apply this preset, there's a mistake!",
+    'AB_template_action_label_example' => 'Text your label to change later',
+    'AB_templates_nav_hint' => 'TheName ofYourPage must be the name of the page in which you will put this action. Remember to paste the code obtained in each page of the tabs.',
+    'AB_templates_nav_class_tabs' => 'Horizontal emphasized',
+    'AB_templates_nav_class_pills' => 'Horizontal sobre',
+    'AB_templates_nav_class_justified' => 'Justified horizontal',
+    'AB_templates_nav_hide_if_no_access_label' => 'Hide if the user does not have access to the linked page',
+    'AB_templates_panel_type_collapsible' => 'Open accord',
+    'AB_templates_section_pattern_zigzag' => 'Zigzag',
+    'AB_templates_section_pattern_diag' => 'Diagonals',
+    'AB_templates_section_pattern_reverse' => 'Reverse the colors of the texture',
+    'AB_templates_section_image_cover' => 'Cover section with image',
+    'AB_templates_section_image_fixed' => 'The image is blocked during the scroll (parallax)',
+    'AB_templates_section_animation_hint' => 'Much more effects available on https://animate.style/',
+    'EDIT_CONFIG_GROUP_TEMPLATES' => 'Tags meta for web indexing',
+    'EDIT_CONFIG_HINT_META[ROBOTS]' => 'Prevent robots from indexing the wiki (noindex,nofollow,max-image-preview:none,noarchive,noimageindex)',
+    'TEMPLATE_ELEM_SECTION_NOT_CLOSED' => 'action {{accordion ...}} must be closed by an action {{end elem="accordion"}}',
 ];

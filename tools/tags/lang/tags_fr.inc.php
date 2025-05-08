@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     'TAGS_TAGS' => 'Mots clés',
     'TAGS_ACTION_ADMINTAGS' => 'Action {{admintags ...}}',
     'TAGS_ACTION_ADMINTAGS_ONLY_FOR_ADMINS' => 'l\'action est r&eacute;serv&eacute;e au groupe des administrateurs',
@@ -104,25 +103,24 @@ return [
     'AB_tags_listpagestag_type_label' => 'Type',
     'AB_tags_listpagestag_type_all' => 'toutes les pages et les fiches du wiki',
     'AB_tags_listpagestag_type_wiki' => 'uniquement les pages du wiki',
-    'AB_tags_listpagestag_type_bazar'=> 'uniquement les fiches des formulaires',
-    'AB_tags_listpagestag_tags_label'=> 'Tags',
-    'AB_tags_listpagestag_tags_hint'=> 'séparés par des virgules',
-    'AB_tags_listpagestag_nb_label'=> 'Nombre de pages',
-    'AB_tags_listpagestag_tri_label'=> 'Tri',
-    'AB_tags_listpagestag_tri_date'=> 'tri par date décroissante',
-    'AB_tags_listpagestag_tri_alpha'=> 'tri par ordre alphabétique',
-    'AB_tags_listpagestag_template_label'=> 'template',
-    'AB_tags_listpagestag_template_list'=> 'liste',
-    'AB_tags_listpagestag_template_list_panel'=> 'liste avec encadré',
-    'AB_tags_listpagestag_template_list_num'=> 'liste avec puces',
-    'AB_tags_listpagestag_shownumberinfo_label'=> 'afficher le nombre de pages',
-    'AB_tags_listpagestag_nuagetag_label'=> 'nuage de tags',
-    'AB_tags_listpagestag_rss_label'=> 'lien rss vers la liste pour des tags donnés',
+    'AB_tags_listpagestag_type_bazar' => 'uniquement les fiches des formulaires',
+    'AB_tags_listpagestag_tags_label' => 'Tags',
+    'AB_tags_listpagestag_tags_hint' => 'séparés par des virgules',
+    'AB_tags_listpagestag_nb_label' => 'Nombre de pages',
+    'AB_tags_listpagestag_tri_label' => 'Tri',
+    'AB_tags_listpagestag_tri_date' => 'tri par date décroissante',
+    'AB_tags_listpagestag_tri_alpha' => 'tri par ordre alphabétique',
+    'AB_tags_listpagestag_template_label' => 'template',
+    'AB_tags_listpagestag_template_list' => 'liste',
+    'AB_tags_listpagestag_template_list_panel' => 'liste avec encadré',
+    'AB_tags_listpagestag_template_list_num' => 'liste avec puces',
+    'AB_tags_listpagestag_shownumberinfo_label' => 'afficher le nombre de pages',
+    'AB_tags_listpagestag_nuagetag_label' => 'nuage de tags',
+    'AB_tags_listpagestag_rss_label' => 'lien rss vers la liste pour des tags donnés',
     'AB_tags_listpagestag_nbclasses_label' => 'nombre de classes CSS disponibles pour le nuage',
     'AB_tags_nuagetag_tri_shuffle' => 'aléatoire',
 
     // for edit config
     'EDIT_CONFIG_HINT_HIDE_KEYWORDS' => 'Cacher les mots-clés en bas des pages (true ou false)',
     'EDIT_CONFIG_GROUP_TAGS' => 'Mots-clés (tags)',
-
 ];

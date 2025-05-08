@@ -54,10 +54,9 @@ ace.define('ace/mode/yeswiki_highlight_rules', ['require', 'exports', 'module', 
         token: 'constant.hr',
         regex: '^[-]{3,50}$',
         next: 'allowBlock'
-      }, { // list
+      }, { // list ( - or 1. )
         token: 'markup.list',
-        regex: '^\\s{1,3}(?:-|\\d+\\.)\\s+',
-        next: 'listblock-start'
+        regex: '^\\s{1,3}(?:-|\\d+\\.)\\s+'
       }, markdownLink, {
         include: 'basic',
         noEscape: true
@@ -113,23 +112,6 @@ ace.define('ace/mode/yeswiki_highlight_rules', ['require', 'exports', 'module', 
         token: 'markup.close.yw-action',
         regex: '\\}\\}',
         next: 'start'
-      }],
-      'listblock-start': [{
-        token: 'support.variable',
-        regex: /(?:\[[ x]\])?/,
-        next: 'listblock'
-      }],
-      listblock: [{ // Lists only escape on completely blank lines.
-        token: 'empty_line',
-        regex: '^$',
-        next: 'start'
-      }, { // list
-        token: 'markup.list',
-        regex: '^\\s{0,3}(?:[*+-]|\\d+\\.)\\s+',
-        next: 'listblock-start'
-      }, markdownLink, {
-        include: 'basic',
-        noEscape: true
       }],
       'pre-start': [
         { // pre //
@@ -208,7 +190,7 @@ ace.define('ace/mode/yeswiki_behaviour', ['require', 'exports', 'module', 'ace/l
     }
   }
 
-  var YesWikiBehaviour = function(options) {
+  const YesWikiBehaviour = function(options) {
     this.add('braces2', 'insertion', (state, action, editor, session, text) => {
       if (text == '{') {
         initContext(editor)
@@ -425,7 +407,7 @@ ace.define('ace/mode/yeswiki_behaviour', ['require', 'exports', 'module', 'ace/l
     // Only insert in front of whitespace/comments
     iterator.stepForward()
     return iterator.getCurrentTokenRow() !== cursor.row
-          || this.$matchTokenType(iterator.getCurrentToken() || 'text', SAFE_INSERT_BEFORE_TOKENS)
+      || this.$matchTokenType(iterator.getCurrentToken() || 'text', SAFE_INSERT_BEFORE_TOKENS)
   }
 
   YesWikiBehaviour.$matchTokenType = function(token, types) {
@@ -454,16 +436,16 @@ ace.define('ace/mode/yeswiki_behaviour', ['require', 'exports', 'module', 'ace/l
 
   YesWikiBehaviour.isAutoInsertedClosing = function(cursor, line, bracket) {
     return context.autoInsertedBrackets > 0
-          && cursor.row === context.autoInsertedRow
-          && bracket === context.autoInsertedLineEnd[0]
-          && line.substr(cursor.column) === context.autoInsertedLineEnd
+      && cursor.row === context.autoInsertedRow
+      && bracket === context.autoInsertedLineEnd[0]
+      && line.substr(cursor.column) === context.autoInsertedLineEnd
   }
 
   YesWikiBehaviour.isMaybeInsertedClosing = function(cursor, line) {
     return context.maybeInsertedBrackets > 0
-          && cursor.row === context.maybeInsertedRow
-          && line.substr(cursor.column) === context.maybeInsertedLineEnd
-          && line.substr(0, cursor.column) == context.maybeInsertedLineStart
+      && cursor.row === context.maybeInsertedRow
+      && line.substr(cursor.column) === context.maybeInsertedLineEnd
+      && line.substr(0, cursor.column) == context.maybeInsertedLineStart
   }
 
   YesWikiBehaviour.popAutoInsertedClosing = function() {
@@ -504,13 +486,14 @@ ace.define('ace/mode/yeswiki', ['require', 'exports', 'module', 'ace/lib/oop', '
     this.$quotes = { '"': '"', '`': '`' }
 
     this.getNextLineIndent = function(state, line, tab) {
-      if (state == 'listblock') {
-        const match = /^(\s*)(?:([-+*])|(\d+)\.)(\s+)/.exec(line)
-        if (!match) return ''
+      const match = /^(\s*)(?:([-+*])|(\d+)\.)(\s+)/.exec(line)
+      // For lists, add the - on next line, or increment the number for ordered list 1. 2.
+      if (match) {
         let marker = match[2]
         if (!marker) marker = `${parseInt(match[3], 10) + 1}.`
         return match[1] + marker + match[4]
       }
+      // Next mine use same identation
       return this.$getIndent(line)
     }
     this.$id = 'ace/mode/yeswiki'

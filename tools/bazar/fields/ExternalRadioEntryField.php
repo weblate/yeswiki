@@ -10,7 +10,7 @@ use YesWiki\Bazar\Service\ExternalBazarService;
  */
 class ExternalRadioEntryField extends RadioEntryField
 {
-    protected $JSONFormAddress ;
+    protected $JSONFormAddress;
 
     public function __construct(array $values, ContainerInterface $services)
     {
@@ -24,14 +24,14 @@ class ExternalRadioEntryField extends RadioEntryField
 
     protected function renderInput($entry)
     {
-        return "";
+        return '';
     }
 
     public function formatValuesBeforeSave($entry)
     {
         return null;
     }
-    
+
     public function getOptions()
     {
         // load options only when needed but not at construct to prevent infinite loops
@@ -42,6 +42,7 @@ class ExternalRadioEntryField extends RadioEntryField
                 $this->loadOptionsFromJSONForm($this->JSONFormAddress);
             }
         }
-        return  $this->options;
+
+        return $this->options;
     }
 }

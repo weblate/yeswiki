@@ -1,12 +1,7 @@
 <?php
-
 return [
-
     // controllers/ApiController.php
-    'ATTACH_GET_URLIMAGE_CACHE_API_HELP' => "Gives cache filename for wanted image\n".
-        "Need anti-csrf token!",
-        'ATTACH_GET_CACHE_URLIMAGE_NO_FILE' => 'Not existing image file',
-
+    'ATTACH_GET_CACHE_URLIMAGE_NO_FILE' => 'Not existing image file',
     // libs/attach.lib.php
     'ATTACH_ACTION_ATTACH' => 'Action {{attach ...}}',
     'ATTACH_PARAM_DESC_REQUIRED' => '"desc" parameter required for an image',
@@ -22,8 +17,7 @@ return [
     // 'ERROR_PARTIAL_UPLOAD' => 'Le fichier n\'a &eacute;t&eacute; que partiellement t&eacute;l&eacute;charg&eacute;.',
     // 'ERROR_NO_FILE_UPLOADED' => 'Aucun fichier n\'a &eacute;t&eacute; t&eacute;l&eacute;charg&eacute;.',
     // 'ERROR_NOT_AUTHORIZED_EXTENSION' => 'Le fichier n\'a pas une extension autorisée, voici celles que la configuration autorise : ',
-    'ATTACH_ACTION_FULLIMAGELINK_TEXT' => "Add a link to only display the full image",
-    
+    'ATTACH_ACTION_FULLIMAGELINK_TEXT' => 'Add a link to only display the full image',
     'ATTACH_FILE_MANAGEMENT' => 'File management',
     'ATTACH_TRASH' => 'Trash',
     'ATTACH_NO_ATTACHED_FILES' => 'At this time, no attached files to the page {tag}.',
@@ -40,15 +34,12 @@ return [
     'ATTACH_PAGE_REVISION' => 'Page revision',
     'ATTACH_FILE_REVISION' => 'File revision',
     'ATTACH_DELETION' => 'Deletion',
-
     // actions/filemanager.php
     'ATTACH_NO_RIGHTS_TO_ACCESS_FILEMANAGER' => 'You have no rights to access the filemanager',
     // 'FILEMANAGER_ACTION_NEED_ACCESS' => 'Seul le propriétaire de cette page peut accéder au gestionnaire des fichiers attaché',
-
     // actions/backgroundimage.php
     // 'ATTACH_ACTION_BACKGROUNDIMAGE' => 'Action {{backgroundimage ...}}',
     // 'ATTACH_PARAM_FILE_OR_BGCOLOR_NOT_FOUND' => 'il faut indiquer soit une image avec le paramètre "file" ou une couleur de fond avec le paramètre "bgcolor"',
-
     // actions/player.php
     'ATTACH_ACTION_PLAYER' => 'Action {{player ...}}',
     'ATTACH_DOWNLOAD_THE_FILE' => 'Download the file',
@@ -56,7 +47,6 @@ return [
     'ATTACH_PARAM_URL_REQUIRED' => '"url" parameter required',
     'ATTACH_PLAYER_CAN_ONLY_OPEN_FILES_LIKE' => 'The player can only open .mp3, .flv and .mm files and your URL',
     'ATTACH_NOT_LINKED_TO_GOOD_FILE_EXTENSION' => 'is not linked to those type of files',
-
     // actions/pointimage.php
     'ATTACH_ACTION_POINTIMAGE' => 'Action {{pointimage ...}}',
     'ATTACH_PARAM_FILE_NOT_FOUND' => '"file" parameter required',
@@ -67,16 +57,13 @@ return [
     'ATTACH_DESCRIPTION' => 'Description',
     'ATTACH_CANCEL' => 'Cancel',
     'ATTACH_SAVE' => 'Save',
-    
     // actions/video.php
     'ATTACH_ACTION_VIDEO_PARAM_ERROR' => 'The action video must be called with parameters « id » and « serveur ». For « serveur », only values « vimeo » or « youtube » or « peertube » are allowed.',
-    
     // actions/pdf.php
     'ATTACH_ACTION_PDF_PARAM_URL_ERROR' => 'The action pdf must be called with parameter « url » and the given url must be on the same host than the wiki(for example \'xxx.yyy.com\'), same schema (for example \'https\') and the same port if specified (for example \'8080\').',
     // 'ATTACH_ACTION_DISPLAY_PDF_TEXT' => 'Afficher le pdf dans la page :',
     // 'ATTACH_ACTION_DISPLAY_PDF_LINK_TEXT' => 'sous forme de lien',
     // 'ATTACH_ACTION_DISPLAY_PDF_INCLUDED_TEXT' => 'directement inclus dans la page',
-
     // handler edit
     'ACTIVATE_JS_TO_UPLOAD_FILES' => 'Activate JavaScript to upload files',
     'UPLOAD_A_FILE' => 'Upload a file',
@@ -99,14 +86,13 @@ return [
     'WHITE_BORDER' => 'White border',
     'DROP_SHADOW' => 'Drop shadow',
     'ZOOM_HOVER' => 'Zoom on hover',
-    'ALT_INFOS' => 'This texte will be displayed instead of the image, if the image is not found',
-    'ALTERNATIVE_TEXT' => 'Alternative text',
+    'ALT_INFOS' => 'This text will be displayed instead of the image, if the image is not found. It will also be read out loud by assistive technology (screen readers). Let it empty if the image serves a purely decorative purpose',
+    'ALTERNATIVE_TEXT' => 'Alternative text, for visually impaired people',
     // 'NONE' => 'Texte en dessous',
     'LEFT' => 'Left',
     'CENTER' => 'Center',
     'RIGHT' => 'Right',
     'FAILED' => 'Failed',
-
     // handler ajaxupload
     // 'ATTACH_HANDLER_AJAXUPLOAD_FOLDER_NOT_READABLE' => 'Le dossier de téléchargement n\'est pas accessible en écriture.',
     // 'ATTACH_HANDLER_AJAXUPLOAD_NO_FILE' => 'Pas de fichiers envoyés.',
@@ -114,10 +100,31 @@ return [
     // 'ATTACH_HANDLER_AJAXUPLOAD_FILE_TOO_LARGE' => 'Le fichier est trop large.',
     // 'ATTACH_HANDLER_AJAXUPLOAD_AUTHORIZED_EXT' => 'Le fichier n\'a pas une extension autorisée, voici les autorisées : {ext}.',
     // 'ATTACH_HANDLER_AJAXUPLOAD_ERROR' => 'Impossible de sauver le fichier. L\'upload a été annulé ou le serveur a planté...',
-    
     // edit config action
     // 'EDIT_CONFIG_HINT_ATTACH-VIDEO-CONFIG[DEFAULT_VIDEO_SERVICE]' => 'Service de vidéo par défaut (peertube, youtube ou vimeo)',
     // 'EDIT_CONFIG_HINT_ATTACH-VIDEO-CONFIG[DEFAULT_PEERTUBE_INSTANCE]' => 'Adresse du serveur peertube par défaut',
-    'EDIT_CONFIG_HINT_MAX_FILE_SIZE' => 'Maximum size of uploaded files - bits (ex: Taille maximum des fichiers téléversés - byte (ex: 2097152 for 2MB)',
-    // 'EDIT_CONFIG_GROUP_ATTACH' => 'Insertion de médias (images, vidéos)',
+    'EDIT_CONFIG_HINT_MAX_FILE_SIZE' => 'Maximum size of uploaded files - bytes (ex: Maximum size of uploaded files (ex: 2097152, 2048k, 2m)',
+    'INVALID_REQUEST_METHOD' => 'query method invalid',
+    'ERROR_MOVING_TEMPORARY_FILE' => 'error moving temporary file',
+    'ERROR_UPLOAD_MAX_FILESIZE' => 'uploaded file exceeds upload-max-filesize in php.ini.',
+    'ERROR_MAX_FILE_SIZE' => 'The t markedeacute file;l exposedeacute;charg markedeacute excitedcirc;from the size of MAX_FILE_SIZE, which has \'eacute;t yawned; spŭeacute;cifi primeacute;e in the HTML form.',
+    'ERROR_NO_FILE_UPLOADED' => 'No file has \'eacute;t `eacute\'; t imprisonedeacute;l imprisonedeacute;charg imprisonedeacute.',
+    'FILEMANAGER_ACTION_NEED_ACCESS' => 'Only the owner of this page can access the attached file manager',
+    'ATTACH_PARAM_FILE_OR_BGCOLOR_NOT_FOUND' => 'you must indicate either an image with the "file" parameter or a background color with the "bgcolor" parameter',
+    'ATTACH_ACTION_DISPLAY_PDF_TEXT' => 'Show the pdf in the page :',
+    'ATTACH_ACTION_DISPLAY_PDF_LINK_TEXT' => 'as a link',
+    'ATTACH_ACTION_DISPLAY_PDF_INCLUDED_TEXT' => 'directly included in the page',
+    'NONE' => 'Text below',
+    'ATTACH_HANDLER_AJAXUPLOAD_FOLDER_NOT_READABLE' => 'The download folder is not accessible in writing.',
+    'ATTACH_HANDLER_AJAXUPLOAD_NO_FILE' => 'No files sent.',
+    'ATTACH_HANDLER_AJAXUPLOAD_EMPTY_FILE' => 'The file is empty.',
+    'ATTACH_HANDLER_AJAXUPLOAD_FILE_TOO_LARGE' => 'The file is too wide.',
+    'ATTACH_HANDLER_AJAXUPLOAD_AUTHORIZED_EXT' => 'The file does not have an authorized extension, here are the ones allowed: {ext}.',
+    'ATTACH_HANDLER_AJAXUPLOAD_ERROR' => 'I can\'t save the file. The upload was canceled or the server planted...',
+    'EDIT_CONFIG_HINT_ATTACH-VIDEO-CONFIG[DEFAULT_VIDEO_SERVICE]' => 'Default video service (peertube, youtube or vimeo)',
+    'EDIT_CONFIG_HINT_ATTACH-VIDEO-CONFIG[DEFAULT_PEERTUBE_INSTANCE]' => 'Default peertube server address',
+    'EDIT_CONFIG_GROUP_ATTACH' => 'Media Insertion (pictures, videos)',
+    'ERROR_PARTIAL_UPLOAD' => 'The file has \'eacute;t `eacute\'; that partially t towardseacute;l neglecteacute;charg towardseacute.',
+    'ERROR_NOT_AUTHORIZED_EXTENSION' => 'The file does not have an authorized extension, here are the ones that the configuration authorizes: ',
+    'ATTACH_ACTION_BACKGROUNDIMAGE' => 'Action {{backgroundimage...}}',
 ];
