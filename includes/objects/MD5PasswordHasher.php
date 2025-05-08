@@ -10,8 +10,8 @@ use Symfony\Component\PasswordHasher\LegacyPasswordHasherInterface;
 
 class MD5PasswordHasher implements LegacyPasswordHasherInterface
 {
-    protected $needRehash;
     use CheckPasswordLengthTrait;
+    protected $needRehash;
 
     public function __construct(bool $needRehash)
     {
@@ -30,7 +30,6 @@ class MD5PasswordHasher implements LegacyPasswordHasherInterface
         }
 
         return md5($plainPassword);
-
     }
 
     /**

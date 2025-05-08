@@ -2,15 +2,15 @@
 
 use YesWiki\Core\Service\LinkTracker;
 
-if (!defined("WIKINI_VERSION")) {
-    die("acc&egrave;s direct interdit");
+if (!defined('WIKINI_VERSION')) {
+    exit('acc&egrave;s direct interdit');
 }
 
 // adresse vers quoi le bouton pointe
 $link = $this->GetParameter('link');
 
 // extration du nom de 'root_page' si nécessaire
-if ($link == "config/root_page") {
+if ($link == 'config/root_page') {
     $link = $this->config['root_page'];
     $this->setParameter('link', $link);
 }
@@ -65,7 +65,7 @@ if (!empty($nobtn) && $nobtn == '1') {
 }
 
 $hideIfNoAccess = $this->GetParameter('hideifnoaccess');
-if ($hideIfNoAccess == "true" && isset($linkParts['tag']) && !$GLOBALS['wiki']->HasAccess('read', $linkParts['tag'])) {
+if ($hideIfNoAccess == 'true' && isset($linkParts['tag']) && !$GLOBALS['wiki']->HasAccess('read', $linkParts['tag'])) {
     echo '';
 } elseif (empty($link)) {
     echo '<div class="alert alert-danger"><strong>' . _t('TEMPLATE_ACTION_BUTTON') . '</strong> : ' . _t('TEMPLATE_LINK_PARAMETER_REQUIRED') . '.</div>' . "\n";
@@ -74,7 +74,7 @@ if ($hideIfNoAccess == "true" && isset($linkParts['tag']) && !$GLOBALS['wiki']->
         . (!empty($link) ? ' href="' . $link . '"' : '')
         . (!empty($class) ? ' class="' . $class . '"' : '')
         . (!empty($datasize) ? ' data-size="' . $datasize . '"' : '')
-        . ((!empty($datasize) && empty($linkParts)) ? ' data-iframe="1"':'') // use iframe for external links in modalbox
+        . ((!empty($datasize) && empty($linkParts)) ? ' data-iframe="1"' : '') // use iframe for external links in modalbox
         . (!empty($title) ? ' title="' . htmlentities($title, ENT_COMPAT, YW_CHARSET) . '"' : '');
     $btn .= '>' . $icon . (!empty($text) ? htmlentities($text, ENT_COMPAT, YW_CHARSET) : '') . '</a>';
     echo $btn;

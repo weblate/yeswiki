@@ -1,10 +1,8 @@
 <?php
-
 return [
-    
     'LOGIN_SIGNUP' => 'Registrar',
     'LOGIN_LOGIN' => 'Entrar',
-    'LOGIN_WIKINAME' => 'NomeWiki',
+    'LOGIN_WIKINAME' => 'Email ou username.ice',
     'LOGIN_EMAIL' => 'Email',
     'LOGIN_PASSWORD' => 'Senha',
     'LOGIN_MODIFY' => 'Alterar',
@@ -40,10 +38,8 @@ return [
     // 'LOGIN_THE_TEAM' => 'L\'équipe de',
     // 'LOGIN_PASSWORD_LOST_FOR' => 'Mot de passe perdu pour',
     // 'LOGIN_NO_SIGNUP_IN_THIS_PERIOD' => 'Il n\'y a pas d\'inscription pour cette période.',
-
     // actions/login.php
     // 'LOGIN_COOKIES_ERROR' => 'Vous devez accepter les cookies pour pouvoir vous connecter.',
-
     // actions/usersettings.php
     'USERSETTINGS_PASSWORD_NOT_CHANGED' => 'Palavra-passe não alterada.',
     'USERSETTINGS_EMAIL_NOT_CHANGED' => 'E-mail não modificado.',
@@ -52,7 +48,35 @@ return [
     'USERSETTINGS_SIGNUP_MISSING_INPUT' => 'Os parâmetros \'{parameters}\' não podem ser vazios!',
     'USERSETTINGS_NAME_ALREADY_USED' => 'O identificador "{currentName}" já existe!',
     'USERSETTINGS_EMAIL_ALREADY_USED' => 'O e-mail "{email}" já é utilizado por outra conta!',
-    'USERSETTINGS_CHANGE_PWD_IN_IFRAME' => "Está prestes a alterar a sua palavra-passe numa janela do iframe.\n".
-        "Para evitar ataques de teclado, certifique-se de que o url do site começa com {baseUrl}.\n".
-        "Em caso de dúvida, abra este formulário numa página dedicada clicando neste link {link}.",
+    'LOGIN_BACK' => 'Retorno',
+    'LOGIN_YOU_ARE_NOW_DISCONNECTED' => 'Agora você está fora de linha',
+    'LOGIN_NEW_PASSWORD' => 'Nova senha',
+    'LOGIN_COOKIES_ERROR' => 'Você deve aceitar cookies para entrar',
+    'LOGIN_CHANGE_PASSWORD' => 'Repor senha',
+    'LOGIN_CONFIRM_PASSWORD' => 'Confirme sua senha',
+    'LOGIN_PASSWORD_SHOULD_BE_IDENTICAL' => 'As novas senhas devem ser idênticas e não vazias',
+    'LOGIN_MESSAGE_SENT' => 'Uma mensagem foi enviada para você com instruções para redefinir sua senha',
+    'LOGIN_INVALID_KEY' => 'Chave de validação inválida',
+    'LOGIN_DEAR' => 'Querido querido',
+    'LOGIN_PASSWORD_LOST_FOR' => 'Senha perdida para',
+    'LOGIN_MY_CONTENTS' => 'Meu conteúdo',
+    'LOGIN_WRONG_PASSWORD' => 'Identificação impossível: senha errada.',
+    'LOGIN_WRONG_USER' => 'Identificação impossível: identificador desconhecido.',
+    'LOGIN_NOT_AUTORIZED' => 'Você não ilude; você não tem que se imitar; " agrave; ler esta página',
+    'LOGIN_NOT_AUTORIZED_EDIT' => 'Você não ignitecirc; você não tem que se imitar; \' agrave; edit this page',
+    'LOGIN_NO_CONNECTED_USER' => 'Nenhum usuário conectado.',
+    'LOGIN_LOST_PASSWORD' => 'Senha perdida?',
+    'LOGIN_UNKNOWN_USER' => 'Email desconhecido, nenhum usuário com este e-mail registrado',
+    'LOGIN_ADD_EMAIL_TO_CONTINUE' => 'Insira um e-mail para continuar',
+    'LOGIN_SEND' => 'Enviar',
+    'LOGIN_WELCOME' => 'Bem-vindo',
+    'LOGIN_WRITE_PASSWORD' => 'Digite sua nova senha nos campos abaixo',
+    'LOGIN_PASSWORD_WAS_RESET' => 'Sua senha foi alterada com sucesso',
+    'LOGIN_CLICK_FOLLOWING_LINK' => 'Clique no seguinte link para redefinir sua senha',
+    'LOGIN_THE_TEAM' => 'A equipe de',
+    'LOGIN_NO_SIGNUP_IN_THIS_PERIOD' => 'Não há registro para este período.',
+    'LOGIN_PASSWORD_FOR' => 'Senha para',
+    'LOGIN_MY_OPTIONS' => 'As minhas opções',
+    'LOGIN_PLEASE_REGISTER' => 'identifique por favor',
+    'LINK_TO_CHANGE_PASSWORD' => 'Link para mudar a senha',
 ];

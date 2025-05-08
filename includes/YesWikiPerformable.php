@@ -1,4 +1,5 @@
 <?php
+
 namespace YesWiki\Core;
 
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -10,7 +11,7 @@ use YesWiki\Wiki;
 /**
  * A YesWiki object, with basic functionality like accessing main YesWiki instance, or
  * use easily templates
- * See Performer service which run such object
+ * See Performer service which run such object.
  */
 abstract class YesWikiPerformable
 {
@@ -21,8 +22,7 @@ abstract class YesWikiPerformable
     protected $output;
 
     /**
-     * Setter for the wiki property
-     * @param Wiki $wiki
+     * Setter for the wiki property.
      */
     public function setWiki(Wiki $wiki): void
     {
@@ -30,8 +30,7 @@ abstract class YesWikiPerformable
     }
 
     /**
-     * Setter for the parameters
-     * @param ParameterBagInterface $params
+     * Setter for the parameters.
      */
     public function setParams(ParameterBagInterface $params): void
     {
@@ -39,8 +38,7 @@ abstract class YesWikiPerformable
     }
 
     /**
-     * Setter for the twig property
-     * @param TemplateEngine $twig
+     * Setter for the twig property.
      */
     public function setTwig(TemplateEngine $twig): void
     {
@@ -48,8 +46,7 @@ abstract class YesWikiPerformable
     }
 
     /**
-     * Setter for the arguments property
-     * @param array $arguments
+     * Setter for the arguments property.
      */
     public function setArguments(array &$arguments): void
     {
@@ -59,8 +56,7 @@ abstract class YesWikiPerformable
     }
 
     /**
-     * Setter for the output property
-     * @param string $output
+     * Setter for the output property.
      */
     public function setOutput(string &$output): void
     {
@@ -70,16 +66,18 @@ abstract class YesWikiPerformable
     abstract public function run();
 
     /**
-     * Shortcut to render twig template
+     * Shortcut to render twig template.
      *
      * @param string $templatePath path to twig template. you can use full path
-     * like tools/bazar/template/myfile.twig, or namespace like @bazar/myfile.twig
-     * @param array $data An array with data to pass to the template
+     *                             like tools/bazar/template/myfile.twig, or namespace like @bazar/myfile.twig
+     * @param array  $data         An array with data to pass to the template
+     *
      * @return string HTML
      */
     public function render($templatePath, $data = [], $method = 'render')
     {
         $data = array_merge($data, ['arguments' => $this->arguments]);
+
         return $this->twig->$method($templatePath, $data);
     }
 
@@ -95,14 +93,15 @@ abstract class YesWikiPerformable
     }
 
     // Shortcut to call an action within another action
-    protected function callAction(string $action, $arguments = []) : string
+    protected function callAction(string $action, $arguments = []): string
     {
         // This additional argument helps to prevent infinite loops
         $arguments['calledBy'] = get_class($this);
+
         return $this->wiki->Action($action, 0, $arguments);
     }
 
-    protected function getRequest() : Request
+    protected function getRequest(): Request
     {
         return $this->wiki->request;
     }
@@ -117,19 +116,19 @@ abstract class YesWikiPerformable
     {
         if (is_array($param)) {
             if ($index != '' && isset($param[$index])) {
-                $param = $param[$index] ;
+                $param = $param[$index];
             } else {
-                return $default ;
+                return $default;
             }
         }
         if (is_bool($param)) {
             return $param;
-        } elseif (in_array($param,[0,'0','no','non','false'],true)) {
-            return false ;
+        } elseif (in_array($param, [0, '0', 'no', 'non', 'false'], true)) {
+            return false;
         } elseif (empty($param)) {
-            return $default ;
+            return $default;
         } else {
-            return true ;
+            return true;
         }
     }
 
@@ -143,7 +142,8 @@ abstract class YesWikiPerformable
     }
 
     /**
-     * check if wiki_status is hibernated
+     * check if wiki_status is hibernated.
+     *
      * @return bool true if in hibernation
      */
     protected function isWikiHibernated(): bool
@@ -152,7 +152,8 @@ abstract class YesWikiPerformable
     }
 
     /**
-     * return alert message when in hibernation
+     * return alert message when in hibernation.
+     *
      * @return string true if in hibernation
      */
     protected function getMessageWhenHibernated(): string

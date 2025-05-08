@@ -32,7 +32,7 @@ class Guard
     }
 
     // TODO remove this method and use YesWiki::HasAccess
-    public function isAllowed($action = 'saisie_fiche', $ownerId = '') : bool
+    public function isAllowed($action = 'saisie_fiche', $ownerId = ''): bool
     {
         $loggedUserName = $this->authController->getLoggedUserName();
         $isOwner = $ownerId === $loggedUserName || $ownerId === '';
@@ -66,10 +66,12 @@ class Guard
      * Teste les droits d'acces champ par champ du contenu d'un fiche bazar
      * Si utilisateur connecte est  proprietaire ou adminstrateur : acces a tous les champs
      * Sinon ne sont retournes que les champs dont les droits d'acces sont compatibles.
-     * Introduction du droit % : seul le proprietaire peut acceder
-     * @param array $page
-     * @param string $tag
+     * Introduction du droit % : seul le proprietaire peut acceder.
+     *
+     * @param array       $page
+     * @param string      $tag
      * @param string|null $userNameForCheckingACL username used to check ACL, if empty, uses en the connectd user
+     *
      * @return array $page
      */
     public function checkAcls($page, $tag, ?string $userNameForCheckingACL = null)
@@ -79,42 +81,42 @@ class Guard
             return $page;
         }
         if ($page) {
-            $valjson = $page["body"];
+            $valjson = $page['body'];
             $valeur = json_decode($valjson, true);
 
             if ($valeur) {
                 $form = $this->formManager->getOne($valeur['id_typeannonce']);
                 if ($form) {
-                    $fieldname = array();
+                    $fieldname = [];
                     foreach ($form['prepared'] as $field) {
                         if ($field instanceof BazarField
                              && !$field->canRead(['id_fiche' => $tag], $userNameForCheckingACL)
-                           ) {
-                            $fieldname[] = $field->getPropertyName() ;
+                        ) {
+                            $fieldname[] = $field->getPropertyName();
                         }
                     }
                     if (count($fieldname) > 0) {
-                        //
                         foreach ($fieldname as $field) {
-                            $valeur[$field] = "";
+                            $valeur[$field] = '';
                             // on vide le champ
                         }
                         //$valeur = array_map(function($value){
                         //     return mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1');
                         // }, $valeur);
-                        $page["body"] = json_encode($valeur);
+                        $page['body'] = json_encode($valeur);
                     }
                 }
             }
         }
+
         return $page;
     }
 
-    protected function isPageOwner($page, ?string $userName = null) : bool
+    protected function isPageOwner($page, ?string $userName = null): bool
     {
         if (!empty($userName)) {
             // check if userName is owner
-            return ($page['owner'] === $userName);
+            return $page['owner'] === $userName;
         }
         // check if user is logged in
         if (!$this->authController->getLoggedUser()) {
@@ -124,14 +126,15 @@ class Guard
         if ($page['owner'] == $this->authController->getLoggedUserName()) {
             return true;
         }
+
         return false;
     }
 
     /**
-     * sanitize data for correspondance
-     * @param null|array $page
-     * @param null|array $entry
+     * sanitize data for correspondance.
+     *
      * @param string $fieldName
+     *
      * @return $value value or empty string
      */
     public function isFieldDataAuthorizedForCorrespondance(?array $page, ?array $entry, $fieldName)
@@ -147,6 +150,7 @@ class Guard
                 return '';
             }
         }
-        return (empty($fieldName) || !isset($entry[$fieldName])) ? "" : $entry[$fieldName];
+
+        return (empty($fieldName) || !isset($entry[$fieldName])) ? '' : $entry[$fieldName];
     }
 }

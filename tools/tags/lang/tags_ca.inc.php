@@ -1,7 +1,5 @@
 <?php
-
 return [
-
     // 'TAGS_TAGS' => 'Mots clés',
     'TAGS_ACTION_ADMINTAGS' => 'Acció {{admintags ...}}',
     'TAGS_ACTION_ADMINTAGS_ONLY_FOR_ADMINS' => 'l\'acció és exclusiva de l\'administrador',
@@ -23,36 +21,30 @@ return [
     'TAGS_SEE_ALL_PAGES_WITH_THIS_TAGS' => 'Mostra totes les pàgines que contenen aquest mot clau',
     'TAGS_ALERT_PAGE_ALREADY_MODIFIED' => 'COMPTE: aquesta pàgina ha estat modificada per algú altre mentre l\'estàveu editant.<br />Copieu els vostres canvis i torneu a iniciar l\'edició.',
     'TAGS_ANSWER_THIS_COMMENT' => 'Respon a aquest comentari',
-    'TAGS_DATE_FORMAT' => "\l\e d.m.Y \a \l\e\s H:i:s",
+    'TAGS_DATE_FORMAT' => "le d.m.Y a les H:i:s",
     'TAGS_WRITE_YOUR_COMMENT_HERE' => 'Escriviu el vostre comentari aquí:',
     'TAGS_ADD_YOUR_COMMENT' => 'Afegiu-hi el vostre comentari',
     'TAGS_ACTION_FILTERTAGS' => 'Acció {{filtertags ...}}',
     'TAGS_NO_FILTERS' => 'No s\'ha trobat el paràmetre "filter1", que és obligatori.',
     'TAGS_ONLY_ONE_DOUBLEPOINT' => 'només es pot escriure els dos punts (:) una vegada per indicar l\'etiqueta.',
-
     'TAGS_ACTION_INCLUDEPAGES' => 'Acció {{includepages ...}}',
     'TAGS_NO_PARAM_PAGES' => 'No s\'ha trobat el paràmetre "pages", que és obligatori.',
-
     'TAGS_NO_RESULTS' => 'No s\'han obtingut resultats amb aquests mots clau.',
     'TAGS_RESULTS' => 'Resultats',
     'TAGS_FILTER' => 'Filtra',
     'TAGS_CONTAINING_TAG' => 'amb el mot clau',
     'TAGS_ONE_PAGE' => 'Una pàgina',
     'TAGS_PAGES' => 'pàgines',
-
     // actions/admintag.php
     // 'TAGS_NO_TAG' => 'Aucun mot clé utilisé pour le moment',
-
     // actions/listpagestag.php
     // 'TAGS_TOTAL_NB_PAGES' => 'Un total de %{nb_total} pages a &eacute;t&eacute; trouv&eacute;',
     // 'TAGS_ONE_PAGE_FOUND' => 'Une page a &eacute;t&eacute; trouv&eacute;e',
     // 'TAGS_NO_PAGE' => 'Aucune page trouv&eacute;e',
     // 'TAGS_WITH_KEYWORD' => 'avec le mot cl&eacute;',
     // 'TAGS_WITH_KEYWORD_SEPARATOR' => 'et',
-
     // actions/rss.php
     'TAGS_RSS_FEED_FOR_NEW_PAGES_WITH_TAGS' => 'Flux RSS de pàgines noves amb els mots clau',
-
     // handler exportpages
     'TAGS_YOUR_EBOOK' => 'El vostre Ebook',
     'TAGS_SPAM_RISK' => 'Cal activar el javascript per evitar que us prenguin per spam.',
@@ -93,10 +85,8 @@ return [
     // 'TAGS_CONTENT_VISIBLE_ONLINE_FROM_PAGE' => 'Contenu en ligne sur la page',
     'TAGS_NO_EBOOK_METADATAS' => 'Aquesta pàgina no inclou les metadades necessàries per crear l\'ebook.',
     'TAGS_NO_EBOOK_FOUND' => 'No s\'ha trobat cap ebook.',
-
     // handler/tagrss.php
     // 'TAGS_HIDDEN_CONTENT' => 'Contenu masqué',
-
     // action builder tags group
     // 'AB_tags_group_label' => 'Gestion des tags',
     // 'AB_tags_admintag_label' => 'Gestion des tags',
@@ -120,9 +110,44 @@ return [
     // 'AB_tags_listpagestag_rss_label'=> 'lien rss vers la liste pour des tags donnés',
     // 'AB_tags_listpagestag_nbclasses_label' => 'nombre de classes CSS disponibles pour le nuage',
     // 'AB_tags_nuagetag_tri_shuffle' => 'aléatoire',
-
     // for edit config
     'EDIT_CONFIG_HINT_HIDE_KEYWORDS' => 'Amaga les paraules clau a la part inferior de les pàgines (true o false)',
     'EDIT_CONFIG_GROUP_TAGS' => 'Paraules clau (tags)',
-
+    'AB_tags_listpagestag_type_label' => 'Tipus',
+    'TAGS_TAGS' => 'Paraules clau',
+    'TAGS_FROM_THIS_PAGE' => 'd\'aquesta pàgina',
+    'TAGS_FROM_ALL_PAGES' => 'de totes les pàgines',
+    'TAGS_NO_TAG' => 'Cap paraula clau utilitzada ara com ara',
+    'TAGS_TOTAL_NB_PAGES' => 'Un total de %{nb_total} patges ha estat trobat',
+    'TAGS_ONE_PAGE_FOUND' => 'Una pàgina ha estat trobada',
+    'TAGS_DOWNLOAD' => 'Descarregar',
+    'TAGS_HIDDEN_CONTENT' => 'Contingut emmascarat',
+    'AB_tags_group_label' => 'Gestió dels tags',
+    'AB_tags_admintag_label' => 'Gestió dels tags',
+    'AB_tags_listpagestag_label' => 'Llista de les pàgines per tag',
+    'AB_tags_listpagestag_nb_label' => 'Nombre de pàgines',
+    'AB_tags_listpagestag_tri_label' => 'Selecció',
+    'AB_tags_listpagestag_tri_date' => 'selecció per data decreixent',
+    'AB_tags_listpagestag_tri_alpha' => 'selecció per ordre alfabètic',
+    'TAGS_PRESENT_IN' => 'present en',
+    'TAGS_ADD_TAGS' => 'Afegir paraules clau utilitzant la tecla entrada',
+    'TAGS_WITH_KEYWORD_SEPARATOR' => 'i',
+    'TAGS_CONTENT_VISIBLE_ONLINE_FROM_PAGE' => 'Contingut en línia sobre la pàgina',
+    'AB_tags_listpagestag_type_all' => 'totes les pàgines i les fitxes del wiki',
+    'AB_tags_listpagestag_type_wiki' => 'únicament les pàgines del wiki',
+    'AB_tags_listpagestag_type_bazar' => 'únicament les fitxes dels formularis',
+    'AB_tags_listpagestag_tags_label' => 'Tags',
+    'AB_tags_listpagestag_tags_hint' => 'separats per comes',
+    'AB_tags_listpagestag_template_label' => 'template',
+    'AB_tags_listpagestag_template_list' => 'llista',
+    'AB_tags_listpagestag_template_list_panel' => 'llista amb requadre',
+    'AB_tags_listpagestag_template_list_num' => 'llista amb xips',
+    'AB_tags_listpagestag_shownumberinfo_label' => 'anunciar el nombre de pàgines',
+    'AB_tags_listpagestag_nuagetag_label' => 'núvol de tags',
+    'AB_tags_listpagestag_rss_label' => 'enllaç rss cap a la llista per a tags donats',
+    'AB_tags_listpagestag_nbclasses_label' => 'algunes classes CSS disponibles per al núvol',
+    'AB_tags_nuagetag_tri_shuffle' => 'aleatori',
+    'TAGS_DELETE_MINUSCULE' => 'Elimina',
+    'TAGS_NO_PAGE' => 'No s\'ha trobat cap pàgina',
+    'TAGS_WITH_KEYWORD' => 'amb el mot clau',
 ];

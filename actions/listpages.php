@@ -19,7 +19,7 @@
 // retrieve parameters
 $sort = strtolower($this->GetParameter('sort'));
 $tree = $this->GetParameter('tree');
-$levels = (int) $this->GetParameter('levels');
+$levels = (int)$this->GetParameter('levels');
 $max_levels = 7;
 $owner = $this->GetParameter('owner');
 $exclude = $this->GetParameter('exclude');
@@ -27,7 +27,7 @@ $user = $this->GetParameter('user');
 
 // default values
 // use a secure $sort value for MySQL
-if (!in_array($sort, array('time', 'user', 'owner', 'tag'))) {
+if (!in_array($sort, ['time', 'user', 'owner', 'tag'])) {
     $sort = 'tag';
 }
 if ($owner == 'owner') {
@@ -52,7 +52,7 @@ if ($exclude) {
     // notice we can addslash() the list before splitting it because escaped character are not separators
     $exclude = preg_split('/[ ;,\|]/', addslashes($exclude), -1, PREG_SPLIT_NO_EMPTY);
 } else {
-    $exclude = array();
+    $exclude = [];
 }
 if ($user == 'user') {
     $user = $this->GetPageOwner();
@@ -73,7 +73,7 @@ if ($tree) {
      *  [, additionnal info[, ...]] // modification date, owner (+ does he have his own page ?), user (+ idem and is he registered ?)
      * )
      */
-    $links = array();
+    $links = [];
 
     // informations on the root page
     switch ($sort) {
@@ -81,7 +81,7 @@ if ($tree) {
             $sql = 'SELECT a.owner, b.tag IS NOT NULL owner_has_ownpage'
                 . ' FROM ' . $prefix . 'pages a'
                 . ' LEFT JOIN ' . $prefix . 'pages b ON a.owner = b.tag AND b.latest = "Y"';
-                break;
+            break;
         case 'user':
             $sql = 'SELECT a.user, u.name IS NOT NULL user_is_registered, b.tag IS NOT NULL user_has_ownpage'
                 . ' FROM ' . $prefix . 'pages a'
@@ -93,24 +93,25 @@ if ($tree) {
                 . ' FROM ' . $prefix . 'pages a';
             break;
         case 'tag':
-            $links[$tree] = array();
+            $links[$tree] = [];
     } // switch
     if ($sort != 'tag') {
         $sql .= ' WHERE a.tag = "' . $this->services->get(\YesWiki\Core\Service\DbService::class)->escape($tree) . '" AND a.latest = "Y" LIMIT 1';
         if (!$rootData = $this->LoadSingle($sql)) {
-            echo '<div class="alert alert-danger"><strong>'._t('ERROR').' '._t('ACTION').' ListPages</strong> : '._('THE_PAGE').' ' . htmlspecialchars($tree, ENT_COMPAT, YW_CHARSET) . ' '._t('DOESNT_EXIST').' !</div>';
+            echo '<div class="alert alert-danger"><strong>' . _t('ERROR') . ' ' . _t('ACTION') . ' ListPages</strong> : ' . _('THE_PAGE') . ' ' . htmlspecialchars($tree, ENT_COMPAT, YW_CHARSET) . ' ' . _t('DOESNT_EXIST') . ' !</div>';
+
             return;
         }
         $links[$tree] = $rootData;
     }
     $links[$tree]['page_exists'] = true;
-    $links[$tree]['haslinksto'] = array();
-    
+    $links[$tree]['haslinksto'] = [];
+
     // To simplify treatment and to make it more efficient we'll work by referrence.
     // This will allow you to do only one request by tree level
     // $workingon represents every page of the current level
-    $workingon = array($tree => &$links[$tree]['haslinksto']);
-    
+    $workingon = [$tree => &$links[$tree]['haslinksto']];
+
     // to avoid many loops and computing several time the lists needed for the request,
     // we store them into variables
     $from = '"' . $this->services->get(\YesWiki\Core\Service\DbService::class)->escape($tree) . '"';
@@ -184,13 +185,13 @@ if ($tree) {
                 $sql .= 'a.user IS NULL, a.user';
                 break;
         } // switch
-        
+
         if ($pages = $this->LoadAll($sql)) {
             $from = '';
-            $newworkingon = array();
+            $newworkingon = [];
             foreach ($pages as $page) {
                 $to_tag = '"' . $this->services->get(\YesWiki\Core\Service\DbService::class)->escape($page['to_tag']) . '"';
-                $workingon[$page['from_tag']][$page['to_tag']] = array('page_exists' => $page['page_exists'], 'haslinksto' => array());
+                $workingon[$page['from_tag']][$page['to_tag']] = ['page_exists' => $page['page_exists'], 'haslinksto' => []];
                 if ($sort != 'tag') {
                     $workingon[$page['from_tag']][$page['to_tag']][$sort] = $page[$sort];
                     switch ($sort) {
@@ -222,7 +223,7 @@ if ($tree) {
             break;
         }
     }
-    
+
     // Seccond step: display the tree
     // this function allows us to render the tree using HTML lists.
     if (!function_exists('ShowPageTree')) {
@@ -230,7 +231,7 @@ if ($tree) {
         {
             if ($tree) {
                 $indentStr = str_repeat("\t", $indent);
-                $retour =  "$indentStr<ul>\n";
+                $retour = "$indentStr<ul>\n";
                 $aclService = $wiki->services->get(\YesWiki\Core\Service\AclService::class);
                 foreach ($tree as $pageName => $pageData) {
                     if ($aclService->hasAccess('read', $pageName)) {
@@ -239,7 +240,7 @@ if ($tree) {
                             $retour .= $wiki->ComposeLinkToPage($pageName, false, false, false);
                             switch ($show) {
                                 case 'owner':
-                                    $retour .= ' . . . . '._t('BELONGING_TO').' : ';
+                                    $retour .= ' . . . . ' . _t('BELONGING_TO') . ' : ';
                                     if ($pageData['owner']) {
                                         if ($pageData['owner_has_ownpage']) {
                                             $retour .= $wiki->ComposeLinkToPage($pageData['owner'], false, false, false);
@@ -252,7 +253,7 @@ if ($tree) {
                                     }
                                     break;
                                 case 'user':
-                                    $retour .= ' . . . . '._t('LAST_CHANGE_BY').' : ';
+                                    $retour .= ' . . . . ' . _t('LAST_CHANGE_BY') . ' : ';
                                     if ($pageData['user_is_registered']) {
                                         if ($pageData['user_has_ownpage']) {
                                             $retour .= $wiki->ComposeLinkToPage($pageData['user'], false, false, false);
@@ -265,7 +266,7 @@ if ($tree) {
                                     }
                                     break;
                                 case 'time':
-                                    $retour .= ' . . . . '._t('LAST_CHANGE').' : ' . $pageData['time'];
+                                    $retour .= ' . . . . ' . _t('LAST_CHANGE') . ' : ' . $pageData['time'];
                                     break;
                             } // switch
                             if ($pageData['haslinksto']) {
@@ -280,12 +281,14 @@ if ($tree) {
                         $retour .= "</li>\n";
                     }
                 }
+
                 return "$retour$indentStr</ul>\n";
             }
+
             return '';
         }
     }
-    
+
     echo ShowPageTree($links, $this, $sort);
 } else {
     // classical list display
@@ -347,42 +350,45 @@ if ($tree) {
     } else {
         $sql .= ' ORDER BY a.' . $sort;
     }
-    
+
     // retrieving the pages
     $pages = $this->LoadAll($sql);
-    
+
     // Display
     // Header
     if ($user) {
-        echo _t('PAGE_LIST_WHERE').' ' . $this->Format($user) . ' '._t('HAS_PARTICIPATED');
+        echo _t('PAGE_LIST_WHERE') . ' ' . $this->Format($user) . ' ' . _t('HAS_PARTICIPATED');
         if ($owner) {
-            echo ' '._t('INCLUDING').' ' . $this->Link($owner) . ' '._t('IS_THE_OWNER');
+            echo ' ' . _t('INCLUDING') . ' ' . $this->Link($owner) . ' ' . _t('IS_THE_OWNER');
         }
         if ($exclude) {
-            echo ' ('._t('EXCLUDING_EXCLUSIONS').')';
+            echo ' (' . _t('EXCLUDING_EXCLUSIONS') . ')';
         }
         echo ":\n";
         if (!$pages) {
-            echo "<br />\n"._t('NO_PAGE_FOUND')."...<br />\n";
+            echo "<br />\n" . _t('NO_PAGE_FOUND') . "...<br />\n";
+
             return;
         }
     } elseif ($owner) {
-        echo _t('LIST_PAGES_BELONGING_TO').' ' . $this->Link($owner);
+        echo _t('LIST_PAGES_BELONGING_TO') . ' ' . $this->Link($owner);
         if ($exclude) {
-            echo ' ('._t('EXCLUDING_EXCLUSIONS').')';
+            echo ' (' . _t('EXCLUDING_EXCLUSIONS') . ')';
         }
         echo ":\n";
         if (!$pages) {
-            echo "<br />\n"._t('THIS_USER_HAS_NO_PAGE')."...\n<br />\n";
+            echo "<br />\n" . _t('THIS_USER_HAS_NO_PAGE') . "...\n<br />\n";
+
             return;
         }
     } elseif (!$pages) {
         // because it is still possible...
-        echo _t('NO_PAGE_FOUND').' '._t('IN_THIS_WIKI').' ('._t('EXCLUDING_EXCLUSIONS').')';
+        echo _t('NO_PAGE_FOUND') . ' ' . _t('IN_THIS_WIKI') . ' (' . _t('EXCLUDING_EXCLUSIONS') . ')';
+
         return;
     }
     // No header if it is a simple page list that was asked
-    
+
     // Display the list itself
     echo "<ul>\n";
     $aclService = $this->services->get(\YesWiki\Core\Service\AclService::class);
@@ -403,12 +409,12 @@ if ($tree) {
                 }
             }
             if ($sort == 'user' || $sort == 'time') {
-                echo '  . . . . <strong>'._t('LAST_CHANGE').'</strong>';
+                echo '  . . . . <strong>' . _t('LAST_CHANGE') . '</strong>';
                 if ($sort == 'time') {
                     echo ': ' . $page['time'];
                 }
                 if ($sort == 'user' || ($user && $sort == 'time')) {
-                    echo ' <strong>'._t('BY').'</strong> ';
+                    echo ' <strong>' . _t('BY') . '</strong> ';
                     if ($page['user_is_registered']) {
                         if ($page['user_has_ownpage']) {
                             echo $this->ComposeLinkToPage($page['user'], false, false, false);

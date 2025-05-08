@@ -1,10 +1,8 @@
 <?php
-
 return [
-    
     'LOGIN_SIGNUP' => 'Registrar-se',
     'LOGIN_LOGIN' => 'Connectar-se',
-    'LOGIN_WIKINAME' => 'NomWiki',
+    'LOGIN_WIKINAME' => 'Email o nom d\'usuari.ice',
     'LOGIN_EMAIL' => 'Email',
     'LOGIN_PASSWORD' => 'Contrasenya',
     'LOGIN_MODIFY' => 'Modifica',
@@ -40,10 +38,8 @@ return [
     // 'LOGIN_THE_TEAM' => 'L\'équipe de',
     // 'LOGIN_PASSWORD_LOST_FOR' => 'Mot de passe perdu pour',
     // 'LOGIN_NO_SIGNUP_IN_THIS_PERIOD' => 'Il n\'y a pas d\'inscription pour cette période.',
-
     // actions/login.php
     // 'LOGIN_COOKIES_ERROR' => 'Vous devez accepter les cookies pour pouvoir vous connecter.',
-
     // actions/usersettings.php
     'USERSETTINGS_EMAIL_NOT_CHANGED' => 'El correu electrònic no s\'ha modificat.',
     'USERSETTINGS_PASSWORD_NOT_CHANGED' => 'La contrasenya no ha canviat.',
@@ -52,7 +48,35 @@ return [
     'USERSETTINGS_SIGNUP_MISSING_INPUT' => 'Els paràmetres \'{parameters}\' no poden estar buits !',
     'USERSETTINGS_NAME_ALREADY_USED' => 'L\'identificador "{currentName}" ja existeix !',
     'USERSETTINGS_EMAIL_ALREADY_USED' => 'Un altre compte ja ha utilitzat el correu electrònic "{email}" !',
-    'USERSETTINGS_CHANGE_PWD_IN_IFRAME' => "Esteu a punt de canviar la contrasenya en una finestra d'iframe.\n".
-        "Per evitar atacs de registre de claus, assegureu-vos que l'adreça URL del lloc comenci amb {baseUrl}.\n".
-        "En cas de dubte, obriu aquest formulari en una pàgina dedicada fent clic en aquest enllaç {link}.",
+    'LOGIN_BACK' => 'Enrere',
+    'LOGIN_NOT_AUTORIZED' => 'No sou autoritzat a llegir aquesta pàgina',
+    'LOGIN_NOT_AUTORIZED_EDIT' => 'No sou autoritzat a editar aquesta pàgina',
+    'LOGIN_WRONG_PASSWORD' => 'Identificació impossible: mala contrasenya.',
+    'LOGIN_WRONG_USER' => 'Identificació impossible: Identificador no reconegut.',
+    'LOGIN_NO_CONNECTED_USER' => 'usuari connectat.',
+    'LOGIN_PLEASE_REGISTER' => 'vulgueu identificar-vos',
+    'LOGIN_LOST_PASSWORD' => 'Contrasenya perduda?',
+    'LOGIN_CHANGE_PASSWORD' => 'Reiniciar la contrasenya',
+    'LOGIN_UNKNOWN_USER' => 'Email desconegut,  usuari amb aquest email gravat',
+    'LOGIN_ADD_EMAIL_TO_CONTINUE' => 'Vulgueu agafar un email per continuar',
+    'LOGIN_CONFIRM_PASSWORD' => 'Confirmar la vostra contrasenya',
+    'LOGIN_WELCOME' => 'Benvingut.e',
+    'LOGIN_WRITE_PASSWORD' => 'Agafar la vostra nova contrasenya en els camps més avall',
+    'LOGIN_PASSWORD_SHOULD_BE_IDENTICAL' => 'Les noves contrasenyes han de ser idèntiques i no buides',
+    'LOGIN_MESSAGE_SENT' => 'Un missatge us ha estat enviat amb les instruccions per a re-inicialitzar la vostra contrasenya',
+    'LOGIN_INVALID_KEY' => 'Clau de validació incorrecta',
+    'LOGIN_PASSWORD_WAS_RESET' => 'La vostra contrasenya ha estat canviat reeixidament',
+    'LOGIN_DEAR' => 'Car',
+    'LOGIN_CLICK_FOLLOWING_LINK' => 'Cliqueu sobre l\'enllaç següent per a re-inicialitzar la vostra contrasenya',
+    'LOGIN_THE_TEAM' => 'L\'equip de',
+    'LOGIN_PASSWORD_LOST_FOR' => 'Contrasenya perduda a favor',
+    'LOGIN_MY_OPTIONS' => 'Les meves opcions',
+    'LOGIN_MY_CONTENTS' => 'Els meus continguts',
+    'LOGIN_SEND' => 'Enviar',
+    'LOGIN_NO_SIGNUP_IN_THIS_PERIOD' => 'No hi ha inscripció per a aquest període.',
+    'LOGIN_PASSWORD_FOR' => 'Contrasenya a favor',
+    'LINK_TO_CHANGE_PASSWORD' => 'Enllaç per canviar la contrasenya',
+    'LOGIN_YOU_ARE_NOW_DISCONNECTED' => 'No esteu connectat',
+    'LOGIN_NEW_PASSWORD' => 'Contrasenya nova',
+    'LOGIN_COOKIES_ERROR' => 'Cal que accepteu les galetes per connectar-vos',
 ];

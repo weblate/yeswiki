@@ -18,7 +18,7 @@ class HiddenField extends BazarField
 
     protected function renderStatic($entry)
     {
-        return "";
+        return '';
     }
 
     // Format input values before save
@@ -26,7 +26,7 @@ class HiddenField extends BazarField
     // {
     //     return ['fields-to-remove' => [$this->propertyName]];
     // }
-    
+
     // change return of this method to keep compatible with php 7.3 (mixed is not managed)
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
@@ -34,6 +34,6 @@ class HiddenField extends BazarField
         return [
             'type' => $this->getType(),
             'default' => $this->getDefault(),
-            ];
+        ];
     }
 }

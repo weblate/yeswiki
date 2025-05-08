@@ -1,35 +1,34 @@
 <?php
-/*
-*/
 
 use YesWiki\Security\Controller\SecurityController;
+
 if (!defined('WIKINI_VERSION')) {
-    die('acc&egrave;s direct interdit');
+    exit('acc&egrave;s direct interdit');
 }
 
 if ($this->HasAccess('write') && $this->HasAccess('read')) {
     $securityController = $this->services->get(SecurityController::class);
-    list($state,$message) = $securityController->isGrantedPasswordForEditing();
-    if (!$state){
-        echo $this->Header().
-            $message.
+    list($state, $message) = $securityController->isGrantedPasswordForEditing();
+    if (!$state) {
+        echo $this->Header() .
+            $message .
             $this->Footer();
         $this->exit();
     }
-  
+
     if ($this->config['use_hashcash']) {
         if (isset($_POST['submit']) && $_POST['submit'] == SecurityController::EDIT_PAGE_SUBMIT_VALUE) {
             require_once 'tools/security/secret/wp-hashcash.lib';
             if (!isset($_POST['hashcash_value']) || $_POST['hashcash_value'] != hashcash_field_value()) {
-                $error = '<div class="alert alert-danger"><a href="#" data-dismiss="alert" class="close">&times;</a>'._t('HASHCASH_ERROR_PAGE_UNSAVED').'</div>';
+                $error = '<div class="alert alert-danger"><a href="#" data-dismiss="alert" class="close">&times;</a>' . _t('HASHCASH_ERROR_PAGE_UNSAVED') . '</div>';
                 $_POST['submit'] = '';
             }
         }
     }
 
-    list($state,$error) = $securityController->checkCaptchaBeforeSave();
-    
-    if ($state){
+    list($state, $error) = $securityController->checkCaptchaBeforeSave();
+
+    if ($state) {
         // error used in edit.php
         unset($error);
     }

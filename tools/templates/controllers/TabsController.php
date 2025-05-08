@@ -17,33 +17,35 @@ class TabsController extends YesWikiController
     }
 
     /**
-     * change tag
-     * @param string $mode
+     * change tag.
+     *
      * @return string $output
      */
     public function changeTab(string $mode = 'action'): string
     {
         $output = "\n{$this->closeATab($mode)}\n";
-        $params = $this->getParams($mode,false);
-        if ($params['counter'] === false){
+        $params = $this->getParams($mode, false);
+        if ($params['counter'] === false) {
             $output .= $this->closeTabs($mode);
         } else {
             $output .= $this->openATab($mode);
         }
+
         return $output;
     }
 
     /**
-     * open tabs
-     * @param string $mode
+     * open tabs.
+     *
      * @param array|Tabsfield $data
+     *
      * @return string $output
      */
-    public function openTabs(string $mode,$data):string
+    public function openTabs(string $mode, $data): string
     {
         $showFirst = false;
         $selectedtab = 1;
-        if ($data instanceof TabsField && in_array($mode,['view','form'])){
+        if ($data instanceof TabsField && in_array($mode, ['view', 'form'])) {
             if ($mode == 'view') {
                 $titles = $data->getViewTitles();
                 $this->tabsService->setViewTitles($data);
@@ -59,74 +61,78 @@ class TabsController extends YesWikiController
         } else {
             return '';
         }
-        return empty($titles) ? '' : $this->render('@templates/tabs.twig',[
+
+        return empty($titles) ? '' : $this->render('@templates/tabs.twig', [
             'titles' => $titles,
-            'selectedtab' => $selectedtab ,
-            'slugs' => $this->tabsService->getSlugs($mode)
-        ]).($showFirst ? $this->openATab($mode):'');
+            'selectedtab' => $selectedtab,
+            'slugs' => $this->tabsService->getSlugs($mode),
+        ]) . ($showFirst ? $this->openATab($mode) : '');
     }
 
     /**
-     * close tabs
-     * @param string $mode
+     * close tabs.
+     *
      * @return string $output
      */
-    public function closeTabs(string $mode = 'action'):string
+    public function closeTabs(string $mode = 'action'): string
     {
-        $params = $this->getParams($mode,false);
+        $params = $this->getParams($mode, false);
         $output = '';
-        if ($params['isClosed'] === true){
+        if ($params['isClosed'] === true) {
             return '';
         }
         // close not opened tabs
-        if ($params['counter'] !== false) { 
-            for ($i=$params['counter']-1; $i < count($params['titles']); $i++) {
+        if ($params['counter'] !== false) {
+            for ($i = $params['counter'] - 1; $i < count($params['titles']); $i++) {
                 if ($params['tabOpened'] === false) {
-                    $output .= "\n    ".$this->openATab($mode);
+                    $output .= "\n    " . $this->openATab($mode);
                 }
-                $output .= "\n    ".$this->closeATab($mode);
-                $params = $this->getParams($mode,false);
+                $output .= "\n    " . $this->closeATab($mode);
+                $params = $this->getParams($mode, false);
             }
         }
-        if ($params['counter'] === false  && $params['isClosed'] === false ){
+        if ($params['counter'] === false && $params['isClosed'] === false) {
             $this->tabsService->registerClose($mode);
             $output .= "\n</div><!-- close all tabs -->";
         }
+
         return $output;
     }
 
     /**
-     * open a tab
-     * @param string $mode
+     * open a tab.
+     *
      * @return string $output
      */
-    public function openATab(string $mode = 'action'):string
+    public function openATab(string $mode = 'action'): string
     {
-        $params = $this->getParams($mode,false);
+        $params = $this->getParams($mode, false);
         if ($params['counter'] === false || $params['tabOpened'] === true) {
-            return "";
+            return '';
         }
         $this->tabsService->openTab($mode);
-        return $this->render('@templates/tab-open.twig',array_merge($params,[
-            'selected' => ($params['counter'] == $params['selectedtab'])
+
+        return $this->render('@templates/tab-open.twig', array_merge($params, [
+            'selected' => ($params['counter'] == $params['selectedtab']),
         ]));
     }
 
     /**
-     * close a tab
-     * @param string $mode
+     * close a tab.
+     *
      * @return string $output
      */
-    public function closeATab(string $mode = 'action'):string
+    public function closeATab(string $mode = 'action'): string
     {
-        $params = $this->getParams($mode,true);
+        $params = $this->getParams($mode, true);
         if ($params['counter'] === false) {
-            return "";
+            return '';
         }
-        return $this->render('@templates/tab-close.twig',$params);
+
+        return $this->render('@templates/tab-close.twig', $params);
     }
 
-    protected function getParams(string $mode,bool $increment = true): array
+    protected function getParams(string $mode, bool $increment = true): array
     {
         return ($mode === 'form')
             ? $this->tabsService->getFormData($increment)

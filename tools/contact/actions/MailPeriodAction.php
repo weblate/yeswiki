@@ -20,13 +20,13 @@ class MailPeriodAction extends YesWikiAction
         $user = $this->authController->getLoggedUser();
         $userName = $this->authController->getLoggedUserName();
         $periods = [
-            'day' =>   ['label' => _t('CONTACT_DAILY')],
-            'week' =>  ['label' => _t('CONTACT_WEEKLY')],
-            'month' => ['label' => _t('CONTACT_MONTHLY')]
+            'day' => ['label' => _t('CONTACT_DAILY')],
+            'week' => ['label' => _t('CONTACT_WEEKLY')],
+            'month' => ['label' => _t('CONTACT_MONTHLY')],
         ];
         $periods = $this->updatePeriods($periods, $userName);
         $messages = [];
-        
+
         if ($user && !empty($userName)) {
             if (isset($_REQUEST['subscribe'])) {
                 $period = $_REQUEST['subscribe'];
@@ -46,7 +46,7 @@ class MailPeriodAction extends YesWikiAction
         return $this->render('@contact/mailperiod.twig', [
             'user' => $user,
             'messages' => $messages,
-            'periods' => $periods
+            'periods' => $periods,
         ]);
     }
 
@@ -57,20 +57,21 @@ class MailPeriodAction extends YesWikiAction
             $periods[$period]['subscribed'] = $this->userManager->isInGroup($group, $userName, false);
             $periods[$period]['group'] = $this->groupName($period);
         }
+
         return $periods;
     }
 
-    private function groupName($period) : string
+    private function groupName($period): string
     {
         return "Mail{$this->wiki->getPageTag()}" . ucfirst($period);
     }
 
-    private function subscribeUserToGroup($userName, $group) : void
+    private function subscribeUserToGroup($userName, $group): void
     {
-        $this->wiki->SetGroupACL($group, $this->wiki->GetGroupACL($group)."\n".$userName);
+        $this->wiki->SetGroupACL($group, $this->wiki->GetGroupACL($group) . "\n" . $userName);
     }
 
-    private function unsubscribeUserFromGroup($userName, $group) : void
+    private function unsubscribeUserFromGroup($userName, $group): void
     {
         $newgroup = str_replace($userName, '', $this->wiki->GetGroupACL($group));
         $newgroup = explode("\n", $newgroup);

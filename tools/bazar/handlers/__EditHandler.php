@@ -22,8 +22,8 @@ class __EditHandler extends YesWikiHandler
             $this->output .= ob_get_contents();
             ob_end_clean();
             $this->output .= '</div>';
-            
-            $this->output = $this->wiki->Header().$this->output;
+
+            $this->output = $this->wiki->Header() . $this->output;
             $this->output .= $this->wiki->Footer();
 
             // we use die so that the script stop there and the default handler of wiki isn't called
